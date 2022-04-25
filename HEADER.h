@@ -38,7 +38,7 @@ void erreur_chargement_image(BITMAP* image); // Verifie qu'on a bien charger l'i
 void changement_graphique(int valeur); // Permet de changer de mode graphique
 
 
-/* ----------- FONCTION AFFICHAGE ----------- */
+/* ----------- FONCTION AFFICHAGE ----------- *///
 
 void init_map(t_map* carte); // Permet d'initaliser une map
 
