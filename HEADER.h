@@ -5,7 +5,8 @@
 #ifndef HEADER_H_INCLUDED
 #define HEADER_H_INCLUDED
 
-#define TAILLE_TABLEAU 10
+#define LIGNE_TABLEAU 16
+#define COLONNE_TABLEAU 20
 
 /* ----------- STRUCTURE DE DONNEES ----------- */
 
@@ -15,9 +16,9 @@ typedef struct Cases{
 }t_cases;
 
 typedef struct Map{
-    int* map_obstacle[TAILLE_TABLEAU];
+    int map_obstacle[COLONNE_TABLEAU][LIGNE_TABLEAU];
     BITMAP* fond_map;
-    t_cases* tab_coordonnes[TAILLE_TABLEAU];
+    t_cases tab_coordonnes[COLONNE_TABLEAU][LIGNE_TABLEAU];
 }t_map;
 
 typedef struct Personnage{
@@ -36,10 +37,15 @@ typedef struct Personnage{
 void prepa_alleg(void); // Lance alleg init et verifie qu'il fonctionne bien
 void erreur_chargement_image(BITMAP* image); // Verifie qu'on a bien charger l'image
 void changement_graphique(int valeur); // Permet de changer de mode graphique
+void affichage_grille(BITMAP* buffer); // Permet d'afficher la grille sur la map
 
 
-/* ----------- FONCTION AFFICHAGE ----------- */
+/* ----------- SOUS PROGRAMME ----------- */
 
 void init_map(t_map* carte); // Permet d'initaliser une map
+void remplir_tab_coordonnes(t_map* carte); // Permet de remplir les coordonnées de la map
+void remplir_map_obstacle(t_map* carte); // Permet de remplir les types de chaque case
+int position_souris_colonne(void); // Renvoie la colonne dans lequel se situe la souris, renvoie -1 si pas dans une colonne
+int position_souris_ligne(void); // Renvoie la ligne dans lequel se situe la souris, renvoie -1 si pas dans une ligne
 
 #endif // HEADER_H_INCLUDED

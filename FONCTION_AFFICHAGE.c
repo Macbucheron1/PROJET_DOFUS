@@ -54,3 +54,22 @@ void changement_graphique(int valeur)
             }
         }
 }
+
+void affichage_grille(BITMAP* buffer)
+{
+    /* Permet d'afficher la grille sur la carte
+    Prend en parametre le buffer
+    Ne renvoie rien*/
+
+    for (int x = 96; x <= 736; x = x + 32)
+    {
+        line(buffer, x, 32, x, 544, makecol(255, 0, 0));
+    }
+    for (int y = 32; y <= 544; y = y + 32)
+    {
+        line(buffer, 96, y, 736, y, makecol(255, 0, 0));
+    }
+}
+
+
+
