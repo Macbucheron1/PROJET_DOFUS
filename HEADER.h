@@ -30,7 +30,16 @@ typedef struct Personnage{
     int pv_actuel;
     int pm_actuel;
     int pa_actuel;
+    BITMAP* skin;
 }t_personnage;
+
+typedef struct Joueur{
+    char nom_joueur[30];
+    int numero_joueur;
+    t_personnage* classe;
+    int position_colonne;
+    int position_ligne;
+} t_joueur;
 
 /* ----------- FONCTION AFFICHAGE ----------- */
 
