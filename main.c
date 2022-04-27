@@ -22,21 +22,11 @@ int main()
 
     // CODE PRINCIPAL
 
-
     while (!key[KEY_ESC])
     {
         blit(carte.fond_map,buffer1,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
-        for (int x = 100; x <= 700; x = x + 30)
-        {
-            line(buffer1, x, 60, x, 540, makecol(255, 0, 0));
-        }
-        for (int y = 60; y <= 540; y = y + 30)
-        {
-            line(buffer1, 100, y, 700, y, makecol(255, 0, 0));
-        }
-        draw_sprite(buffer1,soldat, 145, 192);
-        blit(buffer1, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-
+        affichage_grille(buffer1);
+        show_mouse(buffer1);
         if (key[KEY_SPACE])
         {
             if (changement_mode_graphique == 0)
@@ -51,6 +41,7 @@ int main()
             }
         }
 
+        blit(buffer1, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 
     }
 
