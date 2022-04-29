@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1651261421 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\dofus_classe\functions.c
+	"header.h"
+
+1651261411 c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\dofus_classe\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<stdbool.h>
+
+1651262362 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\dofus_classe\main.c
+	"header.h"
+
