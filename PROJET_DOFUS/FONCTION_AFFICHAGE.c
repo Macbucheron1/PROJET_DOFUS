@@ -77,32 +77,32 @@ void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y)
 }
 
 
-//Affiche les zones sur lesqeuelles peut aller le perso en vert
-void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16])
+//Affiche les zones sur lesqeuelles peut aller le personnage en vert
+void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
     for(int i=0; i<20;i++)
     {
 
         for(int j=0;j<16;j++)
         {
-            if(tab[i][j]==1)
+            if(zoneDeplacement[i][j]==1)
             {
                 rectfill(buffer,carte.tab_coordonnes[i][j].position_pixel_x+5, carte.tab_coordonnes[i][j].position_pixel_y+5, carte.tab_coordonnes[i][j].position_pixel_x +32-5,carte.tab_coordonnes[i][j].position_pixel_y+32-5, makecol(0,255,0));
             }
         }
     }
-    afficheSouris(buffer,carte,tab);
+    afficheSouris(buffer,carte,zoneDeplacement);
 }
 
 //Affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
-void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16])
+void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
     int i=0,j=0;
     if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)
     {
         i= position_souris_colonne();
         j= position_souris_ligne();
-        if(tab[i][j]==1)
+        if(zoneDeplacement[i][j]==1)
             rectfill(buffer,carte.tab_coordonnes[i][j].position_pixel_x+5, carte.tab_coordonnes[i][j].position_pixel_y+5, carte.tab_coordonnes[i][j].position_pixel_x +32-5,carte.tab_coordonnes[i][j].position_pixel_y+32-5, makecol(0,0,255));
     }
 

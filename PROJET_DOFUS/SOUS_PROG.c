@@ -102,8 +102,9 @@ int position_souris_ligne(void)
 }
 
 //Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
-void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int tab[20][16], int PM_restant)
+void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant)
 {
+
 
     int i,j,tmp;
     int x=x_soldat;
@@ -111,16 +112,25 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
     int continuer=1;
     int continuer1=1;
     coords chemin[3];
+
+    for(i=0; i<20;i++)                  //Iniitialisation du tableau avec des 0
+    {
+        for(j=0; j<16;j++)
+        {
+            zoneDeplacement[i][j]=0;
+        }
+    }
+    //La zone de deplacement correspond a un losange que l'on sép   re en 2 parties (2 grandes boucles for)
     for(i=0;i<PM_restant+1 && continuer1;i++)
     {
         tmp=x;
         for(j=0; j<i*2+1;j++)
         {
             if(x>=0 && y>=0){
-                if(!(i==PM_restant && j==PM_restant) && carte.map_obstacle[x][y]!=1 && CalculChemin(carte, x_soldat,y_soldat,x,y, tab, 3,chemin)!=-1) //obstacle
+                if(!(i==PM_restant && j==PM_restant) && carte.map_obstacle[x][y]!=1 && CalculChemin(carte, x_soldat,y_soldat,x,y, 3,chemin)!=-1) // Verifie si la case est accessible
                 {
 
-                    tab[x][y]=1;
+                    zoneDeplacement[x][y]=1;                                                           //Si c'est le cas, las case=1 dans le tableau
                 }
             }
                 if(x<19)
@@ -145,8 +155,8 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
             for(j=0; j<2*PM_restant-(i*2+1);j++)
             {
                 if(x>=0 && y>=0){
-                    if(carte.map_obstacle[x][y]!=1 && CalculChemin(carte, x_soldat,y_soldat,x,y, tab, 3,chemin)!=-1)
-                        tab[x][y]=1;
+                    if(carte.map_obstacle[x][y]!=1 && CalculChemin(carte, x_soldat,y_soldat,x,y, 3,chemin)!=-1)
+                        zoneDeplacement[x][y]=1;
                 }
                 if(x<19)
                     x=x+1;
@@ -158,25 +168,25 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
         }
     }
 
-    SurbrillanceDeplacement(buffer,carte,tab);
+    SurbrillanceDeplacement(buffer,carte,zoneDeplacement);
 }
 
 //Recupere dans la struct position, la position finale du deplacement, renvoie le nb de PM utilisés
-int Deplacement(t_map carte, int tab[20][16], coords *position) //position du click
+int Deplacement(t_map carte, int zoneDeplacement[20][16], t_joueur* joueurActuel) //position du click
 {
     int i=0,j=0;
     int PM_utilises=0;
 
 
-    if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)
+    if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)                    //Si le curseur et sur la map
     {
         i= position_souris_colonne();
         j= position_souris_ligne();
-        if(mouse_b && tab[i][j]==1)
+        if(mouse_b && zoneDeplacement[i][j]==1)                                         //Si le joueur click sur une zone de deplacement
         {
-            PM_utilises=abs(position->x-position_souris_colonne())+ abs(position->y-position_souris_ligne());
-            position->x=position_souris_colonne();
-            position->y=position_souris_ligne();
+            PM_utilises=abs(joueurActuel->position_colonne-position_souris_colonne())+ abs(joueurActuel->position_ligne-position_souris_ligne());   //Calcul du nb de PM utilisés et actualisation de la position du joueur
+            joueurActuel->position_colonne=position_souris_colonne();
+            joueurActuel->position_ligne=position_souris_ligne();
         }
     }
 
@@ -184,7 +194,7 @@ int Deplacement(t_map carte, int tab[20][16], coords *position) //position du cl
 }
 
 //Stock le chemin dans le tableau chemin si il est possible, sinon renvoie -1
-int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int PM_restant,coords chemin[])
+int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int PM_restant,coords chemin[])
 {
     int chemin1=1, chemin2=1;
     coords pos;
@@ -226,7 +236,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                         chemin[cpt]=pos;
                         cpt++;
                     }
-                    for(int i=y1-1;i>=y2;i--)               //pareil
+                    for(int i=y1-1;i>=y2;i--)
                     {
                         pos.x=x2;
                         pos.y=i;
@@ -237,7 +247,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                 }
             else if(chemin2)
                 {
-                    for(int i=y1-1;i>=y2;i--)               //pareil
+                    for(int i=y1-1;i>=y2;i--)
                     {
                         pos.x=x1;
                         pos.y=i;
@@ -264,19 +274,19 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
         ////////////////////////////////////////////////////////////////////////////////////
         if( x1>x2 && y1>=y2)
         {
-            for(int i=x1-1;i>=x2;i--)                               //+1    <=  ++
+            for(int i=x1-1;i>=x2;i--)
             {
                 if( carte.map_obstacle[i][y1]==1)
                     chemin1=0;
             }
 
-            for(int i=y1-1;i>=y2 && chemin1!=0;i--)                 //pareil
+            for(int i=y1-1;i>=y2 && chemin1!=0;i--)
             {
                 if( carte.map_obstacle[x2][i]==1)
                     chemin1=0;
             }
 
-            for(int i=y1-1;i>=y2 ;i--)                              //pareil
+            for(int i=y1-1;i>=y2 ;i--)
             {
                 if( carte.map_obstacle[x1][i]==1)
                     chemin2=0;
@@ -297,7 +307,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                         chemin[cpt]=pos;
                         cpt++;
                     }
-                    for(int i=y1-1;i>=y2;i--)                           //pareil
+                    for(int i=y1-1;i>=y2;i--)
                     {
                         pos.x=x2;
                         pos.y=i;
@@ -308,7 +318,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                 }
             else if(chemin2)
                 {
-                    for(int i=y1-1;i>=y2;i--)                           //pareil
+                    for(int i=y1-1;i>=y2;i--)
                     {
                         pos.x=x1;
                         pos.y=i;
@@ -335,19 +345,19 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
         ////////////////////////////////////////////////////////////////////////
         if( x1>=x2 && y1<y2)
         {
-            for(int i=x1-1;i>=x2;i--)                               //+1    <=  ++
+            for(int i=x1-1;i>=x2;i--)
             {
                 if( carte.map_obstacle[i][y1]==1)
                     chemin1=0;
             }
 
-            for(int i=y1+1;i<=y2 && chemin1!=0;i++)                 //pareil
+            for(int i=y1+1;i<=y2 && chemin1!=0;i++)
             {
                 if( carte.map_obstacle[x2][i]==1)
                     chemin1=0;
             }
 
-            for(int i=y1+1;i<=y2 ;i++)                              //pareil
+            for(int i=y1+1;i<=y2 ;i++)
             {
                 if( carte.map_obstacle[x1][i]==1)
                     chemin2=0;
@@ -368,7 +378,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                         chemin[cpt]=pos;
                         cpt++;
                     }
-                    for(int i=y1+1;i<=y2 ;i++)                           //pareil
+                    for(int i=y1+1;i<=y2 ;i++)
                     {
                         pos.x=x2;
                         pos.y=i;
@@ -379,7 +389,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                 }
             else if(chemin2)
                 {
-                    for(int i=y1+1;i<=y2 ;i++)                           //pareil
+                    for(int i=y1+1;i<=y2 ;i++)
                     {
                         pos.x=x1;
                         pos.y=i;
@@ -406,19 +416,19 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
         ///////////////////////////////////////////////////////////////////////
         if( x1<x2 && y1<=y2)
         {
-            for(int i=x1+1;i<=x2;i++)                               //+1    <=  ++
+            for(int i=x1+1;i<=x2;i++)
             {
                 if( carte.map_obstacle[i][y1]==1)
                     chemin1=0;
             }
 
-            for(int i=y1+1;i<=y2 && chemin1!=0;i++)                 //pareil
+            for(int i=y1+1;i<=y2 && chemin1!=0;i++)
             {
                 if( carte.map_obstacle[x2][i]==1)
                     chemin1=0;
             }
 
-            for(int i=y1+1;i<=y2 ;i++)                              //pareil
+            for(int i=y1+1;i<=y2 ;i++)
             {
                 if( carte.map_obstacle[x1][i]==1)
                     chemin2=0;
@@ -440,7 +450,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                         chemin[cpt]=pos;
                         cpt++;
                     }
-                    for(int i=y1+1;i<=y2 ;i++)                           //pareil
+                    for(int i=y1+1;i<=y2 ;i++)
                     {
                         pos.x=x2;
                         pos.y=i;
@@ -451,8 +461,7 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int tab[20][16], int
                 }
             else if(chemin2)
                 {
-                    printf("//////");
-                    for(int i=y1+1;i<=y2 ;i++)                           //pareil
+                    for(int i=y1+1;i<=y2 ;i++)
                     {
                         pos.x=x1;
                         pos.y=i;

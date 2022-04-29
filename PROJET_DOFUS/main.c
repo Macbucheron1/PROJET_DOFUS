@@ -21,33 +21,18 @@ int main()
     erreur_chargement_image(soldat);
 
     // CODE PRINCIPAL
+    //////////////Pour tester le deplacement////////////////
+    t_joueur joueurActuel;
+    joueurActuel.position_colonne=9;
+    joueurActuel.position_ligne=8;
+    joueurActuel.classe.pm_actuel=3;
+    /////////////////////////////////////////////////////////
 
     while (!key[KEY_ESC])
     {
         //joueurActuel.classe->pm_actuel=joueurActuel.classe->pm_max;
         //boucle tant que temps>0
-        int tab[20][16]={                                   //Tableau contenant les cases sur lesquelles peut aller le joueur (prend en compte obstacle, PM etc...)
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        };
+        int  zoneDeplacement[20][16];
 
         blit(carte.fond_map,buffer1,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
         affichage_grille(buffer1);
@@ -55,14 +40,11 @@ int main()
 
         ////////////////////////////////////DEPLACEMENT/////////////////////////////
         if(joueurActuel.classe.pm_actuel>0){
-            CalculDeplacement(buffer1,carte, joueurActuel.position_colonne,joueurActuel.position_ligne,tab,joueurActuel.classe.pm_actuel);
-            joueurActuel.classe.pm_actuel-=Deplacement(carte, tab, &position);
+            CalculDeplacement(buffer1,carte, joueurActuel.position_colonne,joueurActuel.position_ligne,zoneDeplacement, joueurActuel.classe.pm_actuel);
+            joueurActuel.classe.pm_actuel-=Deplacement(carte, zoneDeplacement, &joueurActuel);
             //AnimationDeplacement(joueurActuel.position_colonne, joueurActuel.position_ligne=position.y, position.x, position.y);
-            joueurActuel.position_colonne=position.x;
-            joueurActuel.position_ligne=position.y;
-
         }
-        affichagePerso(buffer1,soldat,carte,position.x,position.y);
+        affichagePerso(buffer1,soldat,carte,joueurActuel.position_colonne,joueurActuel.position_ligne);
         ////////////////////////////////////////////////////////////////////////////
 
 
