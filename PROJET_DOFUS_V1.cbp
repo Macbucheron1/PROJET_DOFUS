@@ -35,6 +35,12 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="HEADER.h" />
+		<Unit filename="INITIALISATION.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="PRINCIPALE.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="SOUS_PROG.c">
 			<Option compilerVar="CC" />
 		</Unit>
