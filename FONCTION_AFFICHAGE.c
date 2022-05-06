@@ -57,17 +57,6 @@ void montre_curseur(BITMAP* page)
 }
 
 
-void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y) // a definir
-{
-    /* permet d'afficher le personnage
-    Prend en parametre la bitmap d'affichage, le skin du joueur, la carte et les coordonnées
-    Ne renvoie rien */
-
-    draw_sprite(buffer, soldat, carte.tab_coordonnes[x][y].position_pixel_x, carte.tab_coordonnes[x][y].position_pixel_y-40);
-}
-
-
-
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
     /* Affiche les zones sur lesqeuelles peut aller le personnage en vert
@@ -136,8 +125,9 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                     x=32;
                 x1+=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-                clear(buffer);
                 rest(100);
+                clear(buffer);
+
             }
             while(y1>y2)                                                                                                                                    //Monter
             {
@@ -149,8 +139,9 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                     x=32;
                 y1-=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-                clear(buffer);
                 rest(100);
+                clear(buffer);
+
             }
             while(x1>x2)                                                                                                                                   //Aller a gauche
             {
@@ -162,8 +153,9 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                     x=32;
                 x1-=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-                clear(buffer);
                 rest(100);
+                clear(buffer);
+
             }
             while(y1<y2)                                                                                                                                    //Monter
             {
@@ -175,8 +167,9 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                     x=32;
                 y1+=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-                clear(buffer);
                 rest(100);
+                clear(buffer);
+
             }
 
 

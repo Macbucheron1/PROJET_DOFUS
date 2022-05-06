@@ -20,3 +20,24 @@
 1651577884 source:c:\users\natha\desktop\projet_dofus_v1\principale.c
 	"HEADER.h"
 
+1651842103 source:c:\users\iba20\onedrive\bureau\projet_dofus-main\fonction_affichage.c
+	"HEADER.h"
+
+1651853662 c:\users\iba20\onedrive\bureau\projet_dofus-main\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<stdbool.h>
+
+1651598467 source:c:\users\iba20\onedrive\bureau\projet_dofus-main\initialisation.c
+	"HEADER.h"
+
+1651755317 source:c:\users\iba20\onedrive\bureau\projet_dofus-main\main.c
+	"HEADER.h"
+
+1651844341 source:c:\users\iba20\onedrive\bureau\projet_dofus-main\principale.c
+	"HEADER.h"
+
+1651855749 source:c:\users\iba20\onedrive\bureau\projet_dofus-main\sous_prog.c
+	"HEADER.h"
+

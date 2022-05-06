@@ -64,6 +64,7 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 100, 100, makecol(255,255, 255), -1, "Jouer");
             if (mouse_b & 1)
             {
+                rest(100);
                 jouer();
             }
         }
@@ -117,35 +118,42 @@ void jouer(void) // A finir
     // CODE PRINCIPAL
     //////////////Pour tester le deplacement////////////////
     t_joueur joueurActuel;
-    joueurActuel.position_colonne=9;
-    joueurActuel.position_ligne=8;
-    joueurActuel.classe.pm_actuel=3;
+    joueurActuel.position_colonne=13;
+    joueurActuel.position_ligne=13;
+    joueurActuel.classe.pm_actuel=6;
     /////////////////////////////////////////////////////////
+    int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
+    int positionTmpY=-1;
 
     while (!key[KEY_ESC])
     {
+        //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
+        //int positionTmpY=-1;
 
-        //nouvellePartie(page, personnage,4/*, t_joueur tabJoueurs[]*/);
-        joueurActuel.classe.pm_actuel=3;
+        joueurActuel.classe.pm_actuel=6;    //joueurActuel.classe->pm_actuel=joueurActuel.classe->pm_max;
 
-        //joueurActuel.classe->pm_actuel=joueurActuel.classe->pm_max;
         //boucle tant que temps>0
         int  zoneDeplacement[20][16];
 
         blit(carte.fond_map,page,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
         affichage_grille(page);
 
+
         ////////////////////////////////////DEPLACEMENT/////////////////////////////
         if(joueurActuel.classe.pm_actuel>0){
-            CalculDeplacement(page,carte, joueurActuel.position_colonne,joueurActuel.position_ligne,zoneDeplacement, joueurActuel.classe.pm_actuel);
+            if(joueurActuel.position_colonne!=positionTmpX || joueurActuel.position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
+                CalculDeplacement(page,carte, joueurActuel.position_colonne,joueurActuel.position_ligne,zoneDeplacement, joueurActuel.classe.pm_actuel);
+                positionTmpX=joueurActuel.position_colonne;
+                positionTmpY=joueurActuel.position_ligne;
+            }
+            SurbrillanceDeplacement(page,carte,zoneDeplacement);
             joueurActuel.classe.pm_actuel-=Deplacement(carte, zoneDeplacement, &joueurActuel, page, soldat);
         }
-        //affichagePerso(page,soldat,carte,joueurActuel.position_colonne,joueurActuel.position_ligne);
         masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
         ////////////////////////////////////////////////////////////////////////////
         montre_curseur(page);
         blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(page);
     }
-
+    free(page);
 }
