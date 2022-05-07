@@ -2,13 +2,13 @@
 #define INFINI 9999
 
 /* ------------------------------------- SOUS PROGRAMME -------------------------------------
-    Les fontions présente dans ce fichier sont des fonctions de calcul. Elles sont utilitaire
+    Les fontions prÃ©sente dans ce fichier sont des fonctions de calcul. Elles sont utilitaire
 */
 
 
 void remplir_tab_coordonnes(t_map* carte)
 {
-    /* Permet de remplir le tableau de coordonnées de la map
+    /* Permet de remplir le tableau de coordonnÃ©es de la map
     Prend en parametre un pointeur sur la map
     Ne renvoie rien*/
     int x = 96;
@@ -50,7 +50,7 @@ void remplir_map_obstacle(t_map* carte)
         { 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
-    // On créée cette variable temporaire afin de pouvoir modifier facilement le tableau
+    // On crÃ©Ã©e cette variable temporaire afin de pouvoir modifier facilement le tableau
 
     for (int colonne = 0; colonne < COLONNE_TABLEAU; colonne++)
     {
@@ -113,9 +113,9 @@ void prepa_alleg(void)
 
 void erreur_chargement_image(BITMAP* image)
 {
-    /*Vérification que l'image est bien chargée (dans le cas contraire image vaut NULL)
+    /*VÃ©rification que l'image est bien chargÃ©e (dans le cas contraire image vaut NULL)
     TOUJOURS LE FAIRE CAR ON N'EST JAMAIS CERTAIN DE BIEN TROUVER L'IMAGE
-    Prend en parametre l'image a testé
+    Prend en parametre l'image a testÃ©
     Ne renvoie rien */
     if (!image)
     {
@@ -145,7 +145,7 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
             zoneDeplacement[i][j]=0;
         }
     }
-    //La zone de deplacement correspond a un losange que l'on sép   re en 2 parties (2 grandes boucles for)
+    //La zone de deplacement correspond a un losange que l'on sÃ©p   re en 2 parties (2 grandes boucles for)
     for(i=0;i<PM_restant+1 && continuer1;i++)
     {
         tmp=x;
@@ -199,7 +199,7 @@ int Deplacement(t_map carte, int zoneDeplacement[20][16], t_joueur* joueurActuel
 {
     /* Recupere la position initiale et finale du deplacement
     Prend en parametre la carte, la zone de deplacement, le joueur actuel, la bitmap, et le skin du joueur
-    renvoie le nb de PM utilisés */
+    renvoie le nb de PM utilisÃ©s */
 
     int i=0,j=0;
     int PM_utilises=0;
@@ -230,7 +230,7 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
 {
     /* Permet de cree une liste contenant toutes les aretes du graphe (representant la map)
     Prend en parametre la carte, le chemin (vide), la position finale/initiale du joueur et le nombre de pm (determiner par cette fonction)
-     modifie le tableau chemin et le nombre de PM utilisés
+     modifie le tableau chemin et le nombre de PM utilisÃ©s
      renvoie -1 si le chemin est invalide, sinon renvoie 1 */
 
     int nbSommets,nbAretes;
@@ -297,13 +297,13 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
     int start,finish,distance;
 
     start=tab[x1][y1];          //point de depart ppiur le calcul du chemin
-    finish=tab[x2][y2];         //point d'arivée pour le calcul du chemin
+    finish=tab[x2][y2];         //point d'arivÃ©e pour le calcul du chemin
 
     int chemin_valide=dijkstra(Adj,nbSommets+1,start,finish,chemin, &distance,PM);    //variable qui =-1 si le chemin est invalide
 
     *PM_utilises=distance;      //PM utilisees pour parcourir le chemin
 
-    for(int i=0;i<PM;i++)           //Pour chaque sommet du chemin, on va chercher ses coordonées en (x,y) car plus adapté au tableau (map)
+    for(int i=0;i<PM;i++)           //Pour chaque sommet du chemin, on va chercher ses coordonÃ©es en (x,y) car plus adaptÃ© au tableau (map)
     {
         for(int x=0;x<20;x++)
         {
@@ -326,13 +326,13 @@ int caseDisponible(t_map carte, int x, int y)//,t_joueur Joueurs[], int nbJoueur
 {
     /* permet de determiner si une case est disponible (sans obstacle ou joueur) ou pas
     Prend en parametre la carte et la position de la case
-     modifie le tableau chemin et le nombre de PM utilisés
+     modifie le tableau chemin et le nombre de PM utilisÃ©s
      renvoie 1 si la case est valide, sinon renvoie 0 */
 
     if(carte.map_obstacle[x][y]==0 )  //Verifie si la case cotient un obstacle
     {
         /*for(int i=0;i<nbJoueurs;i++)
-            if(Joueurs[i].position_colonne==x && Joueurs[i].position_ligne==y)      //verifie si un joueur est déjà sur la case => A mettre en place, a la fin
+            if(Joueurs[i].position_colonne==x && Joueurs[i].position_ligne==y)      //verifie si un joueur est dÃ©jÃ  sur la case => A mettre en place, a la fin
                 return 0;*/
 
         return 1;
@@ -344,18 +344,18 @@ int caseDisponible(t_map carte, int x, int y)//,t_joueur Joueurs[], int nbJoueur
 
 void createAdjMatrix(int Adj[][320 + 1],int aretes[][2],int nbSommets,int nbAretes)
 {
-    /*Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
-    Prend en parametre une matrice d'adjacence, une liste contenant toutes les arêtes du graphe, le nombre de sommet et d'arretes
+    /*CrÃ©Ã© une matrice d'adjacence grÃ¢ce a un tableau contenant toutes les liaisons d'un graphe
+    Prend en parametre une matrice d'adjacence, une liste contenant toutes les arÃªtes du graphe, le nombre de sommet et d'arretes
     ne renvoie rien*/
 
-	// Initialise toutes les valeurs à 0
+	// Initialise toutes les valeurs Ã  0
 	for (int i = 0; i < nbSommets + 1; i++) {
 
 		for (int j = 0; j < nbSommets + 1; j++) {
 			Adj[i][j] = 0;
 		}
 	}
-	// recupere les angles et créer la matrice d'adjacence
+	// recupere les angles et crÃ©er la matrice d'adjacence
 	for (int i = 0; i < nbAretes; i++) {
 
 		int x = aretes[i][0];
@@ -370,8 +370,8 @@ void createAdjMatrix(int Adj[][320 + 1],int aretes[][2],int nbSommets,int nbAret
 
 int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM)
 {
-    /*Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
-    prend en parametre la matrice d'adjacence, le nombre de sommet, le sommet initial/final, le tableau chemin à rempliir, la distance du chemin à determiner, et le nombre de PM disponible
+    /*Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case Ã  l'autre
+    prend en parametre la matrice d'adjacence, le nombre de sommet, le sommet initial/final, le tableau chemin Ã  rempliir, la distance du chemin Ã  determiner, et le nombre de PM disponible
     renvoie 1 si le chemin est possible sinon renvoie -1*/
 
     int cout[320 + 1][320 + 1],distance[320 + 1],pred[320 + 1];
@@ -402,7 +402,7 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     while(count<n-1)
     {
         mindistance=INFINI;
-    //On récupère le sommet le plus proche grace à nextnode
+    //On rÃ©cupÃ¨re le sommet le plus proche grace Ã  nextnode
         for(i=0; i<n; i++)
             if(distance[i]<mindistance && !visited[i])
             {
@@ -424,6 +424,41 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
 
     for(i=0; i<n; i++)
 
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
+    int color5 = makecol(50,50,50);  //gris foncÃ©
+        if (Stardelay == 10) {
+
+            i = 0;
+            while (TabStar[i].posY != 1000) {
+                i++;
+            }
+            TabStar[i].posX = 160 + rand()%500;
+            TabStar[i].posY = 110;
+            Stardelay--;
+        }
+        if (Stardelay != 10) {
+            if (Stardelay < 6) {
+                Stardelay = 10;
+            }
+            else {
+                Stardelay--;
+            }
+        }
+        for (int j=0 ; j<LIMIT_STAR ; j++) {
+
+            if (TabStar[j].posY != 1000) {
+                if (TabStar[j].posY > 490) {
+                    TabStar[j].posY = 1000;
+                }
+                else {
+                    TabStar[j].posY = TabStar[j].posY+20;   //vitesse
+                    ellipsefill(backscreen,TabStar[j].posX+5,TabStar[j].posY,2,10,color5);
+                }
+            }
+        }
+    return Stardelay;
+}
+
 
             if(i==finishnode){          //On cherche le sommet de destination
 
@@ -431,7 +466,7 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
                     return -1;
 
                 int cpt= distance[i]-1;
-                chemin[cpt]=i;                  //on stocke le sommet de destination à la derniere place du tableau chemin
+                chemin[cpt]=i;                  //on stocke le sommet de destination Ã  la derniere place du tableau chemin
                 j=i;
                 *distanceChemin=distance[i];
                 do                                //Puis on stocke les autres sommets du chemin dans l'orde suivant debut >...>fin
