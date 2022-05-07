@@ -70,11 +70,15 @@ void init_decor(t_decor* decor)
 
     BITMAP* tmp1 = load_bitmap("grandfond_decor.bmp", NULL);
     erreur_chargement_image(tmp1);
-    BITMAP* tmp2 = load_bitmap("map.bmp", NULL);
+    BITMAP* tmp2 = load_bitmap("map_desert.bmp", NULL);
     erreur_chargement_image(tmp2);
-    decor->visuel =  create_bitmap(2400, SCREEN_H);
+    BITMAP* tmp3 = load_bitmap("map_neige.bmp", NULL);
+    erreur_chargement_image(tmp3);
+    decor->visuel =  create_bitmap(3200, SCREEN_H);
     blit(tmp1, decor->visuel, 0, 0, 0, 0, 1600, 600);
+    blit(tmp1, decor->visuel, 0, 0, 1600, 0, 1600, 600);
     blit(tmp2, decor->visuel, 0, 0, 1600, 0, 800, 600);
+    blit(tmp3, decor->visuel, 0, 0, 800, 0, 800, 600);
     decor->avancement_x = 1;
     decor->avancement_y = 1;
     decor->position_x = 0;
@@ -86,8 +90,11 @@ void init_map(t_map* carte)
     /* Permet d'initialiser une map
     Prend en parametre la carte qu'on doit remplir
     Ne renvoie rien*/
-    carte->fond_map = load_bitmap("map.bmp",NULL);
+    carte->fond_map = load_bitmap("map_desert.bmp",NULL);
     erreur_chargement_image(carte->fond_map);
     remplir_tab_coordonnes(carte);
     remplir_map_obstacle(carte);
 }
+
+
+
