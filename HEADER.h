@@ -12,6 +12,7 @@
 
 #define TAILLE_NOM_CLASSE 15
 #define TAILLE_SKINS 15
+#define LIMIT_STAR 30
 
 /* ----------- STRUCTURE DE DONNEES ----------- */
 
@@ -72,6 +73,12 @@ typedef struct Decor{
     int avancement_y;
 } t_decor;
 
+typedef struct star {
+    int posX;
+    int posY;
+} t_star;
+
+
 /* ----------- FONCTION AFFICHAGE ----------- */
 
 void changement_graphique(int valeur); // Permet de changer de mode graphique
@@ -106,6 +113,9 @@ void init_decor(t_decor* decor); // Initialise le decor
 
 void menu_principal(void); // Lance le menu principale
 void jouer(void); // Permet de jouer
+void credit_en_cours(BITMAP* page, t_decor* visuel_menu); //Lance les credits
+void parametre_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance les parametres
+void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance l'apercu des classes
 
 
 

@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1651583873 source:c:\users\natha\desktop\projet_dofus_v1\fonction_affichage.c
+1651785887 source:c:\users\natha\desktop\projet_dofus_v1\fonction_affichage.c
 	"HEADER.h"
 
-1651583873 c:\users\natha\desktop\projet_dofus_v1\header.h
+1651784599 c:\users\natha\desktop\projet_dofus_v1\header.h
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
@@ -11,12 +11,12 @@
 1651503014 source:c:\users\natha\desktop\projet_dofus_v1\main.c
 	"HEADER.h"
 
-1651582823 source:c:\users\natha\desktop\projet_dofus_v1\sous_prog.c
+1651784615 source:c:\users\natha\desktop\projet_dofus_v1\sous_prog.c
 	"HEADER.h"
 
-1651583873 source:c:\users\natha\desktop\projet_dofus_v1\initialisation.c
+1651782800 source:c:\users\natha\desktop\projet_dofus_v1\initialisation.c
 	"HEADER.h"
 
-1651577884 source:c:\users\natha\desktop\projet_dofus_v1\principale.c
+1651784530 source:c:\users\natha\desktop\projet_dofus_v1\principale.c
 	"HEADER.h"
 

@@ -523,10 +523,40 @@ int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int PM_restant,coord
 }
 
 
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
+    int color5 = makecol(50,50,50);  //gris foncé
+        if (Stardelay == 10) {
 
+            i = 0;
+            while (TabStar[i].posY != 1000) {
+                i++;
+            }
+            TabStar[i].posX = 160 + rand()%500;
+            TabStar[i].posY = 110;
+            Stardelay--;
+        }
+        if (Stardelay != 10) {
+            if (Stardelay < 6) {
+                Stardelay = 10;
+            }
+            else {
+                Stardelay--;
+            }
+        }
+        for (int j=0 ; j<LIMIT_STAR ; j++) {
 
-
-
+            if (TabStar[j].posY != 1000) {
+                if (TabStar[j].posY > 490) {
+                    TabStar[j].posY = 1000;
+                }
+                else {
+                    TabStar[j].posY = TabStar[j].posY+20;   //vitesse
+                    ellipsefill(backscreen,TabStar[j].posX+5,TabStar[j].posY,2,10,color5);
+                }
+            }
+        }
+    return Stardelay;
+}
 
 
 
