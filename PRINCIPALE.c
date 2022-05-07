@@ -1,8 +1,8 @@
 #include "HEADER.h"
 
 /* ------------------------------------- PRINCIPALE -------------------------------------
-    Les fontions prÃ©sente dans ce fichier sont les fonctions principales. C'est celle qui permettront de lancer
-    toutes les fonctionnalitÃ©es principales du jeu
+    Les fontions présente dans ce fichier sont les fonctions principales. C'est celle qui permettront de lancer
+    toutes les fonctionnalitées principales du jeu
 */
 
 void menu_principal(void) // A finir
@@ -10,7 +10,7 @@ void menu_principal(void) // A finir
     ///////////////////////////// INITALISATION VARIABLE /////////////////////////////////////
 
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-    t_decor visuel_menu; 
+    t_decor visuel_menu;
     init_decor(&visuel_menu);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
 
@@ -42,7 +42,7 @@ void menu_principal(void) // A finir
 
         rectfill(fond_menu, 250, 150, 560, 210, couleur_jouer); // Jouer
 
-        rectfill(fond_menu, 250, 250, 560, 310, couleur_apercu_classe); // AperÃ§u des classes
+        rectfill(fond_menu, 250, 250, 560, 310, couleur_apercu_classe); // Aperçu des classes
 
         rectfill(fond_menu, 250, 350, 560, 410, couleur_parametre); // Parametre
 
@@ -86,7 +86,6 @@ void menu_principal(void) // A finir
         {
             if (mouse_b & 1)
             {
-                rest(100);
                 jouer();
             }
         }
@@ -162,44 +161,36 @@ void jouer(void) // A finir
     // CODE PRINCIPAL
     //////////////Pour tester le deplacement////////////////
     t_joueur joueurActuel;
-    joueurActuel.position_colonne=13;
-    joueurActuel.position_ligne=13;
-    joueurActuel.classe.pm_actuel=6;
+    joueurActuel.position_colonne=9;
+    joueurActuel.position_ligne=8;
+    joueurActuel.classe.pm_actuel=3;
     /////////////////////////////////////////////////////////
-    int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
-    int positionTmpY=-1;
 
     while (!key[KEY_ESC])
     {
-        //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
-        //int positionTmpY=-1;
 
-        joueurActuel.classe.pm_actuel=6;    //joueurActuel.classe->pm_actuel=joueurActuel.classe->pm_max;
+        //nouvellePartie(page, personnage,4/*, t_joueur tabJoueurs[]*/);
+        joueurActuel.classe.pm_actuel=3;
 
+        //joueurActuel.classe->pm_actuel=joueurActuel.classe->pm_max;
         //boucle tant que temps>0
         int  zoneDeplacement[20][16];
 
         blit(carte.fond_map,page,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
         affichage_grille(page);
 
-
         ////////////////////////////////////DEPLACEMENT/////////////////////////////
         if(joueurActuel.classe.pm_actuel>0){
-            if(joueurActuel.position_colonne!=positionTmpX || joueurActuel.position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
-                CalculDeplacement(page,carte, joueurActuel.position_colonne,joueurActuel.position_ligne,zoneDeplacement, joueurActuel.classe.pm_actuel);
-                positionTmpX=joueurActuel.position_colonne;
-                positionTmpY=joueurActuel.position_ligne;
-            }
-            SurbrillanceDeplacement(page,carte,zoneDeplacement);
+            CalculDeplacement(page,carte, joueurActuel.position_colonne,joueurActuel.position_ligne,zoneDeplacement, joueurActuel.classe.pm_actuel);
             joueurActuel.classe.pm_actuel-=Deplacement(carte, zoneDeplacement, &joueurActuel, page, soldat);
         }
+        //affichagePerso(page,soldat,carte,joueurActuel.position_colonne,joueurActuel.position_ligne);
         masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
         ////////////////////////////////////////////////////////////////////////////
         montre_curseur(page);
         blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(page);
     }
-
 }
 
 
@@ -254,14 +245,14 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
 
-        // Rajouter le texte des crÃ©dits
+        // Rajouter le texte des crédits
         rectfill(page, 150, 100, 675, 525, makecol(20,20,20));
         rectfill(page, 155, 105, 670, 520, makecol(10,10,10));
         rectfill(page, 160, 110, 665, 515, makecol(0,0,0));
 
         police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
 
-        Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gÃ¨re le fond
+        Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond
 
 
         montre_curseur(page);
@@ -299,7 +290,6 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
-
 }
 
 
@@ -363,9 +353,9 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
         {
             if ((mouse_b & 1) && (mode_graphique == 1))
             {
-                //changement_graphique(0);
-                allegro_message("Fonctionnalite indisponible");
-                mode_graphique = 0;
+                changement_graphique(0);
+                //allegro_message("Fonctionnalite indisponible");
+                //mode_graphique = 0;
             }
 
         }
