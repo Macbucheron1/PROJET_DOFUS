@@ -422,4 +422,3 @@ int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FO
 
 
 
-

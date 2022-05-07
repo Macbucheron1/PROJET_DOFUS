@@ -10,7 +10,7 @@ void menu_principal(void) // A finir
     ///////////////////////////// INITALISATION VARIABLE /////////////////////////////////////
 
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-    t_decor visuel_menu; 
+    t_decor visuel_menu;
     init_decor(&visuel_menu);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
 
@@ -259,6 +259,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
         rectfill(page, 155, 105, 670, 520, makecol(10,10,10));
         rectfill(page, 160, 110, 665, 515, makecol(0,0,0));
 
+        //police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
         police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
 
         Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond

@@ -373,12 +373,10 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     /*Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
     prend en parametre la matrice d'adjacence, le nombre de sommet, le sommet initial/final, le tableau chemin à rempliir, la distance du chemin à determiner, et le nombre de PM disponible
     renvoie 1 si le chemin est possible sinon renvoie -1*/
-
     int cout[320 + 1][320 + 1],distance[320 + 1],pred[320 + 1];
     int visited[320 + 1],count,mindistance,nextnode,i,j;
     //pred[] stocke le predescesseur de chaque sommet
     //count contient le nombre de sommet vu
-
     for(i=0; i<n; i++)
         for(j=0; j<n; j++)
             if(Adj[i][j]==0)
@@ -398,7 +396,6 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     distance[startnode]=0;
     visited[startnode]=1;
     count=1;
-
     while(count<n-1)
     {
         mindistance=INFINI;
@@ -420,9 +417,26 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
                 }
         count++;
     }
-
-
     for(i=0; i<n; i++)
+            if(i==finishnode){          //On cherche le sommet de destination
+                if(distance[i]>PM)      //on verifie si le nombre de PM suffit
+                    return -1;
+
+                int cpt= distance[i]-1;
+                chemin[cpt]=i;                  //on stocke le sommet de destination à la derniere place du tableau chemin
+                j=i;
+                *distanceChemin=distance[i];
+                do                                //Puis on stocke les autres sommets du chemin dans l'orde suivant debut >...>fin
+                {
+                    j=pred[j];
+                    cpt--;
+                    chemin[cpt]=j;
+                }
+                while(j!=startnode);
+            }
+    return 1;
+}
+
 
 int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
     int color5 = makecol(50,50,50);  //gris foncé
@@ -458,33 +472,6 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) 
         }
     return Stardelay;
 }
-
-
-            if(i==finishnode){          //On cherche le sommet de destination
-
-                if(distance[i]>PM)      //on verifie si le nombre de PM suffit
-                    return -1;
-
-                int cpt= distance[i]-1;
-                chemin[cpt]=i;                  //on stocke le sommet de destination à la derniere place du tableau chemin
-                j=i;
-                *distanceChemin=distance[i];
-                do                                //Puis on stocke les autres sommets du chemin dans l'orde suivant debut >...>fin
-                {
-                    j=pred[j];
-                    cpt--;
-                    chemin[cpt]=j;
-
-                }
-                while(j!=startnode);
-            }
-    return 1;
-}
-
-
-
-
-
 
 
 
