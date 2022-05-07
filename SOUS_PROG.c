@@ -388,7 +388,7 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
             else
                 cout[i][j]=Adj[i][j];
 
-    //initialisation pred[],distance[] and visited[]
+    //initialisation pred[],distance[] et visited[]
     for(i=0; i<n; i++)
     {
         distance[i]=cout[startnode][i];
@@ -431,7 +431,7 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
                     return -1;
 
                 int cpt= distance[i]-1;
-                chemin[cpt]=i;                  //on stoche le sommet de destination à la derniere place du tableau chemin
+                chemin[cpt]=i;                  //on stocke le sommet de destination à la derniere place du tableau chemin
                 j=i;
                 *distanceChemin=distance[i];
                 do                                //Puis on stocke les autres sommets du chemin dans l'orde suivant debut >...>fin
