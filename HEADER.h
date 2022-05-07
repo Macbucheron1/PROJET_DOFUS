@@ -100,8 +100,10 @@ void prepa_alleg(void); // Lance alleg init et verifie qu'il fonctionne bien
 void erreur_chargement_image(BITMAP* image); // Verifie qu'on a bien charger l'image
 void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int tab[20][16], int PM_restant); //Remplis le tableau tab,avec des 1, sur les cases sur lesquelles peut aller le joueur
 int Deplacement(t_map carte, int zoneDeplacement[20][16], t_joueur* joueurActuel, BITMAP* buffer, BITMAP* soldat ); //Recupere dans la struct position, la position fde la souris lors du click, renvoie le nb de PM utilisés
-int CalculChemin( t_map carte, int x1,int y1,int x2,int y2, int PM_restant,coords chemin[]);//Stock le chemin dans le tableau chemin si il est possible, sinon renvoie -1
-
+int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords chemin1[], int* PM_utilises);//Stock le chemin dans le tableau chemin si il est possible, sinon renvoie -1
+int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM); //Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
+void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
+int caseDisponible(t_map carte, int x, int y);  // permet de determiner si une case est disponible (sans obstacle ou joueur) ou pas
 
 /* ----------- INITIALISATION ----------- */
 
