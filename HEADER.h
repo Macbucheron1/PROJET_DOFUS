@@ -38,23 +38,7 @@ typedef struct Personnage{ //les classes
     int pv_max; //si soin ne pas depasser ce pv max
     int pm_max; // afin de remettre a ca a chaque tour
     int pa_max; // pareil
-    int pv_actuel;
-    int pm_actuel;
-    int pa_actuel;
     BITMAP* skin[TAILLE_SKINS];
-
-    //pour les attaques
-    int max_meditation; //limite de meditation de la classe jedi (sinon gagne trop de PM)
-    bool bouclier; //si la classe tank active son bouclier true, sinon false
-    int tour_bouclier; //commence a 0 et sincrement a chaque tour
-    int tour_bouclier_max; //a partir de cb de tour le bouclier doit se desactiver
-    int PM_roule; //si true augmente les PM du tank (se desactive au bout d'1 tour)
-    bool en_feu; //si true prend des degats sinon rien
-    int tour_en_feu; //comme tour bouclier
-    int tour_en_feu_max; //pareil
-    int nb_bacta; //initialiser a 0 contre le nombre de seringue utilisée
-    int nb_bacta_max; //limite l'utilisation de seringue de bacta (pour les chasseur de primes)
-
 }t_personnage;
 
 typedef struct Joueur{
@@ -63,6 +47,25 @@ typedef struct Joueur{
     t_personnage classe;
     int position_colonne;
     int position_ligne;
+
+    //info utile en jeu
+    int pv_actuel;
+    int pm_actuel;
+    int pa_actuel;
+
+    //pour les attaques
+    bool bouclier; //si la classe tank active son bouclier true, sinon false
+    int tour_bouclier; //commence a 0 et sincrement a chaque tour
+    int tour_bouclier_max; //a partir de cb de tour le bouclier doit se desactiver
+    bool PM_roule; //si true augmente les PM du tank (se desactive au bout d'1 tour)
+    bool en_feu; //si true prend des degats sinon rien
+    int tour_en_feu; //comme tour bouclier
+    int tour_en_feu_max; //pareil
+    int nb_bacta; //initialiser a 0 contre le nombre de seringue utilisée
+    int nb_bacta_max; //limite l'utilisation de seringue de bacta (pour les chasseur de primes)
+
+    int pm_max_actu_mage; //sert a la remise au max (ne pas utiliser pm_max des classe pour les mages) a chaque tout active que pour les mages (prise en compte de meditation)
+
 } t_joueur;
 
 typedef struct Decor{
@@ -88,11 +91,6 @@ void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelé par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
 void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelé par SurbrillanceDeplacement et affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
 void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, t_joueur joueurActuel, coords chemin[], int PM); // Fait l'animation de deplacement
-void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville); // Affiche la classe clone
-void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige); // Affiche la classe dark vador
-void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_desert); // Affiche la classe jedi
-int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8); // Affiche les credits
-
 
 /* ----------- SOUS PROGRAMME ----------- */
 
@@ -108,13 +106,11 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
 int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM); //Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
 void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
 int caseDisponible(t_map carte, int x, int y);  // permet de determiner si une case est disponible (sans obstacle ou joueur) ou pas
-int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen); // Calcul les etoiles
-
-
 
 /* ----------- INITIALISATION ----------- */
 
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total); //initialise les differentes classes
+t_joueur init_joueur(char* nom_joueur,int num_joueur,t_personnage classe_choisie); //initialise les joueurs
 void init_map(t_map* carte); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
 
@@ -126,6 +122,18 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu); //Lance les credits
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance les parametres
 void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance l'apercu des classes
 
+/* ----------- ATTAQUE ----------- */
 
+/** GENERALE **/
+bool action_possible(t_joueur* tab_j,int i,int point_de_laction); //sert a verifier la possibilité en PA d'une action
+void affichage_action_impossible(BITMAP* page); //affiche un msg d'erreur
+
+/** MAGE **/
+
+/** ARCHER **/
+
+/** GUERRIER **/
+
+/** TANK **/
 
 #endif // HEADER_H_INCLUDED

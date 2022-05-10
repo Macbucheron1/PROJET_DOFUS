@@ -34,6 +34,21 @@
 		<Linker>
 			<Add library="alleg44.dll" />
 		</Linker>
+		<Unit filename="ATTAQUE_ARCHER.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ATTAQUE_GENERALE.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ATTAQUE_GUERRIER.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ATTAQUE_MAGE.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ATTAQUE_TANK.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="FONCTION_AFFICHAGE.c">
 			<Option compilerVar="CC" />
 		</Unit>

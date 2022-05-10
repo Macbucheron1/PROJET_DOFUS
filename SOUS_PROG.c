@@ -93,7 +93,6 @@ int position_souris_ligne(void)
     return -1;
 }
 
-
 void prepa_alleg(void)
 {
     /* Lance alleg init et verifie qu'il fonctionne bien
@@ -437,12 +436,9 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     return 1;
 }
 
-int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
-{
-    /* Calcul la position des etoiles
-    Prend en parametre le tableau d'etoile, le delay d'affichages etoiles, i, la bitmap d'affichage
-    Renvoie la nouvelle valeur de delay*/
-    int color5 = makecol(100,100,100);  //gris foncé
+
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
+    int color5 = makecol(50,50,50);  //gris foncé
         if (Stardelay == 10) {
 
             i = 0;
@@ -468,14 +464,10 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
                     TabStar[j].posY = 1000;
                 }
                 else {
-                    TabStar[j].posY = TabStar[j].posY+10;   //vitesse
+                    TabStar[j].posY = TabStar[j].posY+20;   //vitesse
                     ellipsefill(backscreen,TabStar[j].posX+5,TabStar[j].posY,2,10,color5);
                 }
             }
         }
     return Stardelay;
 }
-
-
-
-
