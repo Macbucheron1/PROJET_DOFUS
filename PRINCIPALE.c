@@ -13,6 +13,7 @@ void menu_principal(void) // A finir
     t_decor visuel_menu;
     init_decor(&visuel_menu);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
+    FONT* arial_16 = load_font("arial_14.pcx", NULL, NULL);
 
     int couleur_quitter = makecol(0,255,255);
     int couleur_jouer = makecol(255,0,0);
@@ -31,11 +32,11 @@ void menu_principal(void) // A finir
 
         ///////////////////////////// Dessin Bouton pour quitter /////////////////////////////////////
 
-        rectfill(fond_menu, 10, 10, 30, 30, couleur_quitter);
-        rectfill(page, 10, 10, 33, 30, makecol(190,190,190));
-        rectfill(page, 12, 12, 31, 28, makecol(175,175,175));
-        rectfill(page, 14, 14, 29, 26, makecol(160,160,160));
-        textprintf_ex(page, font, 15, 15, makecol(0,0,0), -1, "II");
+        rectfill(fond_menu, 10, 10, 30, 32, couleur_quitter);
+        rectfill(page, 10, 10, 33, 34, makecol(190,190,190));
+        rectfill(page, 12, 12, 31, 32, makecol(175,175,175));
+        rectfill(page, 14, 14, 29, 30, makecol(160,160,160));
+        textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
 
         ///////////////////////////// Dessin Bouton du menu /////////////////////////////////////
 
@@ -70,12 +71,16 @@ void menu_principal(void) // A finir
         rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
-        montre_curseur(page);
+
 
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
         {
+            rectfill(page, 10, 10, 33, 34, makecol(210,210,210));
+            rectfill(page, 12, 12, 31, 32, makecol(195,195,195));
+            rectfill(page, 14, 14, 29, 30, makecol(180,180,180));
+            textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
             if (mouse_b & 1)
             {
                 return; // Trouver un moyen de quitter autre
@@ -84,6 +89,10 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_jouer) // JOUER
         {
+            rectfill(page, 250, 150, 560, 210, makecol(210,210,210));
+            rectfill(page, 253, 153, 557, 207, makecol(195,195,195));
+            rectfill(page, 256, 156, 554, 204, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 170, makecol(20,20, 20), -1, "Jouer");
             if (mouse_b & 1)
             {
                 rest(100);
@@ -93,6 +102,10 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
         {
+            rectfill(page,  250, 250, 560, 310, makecol(210,210,210));
+            rectfill(page, 253, 253, 557, 307, makecol(195,195,175));
+            rectfill(page, 256, 256, 554, 304, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 270, makecol(20,20,20), -1, "Apercu des classes");
             if (mouse_b & 1)
             {
                 apercu_classe_en_cours(page, &visuel_menu);
@@ -101,6 +114,10 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_parametre) // PARAMETRE
         {
+            rectfill(page, 250, 350, 560, 410, makecol(210,210,210));
+            rectfill(page, 253, 353, 557, 407, makecol(195,195,175));
+            rectfill(page, 256, 356, 554, 404, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Parametre");
             if (mouse_b & 1)
             {
                 parametre_en_cours(page, &visuel_menu);
@@ -109,11 +126,17 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_credit) // CREDIT
         {
+            rectfill(page, 250, 450, 560, 510, makecol(210,210,210));
+            rectfill(page, 253, 453, 557, 507, makecol(195,195,175));
+            rectfill(page, 256, 456, 554, 504, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "Credit"); // CREDIT
             if (mouse_b & 1)
             {
                 credit_en_cours(page, &visuel_menu);
             }
         }
+
+        montre_curseur(page);
 
         /////////////////////////////  /////////////////////////////////////
 
@@ -127,11 +150,7 @@ void menu_principal(void) // A finir
 
         if (visuel_menu.position_x >= 2399)
         {
-            visuel_menu.avancement_x = -1;
-        }
-        else if (visuel_menu.position_x <=1)
-        {
-            visuel_menu.avancement_x = 1;
+            visuel_menu.position_x = 1;
         }
         visuel_menu.position_x = (visuel_menu.position_x + visuel_menu.avancement_x);
         rest(1);
@@ -203,10 +222,6 @@ void jouer(void) // A finir
 }
 
 
-
-
-
-
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
 {
     /* Lance les credits
@@ -255,14 +270,17 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
 
         // Rajouter le texte des crédits
-        rectfill(page, 150, 100, 675, 525, makecol(20,20,20));
-        rectfill(page, 155, 105, 670, 520, makecol(10,10,10));
+        rectfill(page, 150, 100, 675, 525, makecol(40,40,40));
+        rectfill(page, 155, 105, 670, 520, makecol(20,20,20));
         rectfill(page, 160, 110, 665, 515, makecol(0,0,0));
 
-        //police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
-        police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
 
         Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond
+
+
+        police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
+
+
 
 
         montre_curseur(page);
@@ -286,13 +304,9 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 1599)
+        if (visuel_menu->position_x >= 2399)
         {
-            visuel_menu->avancement_x = -1;
-        }
-        else if (visuel_menu->position_x <=1)
-        {
-            visuel_menu->avancement_x = 1;
+            visuel_menu->position_x = 1;
         }
         visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
         rest(1);
@@ -384,13 +398,9 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 1599)
+        if (visuel_menu->position_x >= 2399)
         {
-            visuel_menu->avancement_x = -1;
-        }
-        else if (visuel_menu->position_x <=1)
-        {
-            visuel_menu->avancement_x = 1;
+            visuel_menu->position_x = 1;
         }
         visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
         rest(1);
@@ -407,18 +417,90 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
     Prend en parametre la bitmap d'affichage et le decor
     Ne renvoie rien */
 
-    /////////////////////////// VARIABLE //////////////////////////
+/////////////////////////// VARIABLE //////////////////////////
 
     BITMAP* fond_apercu_classe = create_bitmap(SCREEN_W,SCREEN_H);
+    BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
+    erreur_chargement_image(soldat);
 
-    ////////////////////////// BOUCLE EVENEMENT //////////////////////////
+    BITMAP* map_desert = load_bitmap("map_desert.bmp", NULL);
+    erreur_chargement_image(map_desert);
+
+    BITMAP* map_neige = load_bitmap("map_neige.bmp", NULL);
+    erreur_chargement_image(map_neige);
+
+    BITMAP* map_ville = load_bitmap("map_ville.bmp", NULL);
+    erreur_chargement_image(map_ville);
+
+    BITMAP* text_jedi = create_bitmap(300,200);
+    clear_to_color(text_jedi, makecol(40, 40, 40));
+    textout_ex(text_jedi, font, "JEDI : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    BITMAP* text_vador = create_bitmap(300,200);
+    clear_to_color(text_vador, makecol(40, 40, 40));
+    textout_ex(text_vador, font, "DARK VADOR : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    BITMAP* text_clone = create_bitmap(300,200);
+    clear_to_color(text_clone, makecol(40, 40, 40));
+    textout_ex(text_clone, font, "CLONE : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    BITMAP* text_droide = create_bitmap(300,200);
+    clear_to_color(text_droide, makecol(40, 40, 40));
+    textout_ex(text_droide, font, "DROIDE : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    //BITMAP* map_
+    int position_x_bitmap_jedi = 32;
+    int nouvelle_affichage_jedi = 0;
+    int direction_jedi = 0;
+    int sortie_boite_jedi_x = 210;
+    int sortie_boite_jedi_y = 200;
+
+    int position_x_bitmap_vador= 630;
+    int nouvelle_affichage_vador = 20;
+    int direction_vador = 1;
+    int sortie_boite_vador_x = 560;
+    int sortie_boite_vador_y = 200;
+
+    int position_x_bitmap_clone = 630;
+    int nouvelle_affichage_clone = 40;
+    int direction_clone = 2;
+    int sortie_boite_clone_x = 210;
+    int sortie_boite_clone_y = 450;
+
+    //int position_x_bitmap_droid = 630; // a changer quand skin droid
+    //int nouvelle_affichage_droid = 40; // a changer quand skin droid
+    //int direction_droid = 2; // A changer skin droid
+    int sortie_boite_droid_x = 560;
+    int sortie_boite_droid_y = 450;
+
+////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
     while (!key[KEY_ESC])
     {
         clear_bitmap(page);
         blit(visuel_menu->visuel, page, visuel_menu->position_x, 0, 0, 0, 800, 600);
 
-        ////////////////////////// DESSIN MENU //////////////////////////
+////////////////////////// DESSIN MENU //////////////////////////
 
         rect(page, 80, 50, 150, 80, makecol(255, 0, 0));
 
@@ -426,18 +508,41 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         line(page, 80, 100, 40, 65, makecol(255, 0, 0));
         line(page, 80, 100, 80, 30, makecol(255, 0, 0));
 
+
+
+        rectfill(page, 110 - 3, 350 - 3, 210 + 3, 450 + 3, makecol(40, 40, 40));
+        rectfill(page, 110, 350, 210, 450, makecol(20, 20, 20));
+        rectfill(page, 110 + 3, 350 + 3, 210 - 3, 450 - 3, makecol(0, 0, 0));
+
+
+
+
+
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
+
+
+
 
         // Afficher les classes
 
-        montre_curseur(page);
 
-        ////////////////////////// DESSIN BOUTON //////////////////////////
+
+
+        masked_blit(map_neige, page, 400, 400, 111, 351, 98, 98);
+
+
+
+////////////////////////// DESSIN BOUTON //////////////////////////
 
         clear_to_color(fond_apercu_classe, makecol(0, 0, 0));
         rectfill(fond_apercu_classe, 40, 30, 150, 100, makecol(255, 0, 0));
 
-        ////////////////////////// DETECTION BOUTON //////////////////////////
+        rectfill(fond_apercu_classe, 110, 100, 210, 200, makecol(0, 255, 0));
+        rectfill(fond_apercu_classe, 110, 350, 210, 450, makecol(0, 0, 255));
+        rectfill(fond_apercu_classe, 460, 100, 560, 200, makecol(255, 255, 0));
+        rectfill(fond_apercu_classe, 460, 350, 560, 450, makecol(0, 255, 255));
+
+////////////////////////// DETECTION BOUTON //////////////////////////
 
         if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(255, 0, 0))
         {
@@ -445,31 +550,156 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
             {
                 return;
             }
+        }
 
+        ///////////// JEDI /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(0, 255, 0))
+        {
+
+            rectfill(page, 110, 100, sortie_boite_jedi_x, sortie_boite_jedi_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 100+2, sortie_boite_jedi_x-2, sortie_boite_jedi_y-2, makecol(20, 20, 20));
+            blit(text_jedi, page, 0, 0, 110+4, 100+4, sortie_boite_jedi_x-110-7, sortie_boite_jedi_y-100-7);
+            if (sortie_boite_jedi_x <= 410)
+            {
+                sortie_boite_jedi_x+=2;
+            }
+            if (sortie_boite_jedi_y <= 300)
+            {
+                sortie_boite_jedi_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 110, 100, sortie_boite_jedi_x, sortie_boite_jedi_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 100+2, sortie_boite_jedi_x-2, sortie_boite_jedi_y-2, makecol(20, 20, 20));
+            blit(text_jedi, page, 0, 0, 110+4, 100+4, sortie_boite_jedi_x-110-6, sortie_boite_jedi_y-100-6);
+            if (sortie_boite_jedi_x>=210)
+            {
+                sortie_boite_jedi_x-=2;
+            }
+            if (sortie_boite_jedi_y>=200)
+            {
+                sortie_boite_jedi_y--;
+            }
+        }
+
+        ///////////// DARK VADOR /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(255, 255, 0))
+        {
+            rectfill(page, 460, 100, sortie_boite_vador_x, sortie_boite_vador_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 100+2, sortie_boite_vador_x-2, sortie_boite_vador_y-2, makecol(20, 20, 20));
+            blit(text_vador, page, 0, 0, 460+4, 100+4, sortie_boite_vador_x-460-7, sortie_boite_vador_y-100-7);
+            if (sortie_boite_vador_x <= 760)
+            {
+                sortie_boite_vador_x+=2;
+            }
+            if (sortie_boite_vador_y <= 300)
+            {
+                sortie_boite_vador_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 460, 100, sortie_boite_vador_x, sortie_boite_vador_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 100+2, sortie_boite_vador_x-2, sortie_boite_vador_y-2, makecol(20, 20, 20));
+            blit(text_vador, page, 0, 0, 460+4, 100+4, sortie_boite_vador_x-460-6, sortie_boite_vador_y-100-6);
+            if (sortie_boite_vador_x>=560)
+            {
+                sortie_boite_vador_x-=2;
+            }
+            if (sortie_boite_vador_y>=200)
+            {
+                sortie_boite_vador_y--;
+            }
+        }
+
+        ///////////// CLONE /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(0, 0, 255))
+        {
+            rectfill(page, 110, 350, sortie_boite_clone_x, sortie_boite_clone_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 350+2, sortie_boite_clone_x-2, sortie_boite_clone_y-2, makecol(20, 20, 20));
+            blit(text_clone, page, 0, 0, 110+4, 350+4, sortie_boite_clone_x-110-7, sortie_boite_clone_y-350-7);
+            if (sortie_boite_clone_x <= 410)
+            {
+                sortie_boite_clone_x+=2;
+            }
+            if (sortie_boite_clone_y <= 550)
+            {
+                sortie_boite_clone_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 110, 350, sortie_boite_clone_x, sortie_boite_clone_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 350+2, sortie_boite_clone_x-2, sortie_boite_clone_y-2, makecol(20, 20, 20));
+            blit(text_clone, page, 0, 0, 110+4, 350+4, sortie_boite_clone_x-110-6, sortie_boite_clone_y-350-6);
+            if (sortie_boite_clone_x>=210)
+            {
+                sortie_boite_clone_x-=2;
+            }
+            if (sortie_boite_clone_y>=450)
+            {
+                sortie_boite_clone_y--;
+            }
+        }
+
+        ///////////// DROIDE /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(0, 255, 255))
+        {
+            rectfill(page, 460, 350, sortie_boite_droid_x, sortie_boite_droid_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 350+2, sortie_boite_droid_x-2, sortie_boite_droid_y-2, makecol(20, 20, 20));
+            blit(text_droide, page, 0, 0, 460+4, 350+4, sortie_boite_droid_x-460-7, sortie_boite_droid_y-350-7);
+            if (sortie_boite_droid_x <= 760)
+            {
+                sortie_boite_droid_x+=2;
+            }
+            if (sortie_boite_droid_y <= 550)
+            {
+                sortie_boite_droid_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 460, 350, sortie_boite_droid_x, sortie_boite_droid_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 350+2, sortie_boite_droid_x-2, sortie_boite_droid_y-2, makecol(20, 20, 20));
+            blit(text_droide, page, 0, 0, 460+4, 350+4, sortie_boite_droid_x-460-6, sortie_boite_droid_y-350-6);
+            if (sortie_boite_droid_x>=560)
+            {
+                sortie_boite_droid_x-=2;
+            }
+            if (sortie_boite_droid_y>=450)
+            {
+                sortie_boite_droid_y--;
+            }
         }
 
 
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 1599)
+        if (visuel_menu->position_x >= 2399)
         {
-            visuel_menu->avancement_x = -1;
-        }
-        else if (visuel_menu->position_x <=1)
-        {
-            visuel_menu->avancement_x = 1;
+            visuel_menu->position_x = 1;
         }
         visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
         rest(1);
 
 
+        ///////////////////////////// ANIMATION PERSONNAGE /////////////////////////////////////
+
+        affichage_classe1(&position_x_bitmap_jedi, &nouvelle_affichage_jedi, &direction_jedi, soldat, page, 150, 150, map_desert);
+        affichage_classe3(&position_x_bitmap_vador, &nouvelle_affichage_vador, &direction_vador, soldat, page, 490, 150, map_neige);
+        affichage_classe2(&position_x_bitmap_clone, &nouvelle_affichage_clone, &direction_clone, soldat, page, 140, 405, map_ville);
+
+        montre_curseur(page);
+
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
 }
-
-
-
 
 
 
