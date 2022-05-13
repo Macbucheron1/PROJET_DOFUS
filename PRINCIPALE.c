@@ -513,10 +513,16 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
 
     BITMAP* fond_parametre = create_bitmap(SCREEN_W,SCREEN_H);
     int  mode_graphique = 1;
-
+    int point[6] = {250, 500, 250+255, 500, 250+255, 350};
+    int dernier_point_vert_y = 500;
+    polygon(fond_parametre, 3, point, makecol(0, 255, 0));
+    while(getpixel(fond_parametre, *volume+250, dernier_point_vert_y) == makecol(0, 255, 0))
+        dernier_point_vert_y--;
+    dernier_point_vert_y+=5;
+    printf("Volume+250 : %d / dernier point y : %d", *volume+250, dernier_point_vert_y);
+    int point2[6] = {256, 500, *volume+250, 500, *volume+250, dernier_point_vert_y};
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
-    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
-    erreur_chargement_image(curseur);
+   
     while (!key[KEY_ESC])
     {
         clear_bitmap(page);
@@ -537,7 +543,11 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
         textout_ex(page, font, "Pleine ecran", 205, 225, makecol(0, 0, 0), -1);
         textout_ex(page, font, "Fenetre", 525, 225, makecol(0, 0, 0), -1);
 
+        line(page, 251, 501, 251+255, 501, makecol(0,0, 0));
+        line(page, 251+255, 351, 251+255, 501, makecol(0,0, 0));
+        line(page, 251, 501, 251+255, 351, makecol(0,0, 0));
 
+        polygon(page, 3, point2, makecol(0, 255, 0));
 
         montre_curseur(page,curseur);
 
@@ -548,7 +558,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
 
         rectfill(fond_parametre, 200, 200, 300, 300, makecol(255, 255, 0));
         rectfill(fond_parametre, 500, 200, 600, 300, makecol(255, 0, 255));
-
+        polygon(fond_parametre, 3, point, makecol(0, 255, 0));
         ////////////////////////// DETECTION BOUTON //////////////////////////
 
         if (getpixel(fond_parametre, mouse_x, mouse_y) == makecol(255, 0, 0))
@@ -579,20 +589,26 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
             }
 
         }
+        if (getpixel(fond_parametre, mouse_x, mouse_y) == makecol(0, 255, 0))
+        {
+            if (mouse_b & 1)
+            {
+                point2[2] = mouse_x;
+                point2[4] = mouse_x;
+                dernier_point_vert_y = mouse_y;
+                while(getpixel(fond_parametre, mouse_x, dernier_point_vert_y) == makecol(0, 255, 0))
+                    dernier_point_vert_y--;
+                point2[5] = dernier_point_vert_y+5;
+                adjust_sample(musique, mouse_x-250, 128, 1000, 1);
+                *volume = mouse_x-250;
+            }
 
+        }
 
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 1599)
-        {
-            visuel_menu->avancement_x = -1;
-        }
-        else if (visuel_menu->position_x <=1)
-        {
-            visuel_menu->avancement_x = 1;
-        }
-        visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
         rest(1);
 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
