@@ -133,12 +133,15 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
 int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM); //Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
 void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
 int caseDisponible(t_map carte, int x, int y);  // permet de determiner si une case est disponible (sans obstacle ou joueur) ou pas
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen); // Calcul les etoiles
+
 
 /* ----------- INITIALISATION ----------- */
 
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total); //initialise les differentes classes
 void init_map(t_map* carte); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
+void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y); // Initialise un acteurs
 
 /* ----------- PRINCIPALE ----------- */
 
