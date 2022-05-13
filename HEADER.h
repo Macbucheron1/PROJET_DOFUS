@@ -159,7 +159,7 @@ void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin,
 /* ----------- PRINCIPALE ----------- */
 
 void menu_principal(void); // Lance le menu principale
-void jouer(t_joueur Joueurs[], int nbJoueurs); // Permet de jouer
+int jouer(t_joueur Joueurs[], int nbJoueurs); // Permet de jouer
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu); //Lance les credits
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance les parametres
 void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance l'apercu des classes
