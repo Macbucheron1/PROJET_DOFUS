@@ -707,7 +707,7 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         clear_to_color(fond_apercu_classe, makecol(0, 0, 0));
         rectfill(fond_apercu_classe, 40, 30, 150, 100, makecol(255, 0, 0));
 
-        ////////////////////////// DETECTION BOUTON //////////////////////////
+////////////////////////// DETECTION BOUTON //////////////////////////
 
         if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(255, 0, 0))
         {
@@ -715,7 +715,131 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
             {
                 return;
             }
+        }
 
+        ///////////// JEDI /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(0, 255, 0))
+        {
+
+            rectfill(page, 110, 100, sortie_boite_jedi_x, sortie_boite_jedi_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 100+2, sortie_boite_jedi_x-2, sortie_boite_jedi_y-2, makecol(20, 20, 20));
+            blit(text_jedi, page, 0, 0, 110+4, 100+4, sortie_boite_jedi_x-110-7, sortie_boite_jedi_y-100-7);
+            if (sortie_boite_jedi_x <= 410)
+            {
+                sortie_boite_jedi_x+=2;
+            }
+            if (sortie_boite_jedi_y <= 300)
+            {
+                sortie_boite_jedi_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 110, 100, sortie_boite_jedi_x, sortie_boite_jedi_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 100+2, sortie_boite_jedi_x-2, sortie_boite_jedi_y-2, makecol(20, 20, 20));
+            blit(text_jedi, page, 0, 0, 110+4, 100+4, sortie_boite_jedi_x-110-6, sortie_boite_jedi_y-100-6);
+            if (sortie_boite_jedi_x>=210)
+            {
+                sortie_boite_jedi_x-=2;
+            }
+            if (sortie_boite_jedi_y>=200)
+            {
+                sortie_boite_jedi_y--;
+            }
+        }
+
+        ///////////// DARK VADOR /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(255, 255, 0))
+        {
+            rectfill(page, 460, 100, sortie_boite_vador_x, sortie_boite_vador_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 100+2, sortie_boite_vador_x-2, sortie_boite_vador_y-2, makecol(20, 20, 20));
+            blit(text_vador, page, 0, 0, 460+4, 100+4, sortie_boite_vador_x-460-7, sortie_boite_vador_y-100-7);
+            if (sortie_boite_vador_x <= 760)
+            {
+                sortie_boite_vador_x+=2;
+            }
+            if (sortie_boite_vador_y <= 300)
+            {
+                sortie_boite_vador_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 460, 100, sortie_boite_vador_x, sortie_boite_vador_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 100+2, sortie_boite_vador_x-2, sortie_boite_vador_y-2, makecol(20, 20, 20));
+            blit(text_vador, page, 0, 0, 460+4, 100+4, sortie_boite_vador_x-460-6, sortie_boite_vador_y-100-6);
+            if (sortie_boite_vador_x>=560)
+            {
+                sortie_boite_vador_x-=2;
+            }
+            if (sortie_boite_vador_y>=200)
+            {
+                sortie_boite_vador_y--;
+            }
+        }
+
+        ///////////// CLONE /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(0, 0, 255))
+        {
+            rectfill(page, 110, 350, sortie_boite_clone_x, sortie_boite_clone_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 350+2, sortie_boite_clone_x-2, sortie_boite_clone_y-2, makecol(20, 20, 20));
+            blit(text_clone, page, 0, 0, 110+4, 350+4, sortie_boite_clone_x-110-7, sortie_boite_clone_y-350-7);
+            if (sortie_boite_clone_x <= 410)
+            {
+                sortie_boite_clone_x+=2;
+            }
+            if (sortie_boite_clone_y <= 550)
+            {
+                sortie_boite_clone_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 110, 350, sortie_boite_clone_x, sortie_boite_clone_y, makecol(0, 0, 0));
+            rectfill(page, 110+2, 350+2, sortie_boite_clone_x-2, sortie_boite_clone_y-2, makecol(20, 20, 20));
+            blit(text_clone, page, 0, 0, 110+4, 350+4, sortie_boite_clone_x-110-6, sortie_boite_clone_y-350-6);
+            if (sortie_boite_clone_x>=210)
+            {
+                sortie_boite_clone_x-=2;
+            }
+            if (sortie_boite_clone_y>=450)
+            {
+                sortie_boite_clone_y--;
+            }
+        }
+
+        ///////////// DROIDE /////////////
+
+        if (getpixel(fond_apercu_classe, mouse_x, mouse_y) == makecol(0, 255, 255))
+        {
+            rectfill(page, 460, 350, sortie_boite_droid_x, sortie_boite_droid_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 350+2, sortie_boite_droid_x-2, sortie_boite_droid_y-2, makecol(20, 20, 20));
+            blit(text_droide, page, 0, 0, 460+4, 350+4, sortie_boite_droid_x-460-7, sortie_boite_droid_y-350-7);
+            if (sortie_boite_droid_x <= 760)
+            {
+                sortie_boite_droid_x+=2;
+            }
+            if (sortie_boite_droid_y <= 550)
+            {
+                sortie_boite_droid_y++;
+            }
+        }
+        else
+        {
+            rectfill(page, 460, 350, sortie_boite_droid_x, sortie_boite_droid_y, makecol(0, 0, 0));
+            rectfill(page, 460+2, 350+2, sortie_boite_droid_x-2, sortie_boite_droid_y-2, makecol(20, 20, 20));
+            blit(text_droide, page, 0, 0, 460+4, 350+4, sortie_boite_droid_x-460-6, sortie_boite_droid_y-350-6);
+            if (sortie_boite_droid_x>=560)
+            {
+                sortie_boite_droid_x-=2;
+            }
+            if (sortie_boite_droid_y>=450)
+            {
+                sortie_boite_droid_y--;
+            }
         }
 
 
@@ -730,42 +854,13 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         rest(1);
 
 
-        ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
+        ///////////////////////////// ANIMATION PERSONNAGE /////////////////////////////////////
 
-        nouvelle_affichage++;
-        if (nouvelle_affichage%10 == 0)
-        {
-            position_x_bitmap_soldat = position_x_bitmap_soldat + 96;
-        }
-        if (position_x_bitmap_soldat>=340)
-        {
-            position_x_bitmap_soldat = 32;
-        }
-        if (nouvelle_affichage >= 80)
-        {
-            direction_soldat++;
-            nouvelle_affichage = 0;
-        }
-        if (direction_soldat >= 4)
-        {
-            direction_soldat = 0;
-        }
-        else if (direction_soldat == 0)
-        {
-            masked_blit(soldat,page, position_x_bitmap_soldat, 207, 150,150-30, 32,64);
-        }
-        else if (direction_soldat == 1)
-        {
-            masked_blit(soldat,page, position_x_bitmap_soldat, 14, 150,150-30, 32,64);
-        }
-        else if (direction_soldat == 2)
-        {
-            masked_blit(soldat,page, position_x_bitmap_soldat, 300, 150,150-30, 32,64);
-        }
-        else if (direction_soldat == 3)
-        {
-           masked_blit(soldat,page, position_x_bitmap_soldat, 108, 150,150-30, 32,64);
-        }
+        affichage_classe1(&position_x_bitmap_jedi, &nouvelle_affichage_jedi, &direction_jedi, soldat, page, 150, 150, map_desert);
+        affichage_classe3(&position_x_bitmap_vador, &nouvelle_affichage_vador, &direction_vador, soldat, page, 490, 150, map_neige);
+        affichage_classe2(&position_x_bitmap_clone, &nouvelle_affichage_clone, &direction_clone, soldat, page, 140, 405, map_ville);
+
+        montre_curseur(page);
 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
