@@ -126,6 +126,10 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_credit) // CREDIT
         {
+            rectfill(page, 250, 450, 560, 510, makecol(210,210,210));
+            rectfill(page, 253, 453, 557, 507, makecol(195,195,175));
+            rectfill(page, 256, 456, 554, 504, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "Credit"); // CREDIT
             if (mouse_b & 1)
             {
                 credit_en_cours(page, &visuel_menu);
