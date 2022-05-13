@@ -118,7 +118,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
             while(x1<x2)                                                                                                                                   //Aller a droite
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-                affichage_grille(buffer);
+                affichage_en_jeu(buffer);
                 masked_blit(soldat,buffer, x, 14, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
@@ -159,7 +159,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
             while(y1<y2)                                                                                                                                    //Monter
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-                affichage_grille(buffer);
+                affichage_en_jeu(buffer);
                 masked_blit(soldat,buffer, x, 202, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
@@ -175,7 +175,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
 
         }
     blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-    affichage_grille(buffer);
+    affichage_en_jeu(buffer);
 }
 
 int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8)
@@ -691,7 +691,48 @@ int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, in
     return 0;
 }
 
+void affichage_en_jeu(BITMAP* buffer)
+{
+    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
+    int i;
+    BITMAP* avatar = load_bitmap("avatar.bmp", NULL);
+    erreur_chargement_image(avatar);
+    draw_sprite(buffer, avatar,3,90);
+    BITMAP* avatar2 = load_bitmap("avatar2.bmp", NULL);
+    erreur_chargement_image(avatar2);
+    draw_sprite(buffer, avatar2,10,20);
+    BITMAP* avatar3 = load_bitmap("avatar3.bmp", NULL);
+    erreur_chargement_image(avatar3);
+    draw_sprite(buffer, avatar3,33,90);
+    BITMAP* avatar4 = load_bitmap("avatar4.bmp", NULL);
+    erreur_chargement_image(avatar4);
+    draw_sprite(buffer, avatar4,63,90);
 
+
+    for(i = 0; i<3; i++)
+    {
+        rectfill(buffer, 750+2*i, 10+2*i, 790-2*i, 50-2*i, makecol(190-15*i,190-15*i,190-15*i));
+        //rectfill(buffer, 18+2*i, 20+2*i, 78-2*i, 80-2*i, makecol(190-15*i,190-15*i,190-15*i));
+    }
+    for(i = 0; i<3; i++)
+    {
+        hline(buffer, 760, 22+8*i,780,makecol(96,96,96));
+    }
+    for(i = 0;i<6;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            rectfill(buffer, 100+108*i+2*j, 555+2*j, 200+108*i-2*j, 585-2*j, makecol(190-15*j,190-15*j,190-15*j));
+        }
+    }
+    for(i = 0; i<3;i++)
+    {
+        for(int j = 0; j<3;j++)
+        {
+            //rectfill(buffer, 10+26*i+2*j, 180+2*j, 35+26*i-2*j, 205-2*j, makecol(190-15*j,190-15*j,190-15*j));
+        }
+    }
+}
 
 
 
