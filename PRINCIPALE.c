@@ -78,6 +78,10 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
         {
+            rectfill(page, 10, 10, 33, 34, makecol(210,210,210));
+            rectfill(page, 12, 12, 31, 32, makecol(195,195,195));
+            rectfill(page, 14, 14, 29, 30, makecol(180,180,180));
+            textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
             if (mouse_b & 1)
             {
                 quitter = 1; // Trouver un moyen de quitter autre
