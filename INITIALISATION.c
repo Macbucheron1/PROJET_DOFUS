@@ -1,65 +1,92 @@
 #include "HEADER.h"
 
 /* ------------------------------------- INITIALISATION -------------------------------------
-    Les fontions pr√©sente dans ce fichier sont des fonctions d'initialisation
+    Les fontions prÈsente dans ce fichier sont des fonctions d'initialisation
 */
 
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total) // a decrire
 {
     /* Permet d'initaliser les classes
     Prend en parametre le nom de classe, le numero de classe, les points d'action max, les points vie max, les points mvt max, le nb skin total
-    Renvoie la structure cr√©√©e*/
+    Renvoie la structure crÈÈe*/
 
     t_personnage c;
 
     //definit en fonction des differentes classes
+
     c.numero_classe=num_classe;
 
     c.pa_max=p_action_max;
-    c.pa_actuel=c.pa_max;
-
     c.pm_max=p_mvt_max;
-    c.pm_actuel=c.pm_max;
-
     c.pv_max=p_vie_max;
-    c.pv_actuel=c.pv_max;
 
-    //reste des variables (ne seront utilis√© que pour certaines classes)
-
-    c.max_meditation=3; //ne sert que au mages (jedi/sith)
     strcpy(c.nom_classe,nom_classe);
-    c.PM_roule=false;
 
-    c.bouclier=false; //ne sert que au tank (droideka)
-    c.tour_bouclier=0;
-    c.tour_bouclier_max=3; //nb de tours avec un bouclier au maximum
-
-    c.en_feu=false; //pour tous
-    c.tour_en_feu=0;
-    c.tour_en_feu_max=4; //nb de tours brul√© au maximum
-
-    //pour les chasseurs de prime
-    c.nb_bacta=0;
-    c.nb_bacta_max=5; //peux n'utiliser que 5 seringue au max
-
+/**
     //initialisation du tableau de bitmap qu'on utilisera pour les animation
     int i;
     char nomfichier[256]; //pour charger la bmp que nous voulons utiliser
 
-    for (i=0;i<nb_skin_total;i++)
+    for (i=0; i<nb_skin_total; i++)
     {
         // sprintf permet de faire un printf dans une chaine
         sprintf(nomfichier,"img/%s%d.bmp",nom_classe,i+1); //exemple: img/mage1
 
         c.skin[i] = load_bitmap(nomfichier,NULL);
-        if (!c.skin[i]){
+        if (!c.skin[i])
+        {
             allegro_message("pas pu trouver %s",nomfichier);
             exit(EXIT_FAILURE);
         }
-    }
-
-    //on return la structure cr√©e
+    }**/
+    //on return la structure crÈe
     return c;
+}
+
+t_joueur init_joueur(char* nom_joueur,int num_joueur,t_personnage classe_choisie)
+{
+    t_joueur j;
+
+    //variables propre a chaque joueur
+
+    strcpy(j.nom_joueur,nom_joueur);
+    j.numero_joueur=num_joueur;
+    j.classe=classe_choisie;
+
+    //variable utilise en jeu
+
+    j.pa_actuel=j.classe.pa_max;
+
+    if(j.classe.numero_classe==0) //pour les mages car leur PM max = 6 avc la mediatation
+    {
+        j.pm_actuel=3;
+    }
+    else
+    {
+        j.pm_actuel=j.classe.pm_max;
+    }
+    j.pv_actuel=j.classe.pv_max;
+
+    j.pm_max_actu_mage=j.pm_actuel; //les pm de depart ‡ l'initialisation
+    //permet de limiter le nb de meditation utilisÈ (peut pas depasser les pm_max de la classe mage
+
+    //reste des variables (ne seront utilisÈ que pour certaines classes)
+    j.PM_roule=false;
+
+    j.bouclier=false; //ne sert que au tank (droideka)
+    j.tour_bouclier=0;
+    j.tour_bouclier_max=2; //nb de tours avec un bouclier au maximum
+
+    j.en_feu=false; //pour tous
+    j.tour_en_feu=0;
+    j.tour_en_feu_max=4; //nb de tours brulÈ au maximum
+
+    //pour les chasseurs de prime
+    j.nb_bacta=0;
+    j.nb_bacta_max=5; //peux n'utiliser que 5 seringue au max
+
+    //on return le joueur crÈe
+    return j;
 }
 
 void init_decor(t_decor* decor)
@@ -68,22 +95,23 @@ void init_decor(t_decor* decor)
     Prend en parametre le decor
     ne renvoie rien*/
 
+    BITMAP* tmp1 = load_bitmap("grandfond_decor.bmp", NULL);
+    erreur_chargement_image(tmp1);
     BITMAP* tmp2 = load_bitmap("map_desert.bmp", NULL);
     erreur_chargement_image(tmp2);
     BITMAP* tmp3 = load_bitmap("map_neige.bmp", NULL);
     erreur_chargement_image(tmp3);
-    BITMAP* tmp4 = load_bitmap("map_ville.bmp", NULL);
-    erreur_chargement_image(tmp4);
     decor->visuel =  create_bitmap(3200, SCREEN_H);
-    blit(tmp4, decor->visuel, 0, 0, 2400, 0, 800, 600);
+    blit(tmp1, decor->visuel, 0, 0, 0, 0, 1600, 600);
+    blit(tmp1, decor->visuel, 0, 0, 1600, 0, 1600, 600);
     blit(tmp2, decor->visuel, 0, 0, 1600, 0, 800, 600);
     blit(tmp3, decor->visuel, 0, 0, 800, 0, 800, 600);
-    blit(tmp4, decor->visuel, 0, 0, 0, 0, 800, 600);
     decor->avancement_x = 1;
     decor->avancement_y = 1;
     decor->position_x = 0;
     decor->position_y = 0;
 }
+
 void init_map(t_map* carte)
 {
     /* Permet d'initialiser une map
@@ -95,51 +123,5 @@ void init_map(t_map* carte)
     remplir_map_obstacle(carte);
 }
 
-void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y)
-{
-    acteur->respiration = 0;
 
-    acteur->position.x = position_x;
-    acteur->position.y = position_y;
-    acteur->skin = skin;
-
-    acteur->deplacement.x = deplacement_x;
-    acteur->deplacement.y = deplacement_y;
-
-    acteur->position_bitmap.x = position_bitmap_x;
-    acteur->position_bitmap.y = position_bitmap_y;
-
-    acteur->deplacement_bitmap.x = deplacement_bitmap_x;
-    acteur->deplacement_bitmap.y = deplacement_bitmap_y;
-
-    ///// FIN DE CAHQUE LIGNE /////
-
-
-    acteur->debut_bitmap.base_droite.x = 32;
-    acteur->debut_bitmap.base_droite.y = 14;
-
-    acteur->debut_bitmap.base_gauche.x = 32;
-    acteur->debut_bitmap.base_gauche.y = 108;
-
-    acteur->debut_bitmap.base_bas.x = 32;
-    acteur->debut_bitmap.base_bas.y = 202;
-
-    acteur->debut_bitmap.base_haut.x = 32;
-    acteur->debut_bitmap.base_haut.y = 296;
-
-    ///// FIN DE CAHQUE LIGNE /////
-
-    acteur->fin_bitmap.base_droite.x = 320;
-    acteur->fin_bitmap.base_droite.y = 14;
-
-    acteur->fin_bitmap.base_gauche.x = 320;
-    acteur->fin_bitmap.base_gauche.y = 108;
-
-    acteur->fin_bitmap.base_bas.x = 320;
-    acteur->fin_bitmap.base_bas.y = 202;
-
-    acteur->fin_bitmap.base_haut.x = 320;
-    acteur->fin_bitmap.base_haut.y = 296;
-
-}
 
