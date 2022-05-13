@@ -10,16 +10,55 @@ void menu_principal(void) // A finir
     ///////////////////////////// INITALISATION VARIABLE /////////////////////////////////////
 
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-    t_decor visuel_menu;
-    init_decor(&visuel_menu);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
+    FONT* arial_16 = load_font("arial_14.pcx", NULL, NULL);
+    SAMPLE* musique = load_wav("imperial_march.wav");
+    BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
+    erreur_chargement_image(soldat);
+    BITMAP* test = load_bitmap("test1.bmp",NULL);
+    erreur_chargement_image(test);
 
+    t_decor visuel_menu;
+    BITMAP* tab_bitmap[4];
+    tab_bitmap[0] = load_bitmap("map_desert.bmp", NULL);
+    erreur_chargement_image(tab_bitmap[0]);
+    tab_bitmap[1] = load_bitmap("map_neige.bmp", NULL);
+    erreur_chargement_image(tab_bitmap[1]);
+    tab_bitmap[2] = load_bitmap("map_ville.bmp", NULL);
+    erreur_chargement_image(tab_bitmap[2]);
+    visuel_menu.visuel =  create_bitmap(3200, SCREEN_H);
+    blit(tab_bitmap[2], visuel_menu.visuel, 0, 0, 2400, 0, 800, 600);
+    blit(tab_bitmap[0], visuel_menu.visuel, 0, 0, 1600, 0, 800, 600);
+    blit(tab_bitmap[1], visuel_menu.visuel, 0, 0, 800, 0, 800, 600);
+    blit(tab_bitmap[2], visuel_menu.visuel, 0, 0, 0, 0, 800, 600);
+    visuel_menu.avancement_x = 0;
+    visuel_menu.avancement_y = 1;
+    visuel_menu.position_x = 0;
+    visuel_menu.position_y = 0;
+
+    t_acteur jedi1;
+    init_acteur(&jedi1, 800, 160, soldat, 8, 8, 32, 108, 96, 94);
+
+
+    t_acteur mesActeurs[10];
+    mesActeurs[0] = jedi1;
+
+
+    if (!musique) { //blindage
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+
+    int quitter = 0;
     int couleur_quitter = makecol(0,255,255);
     int couleur_jouer = makecol(255,0,0);
     int couleur_apercu_classe = makecol(0,255,0);
     int couleur_parametre = makecol(0,0,255);
     int couleur_credit = makecol(255,255,0);
-    int quitter = 0;
+    int volume = 200;
+    int delay = 0;
+    unsigned int temps = 0;
+    play_sample(musique, volume, 128, 1000, 1);
 
 
      ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
