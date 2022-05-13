@@ -68,17 +68,17 @@ void init_decor(t_decor* decor)
     Prend en parametre le decor
     ne renvoie rien*/
 
+    BITMAP* tmp1 = load_bitmap("grandfond_decor.bmp", NULL);
+    erreur_chargement_image(tmp1);
     BITMAP* tmp2 = load_bitmap("map_desert.bmp", NULL);
     erreur_chargement_image(tmp2);
     BITMAP* tmp3 = load_bitmap("map_neige.bmp", NULL);
     erreur_chargement_image(tmp3);
-    BITMAP* tmp4 = load_bitmap("map_ville.bmp", NULL);
-    erreur_chargement_image(tmp4);
     decor->visuel =  create_bitmap(3200, SCREEN_H);
-    blit(tmp4, decor->visuel, 0, 0, 2400, 0, 800, 600);
+    blit(tmp1, decor->visuel, 0, 0, 0, 0, 1600, 600);
+    blit(tmp1, decor->visuel, 0, 0, 1600, 0, 1600, 600);
     blit(tmp2, decor->visuel, 0, 0, 1600, 0, 800, 600);
     blit(tmp3, decor->visuel, 0, 0, 800, 0, 800, 600);
-    blit(tmp4, decor->visuel, 0, 0, 0, 0, 800, 600);
     decor->avancement_x = 1;
     decor->avancement_y = 1;
     decor->position_x = 0;
@@ -97,50 +97,4 @@ void init_map(t_map* carte)
 }
 
 
-void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y)
-{
-    acteur->respiration = 0;
 
-    acteur->position.x = position_x;
-    acteur->position.y = position_y;
-    acteur->skin = skin;
-
-    acteur->deplacement.x = deplacement_x;
-    acteur->deplacement.y = deplacement_y;
-
-    acteur->position_bitmap.x = position_bitmap_x;
-    acteur->position_bitmap.y = position_bitmap_y;
-
-    acteur->deplacement_bitmap.x = deplacement_bitmap_x;
-    acteur->deplacement_bitmap.y = deplacement_bitmap_y;
-
-    ///// FIN DE CAHQUE LIGNE /////
-
-
-    acteur->debut_bitmap.base_droite.x = 32;
-    acteur->debut_bitmap.base_droite.y = 14;
-
-    acteur->debut_bitmap.base_gauche.x = 32;
-    acteur->debut_bitmap.base_gauche.y = 108;
-
-    acteur->debut_bitmap.base_bas.x = 32;
-    acteur->debut_bitmap.base_bas.y = 202;
-
-    acteur->debut_bitmap.base_haut.x = 32;
-    acteur->debut_bitmap.base_haut.y = 296;
-
-    ///// FIN DE CAHQUE LIGNE /////
-
-    acteur->fin_bitmap.base_droite.x = 320;
-    acteur->fin_bitmap.base_droite.y = 14;
-
-    acteur->fin_bitmap.base_gauche.x = 320;
-    acteur->fin_bitmap.base_gauche.y = 108;
-
-    acteur->fin_bitmap.base_bas.x = 320;
-    acteur->fin_bitmap.base_bas.y = 202;
-
-    acteur->fin_bitmap.base_haut.x = 320;
-    acteur->fin_bitmap.base_haut.y = 296;
-
-}
