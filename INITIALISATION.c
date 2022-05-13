@@ -1,14 +1,14 @@
 #include "HEADER.h"
 
 /* ------------------------------------- INITIALISATION -------------------------------------
-    Les fontions présente dans ce fichier sont des fonctions d'initialisation
+    Les fontions prÃ©sente dans ce fichier sont des fonctions d'initialisation
 */
 
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total) // a decrire
 {
     /* Permet d'initaliser les classes
     Prend en parametre le nom de classe, le numero de classe, les points d'action max, les points vie max, les points mvt max, le nb skin total
-    Renvoie la structure créée*/
+    Renvoie la structure crÃ©Ã©e*/
 
     t_personnage c;
 
@@ -24,7 +24,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
     c.pv_max=p_vie_max;
     c.pv_actuel=c.pv_max;
 
-    //reste des variables (ne seront utilisé que pour certaines classes)
+    //reste des variables (ne seront utilisÃ© que pour certaines classes)
 
     c.max_meditation=3; //ne sert que au mages (jedi/sith)
     strcpy(c.nom_classe,nom_classe);
@@ -36,7 +36,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
 
     c.en_feu=false; //pour tous
     c.tour_en_feu=0;
-    c.tour_en_feu_max=4; //nb de tours brulé au maximum
+    c.tour_en_feu_max=4; //nb de tours brulÃ© au maximum
 
     //pour les chasseurs de prime
     c.nb_bacta=0;
@@ -58,7 +58,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
         }
     }
 
-    //on return la structure crée
+    //on return la structure crÃ©e
     return c;
 }
 
@@ -96,5 +96,51 @@ void init_map(t_map* carte)
     remplir_map_obstacle(carte);
 }
 
+void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y)
+{
+    acteur->respiration = 0;
 
+    acteur->position.x = position_x;
+    acteur->position.y = position_y;
+    acteur->skin = skin;
+
+    acteur->deplacement.x = deplacement_x;
+    acteur->deplacement.y = deplacement_y;
+
+    acteur->position_bitmap.x = position_bitmap_x;
+    acteur->position_bitmap.y = position_bitmap_y;
+
+    acteur->deplacement_bitmap.x = deplacement_bitmap_x;
+    acteur->deplacement_bitmap.y = deplacement_bitmap_y;
+
+    ///// FIN DE CAHQUE LIGNE /////
+
+
+    acteur->debut_bitmap.base_droite.x = 32;
+    acteur->debut_bitmap.base_droite.y = 14;
+
+    acteur->debut_bitmap.base_gauche.x = 32;
+    acteur->debut_bitmap.base_gauche.y = 108;
+
+    acteur->debut_bitmap.base_bas.x = 32;
+    acteur->debut_bitmap.base_bas.y = 202;
+
+    acteur->debut_bitmap.base_haut.x = 32;
+    acteur->debut_bitmap.base_haut.y = 296;
+
+    ///// FIN DE CAHQUE LIGNE /////
+
+    acteur->fin_bitmap.base_droite.x = 320;
+    acteur->fin_bitmap.base_droite.y = 14;
+
+    acteur->fin_bitmap.base_gauche.x = 320;
+    acteur->fin_bitmap.base_gauche.y = 108;
+
+    acteur->fin_bitmap.base_bas.x = 320;
+    acteur->fin_bitmap.base_bas.y = 202;
+
+    acteur->fin_bitmap.base_haut.x = 320;
+    acteur->fin_bitmap.base_haut.y = 296;
+
+}
 
