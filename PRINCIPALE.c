@@ -1,5 +1,5 @@
 #include "HEADER.h"
-
+#include <time.h>
 /* ------------------------------------- PRINCIPALE -------------------------------------
     Les fontions présente dans ce fichier sont les fonctions principales. C'est celle qui permettront de lancer
     toutes les fonctionnalitées principales du jeu
@@ -53,20 +53,15 @@ void menu_principal(void) // A finir
     int couleur_apercu_classe = makecol(0,255,0);
     int couleur_parametre = makecol(0,0,255);
     int couleur_credit = makecol(255,255,0);
-    int volume = 200;
-    int delay = 0;
-    unsigned int temps = 0;
-    play_sample(musique, volume, 128, 1000, 1);
 
 
      ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
-
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
+    erreur_chargement_image(curseur);
     while ((quitter != 1) && (!key[KEY_ESC]))
     {
         clear_bitmap(page);
         animation_decor_menu(soldat, mesActeurs, &delay, &visuel_menu, tab_bitmap, &temps);
-
-
         blit(visuel_menu.visuel, visuel_menu.visuel, 0, 0, 2400, 0, 800, 600);
         blit(visuel_menu.visuel, page, visuel_menu.position_x, 0, 0, 0, 800, 600);
         clear_to_color(fond_menu, makecol(0, 0, 0));
@@ -92,7 +87,6 @@ void menu_principal(void) // A finir
 
          ///////////////////////////// DESSIN MENU /////////////////////////////////////
 
-
         rectfill(page, 250, 150, 560, 210, makecol(190,190,190));
         rectfill(page, 253, 153, 557, 207, makecol(175,175,175));
         rectfill(page, 256, 156, 554, 204, makecol(160,160,160));
@@ -113,9 +107,10 @@ void menu_principal(void) // A finir
         rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
-
+        
 
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
+
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
         {
@@ -138,7 +133,8 @@ void menu_principal(void) // A finir
             if (mouse_b & 1)
             {
                 rest(100);
-                quitter = jouer();
+                 quitter=nouvellePartie(page);
+
             }
         }
 
@@ -162,6 +158,7 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Parametre");
             if (mouse_b & 1)
             {
+
                 parametre_en_cours(page, &visuel_menu, musique, &volume, soldat, mesActeurs, &delay, tab_bitmap, &temps);
             }
         }
@@ -171,13 +168,13 @@ void menu_principal(void) // A finir
             rectfill(page, 250, 450, 560, 510, makecol(210,210,210));
             rectfill(page, 253, 453, 557, 507, makecol(195,195,175));
             rectfill(page, 256, 456, 554, 504, makecol(180,180,180));
-            textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "Credit"); // CREDIT
+            textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "Credit");
             if (mouse_b & 1)
             {
+
                 credit_en_cours(page, &visuel_menu, soldat, mesActeurs, &delay, &temps, tab_bitmap);
             }
         }
-
         montre_curseur(page);
 
         /////////////////////////////  /////////////////////////////////////
@@ -188,19 +185,20 @@ void menu_principal(void) // A finir
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
         rest(1);
+
+
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
     destroy_sample(musique);
 }
 
-int jouer(void) // A finir
+int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
 {
     // VARIABLE
     t_map carte;
     BITMAP* page;
     BITMAP* soldat;
-
-
+    
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
 
     int couleur_menu = makecol(0,255,255);
@@ -219,7 +217,6 @@ int jouer(void) // A finir
     rectfill(fond_menu,494,555,594,585,couleur_attaque_4);
     rectfill(fond_menu,622,555,722,585,couleur_attaque_5);
 
-
     // INITIALISATION VARIABLE
     init_map(&carte);
     srand(time(NULL));
@@ -235,101 +232,87 @@ int jouer(void) // A finir
     int affiche_grille = 0;
 
     // CODE PRINCIPAL
-    //////////////Pour tester le deplacement////////////////
-    t_joueur joueurActuel;
-    joueurActuel.position_colonne=13;
-    joueurActuel.position_ligne=13;
-    joueurActuel.classe.pm_actuel=6;
-    /////////////////////////////////////////////////////////
-    int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
-    int positionTmpY=-1;
-    
-while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
+
+    t_joueur *joueurActuel;
+
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
+    erreur_chargement_image(curseur);
+
+    int indiceActuel= rand()%nbJoueurs;    //indice du joueur actuel choisi aleatoirement
+    time_t temps1;
+    time_t temps2;
+    for(int i=0;i<nbJoueurs;i++)
     {
-        //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
-        //int positionTmpY=-1;
 
-        joueurActuel.classe.pm_actuel=6;    //joueurActuel.classe->pm_actuel=joueurActuel.classe->pm_max;
-
-        //boucle tant que temps>0
-        int  zoneDeplacement[20][16];
-
-        blit(carte.fond_map,page,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
-        affichage_grille(page);
-
-
-        ////////////////////////////////////DEPLACEMENT/////////////////////////////
-        if(joueurActuel.classe.pm_actuel>0){
-            if(joueurActuel.position_colonne!=positionTmpX || joueurActuel.position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
-                CalculDeplacement(page,carte, joueurActuel.position_colonne,joueurActuel.position_ligne,zoneDeplacement, joueurActuel.classe.pm_actuel);
-                positionTmpX=joueurActuel.position_colonne;
-                positionTmpY=joueurActuel.position_ligne;
-            }
-            SurbrillanceDeplacement(page,carte,zoneDeplacement);
-            joueurActuel.classe.pm_actuel-=Deplacement(carte, zoneDeplacement, &joueurActuel, page, soldat);
-        }
-        if (respiration <= 800)
-            masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
-        else if (respiration<=1200)
-            masked_blit(soldat,page, 409+94, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
-        if (respiration == 1200)
-            respiration = 0;
-        respiration++;
-
-
-        ////////////////////////////////////////////////////////////////////////////
-        affichage_en_jeu(page);
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+        Joueurs[i].classe.pa_actuel=0;      //A supprimer
+        do
         {
+            Joueurs[i].position_colonne=rand()%20;                      //On donne une position aléatoire à chaque joueur
+            Joueurs[i].position_ligne=rand()%16;
+        }while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0); //Tant que la case est indisponible
 
-            if (mouse_b & 1)
-            {
-                quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
-            }
-        }
-        /*
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 1
-        {
-            if (mouse_b & 1)
-            {
-                rest(100);
-            }
-        }
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 2
-        {
-            if (mouse_b & 1)
-            {
-                rest(100);
-            }
-        }
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 3
-        {
-            if (mouse_b & 1)
-            {
-                rest(100);
-            }
-        }
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 4
-        {
-            if (mouse_b & 1)
-            {
-                rest(100);
-            }
-        }
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 5
-        {
-            if (mouse_b & 1)
-            {
-                rest(100);
-            }
-        }*/
-    
-        montre_curseur(page);
-        blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        clear(page);
+        //Joueurs[i].classe.numero_classe=i+1;
     }
-    return quitter;
-}
+    joueurActuel=&Joueurs[indiceActuel];
+
+    while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
+    {
+
+        int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
+        int positionTmpY=-1;
+
+        joueurActuel->classe.pm_actuel=4; //joueurActuel.classe.pm_actuel=joueurActuel.classe.pm_max;    //On remet le pm max au joueur à chaque tour
+        temps1=clock();  //On stocke le temps en secondes dans temps1
+        temps2=temps1+15000;
+        while(temps1<=temps2 && (joueurActuel->classe.pm_actuel>0 || joueurActuel->classe.pa_actuel>0))           //rajouter la condition si le joueurtuilise tous ses pm et pa
+        {
+            temps1=clock(); //time(&temps1);
+            int  zoneDeplacement[20][16];
+            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs);
+
+            rect(page,230, 5, 630,25,makecol(0,0,0));                 //Affichage de la barre de temps restant
+            rectfill(page,232, 7, (temps2-temps1)*400/15000+232,23,makecol(0,255,0));
+
+            ////////////////////////////////////DEPLACEMENT/////////////////////////////
+            if(joueurActuel->classe.pm_actuel>0){
+                if(joueurActuel->position_colonne!=positionTmpX || joueurActuel->position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
+                    CalculDeplacement(page,carte, joueurActuel->position_colonne,joueurActuel->position_ligne,zoneDeplacement, joueurActuel->classe.pm_actuel, Joueurs, nbJoueurs,indiceActuel);
+                    positionTmpX=joueurActuel->position_colonne;
+                    positionTmpY=joueurActuel->position_ligne;
+                }
+                SurbrillanceDeplacement(page,carte,zoneDeplacement);
+                joueurActuel->classe.pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs);
+            }
+            ////////////////////////////////////////////////////////////////////////////
+            
+            AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
+            //respiration a faire
+            affichage_en_jeu(page);
+            if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+            {
+
+                if (mouse_b & 1)
+                {
+                    quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
+                }
+        }
+            
+            
+            montre_curseur(page,curseur);
+            blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+            clear_bitmap(page);
+        }
+
+        do{                                 //Passage au joueur suivant
+            indiceActuel=(indiceActuel+1)%nbJoueurs;
+        }while(Joueurs[indiceActuel].elimine==1);
+        joueurActuel=&Joueurs[indiceActuel];
+
+    }
+        destroy_bitmap(soldat);
+        destroy_bitmap(page);
+        return quitter;
+    }
 
 int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille)
 {
@@ -465,7 +448,6 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
     }
 
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
-
     while (!key[KEY_ESC])
     {
         clear_bitmap(page);
@@ -486,16 +468,11 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
         rectfill(page, 155, 105, 670, 520, makecol(20,20,20));
         rectfill(page, 160, 110, 665, 515, makecol(0,0,0));
 
-
         Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond
-
-
         police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
 
 
-
-
-        montre_curseur(page);
+        montre_curseur(page,curseur);
 
         ////////////////////////// DESSIN BOUTON //////////////////////////
 
@@ -529,7 +506,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps)
 {
     /* Lance les credits
-    Prend en parametre la bitmap d'affichage, le decor, la musique et le volume
+    Prend en parametre la bitmap d'affichage et le decor
     Ne renvoie rien */
 
     /////////////////////////// VARIABLE //////////////////////////
@@ -544,9 +521,8 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
     dernier_point_vert_y+=5;
     printf("Volume+250 : %d / dernier point y : %d", *volume+250, dernier_point_vert_y);
     int point2[6] = {256, 500, *volume+250, 500, *volume+250, dernier_point_vert_y};
-
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
-
+   
     while (!key[KEY_ESC])
     {
         clear_bitmap(page);
@@ -572,9 +548,8 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
         line(page, 251, 501, 251+255, 351, makecol(0,0, 0));
 
         polygon(page, 3, point2, makecol(0, 255, 0));
-        //while (lo)
 
-        montre_curseur(page);
+        montre_curseur(page,curseur);
 
         ////////////////////////// DESSIN BOUTON //////////////////////////
 
@@ -583,10 +558,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
 
         rectfill(fond_parametre, 200, 200, 300, 300, makecol(255, 255, 0));
         rectfill(fond_parametre, 500, 200, 600, 300, makecol(255, 0, 255));
-
         polygon(fond_parametre, 3, point, makecol(0, 255, 0));
-
-
         ////////////////////////// DETECTION BOUTON //////////////////////////
 
         if (getpixel(fond_parametre, mouse_x, mouse_y) == makecol(255, 0, 0))
@@ -613,12 +585,10 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
         {
             if (mouse_b & 1)
             {
-
                 changement_graphique(1);
             }
 
         }
-
         if (getpixel(fond_parametre, mouse_x, mouse_y) == makecol(0, 255, 0))
         {
             if (mouse_b & 1)
@@ -636,13 +606,10 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
         }
 
 
-
-
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
         animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
         rest(1);
-
 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
@@ -932,7 +899,6 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
 }
-
 
 
 
