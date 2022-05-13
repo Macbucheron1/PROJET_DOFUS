@@ -93,7 +93,6 @@ int position_souris_ligne(void)
     return -1;
 }
 
-
 void prepa_alleg(void)
 {
     /* Lance alleg init et verifie qu'il fonctionne bien
@@ -106,11 +105,6 @@ void prepa_alleg(void)
     if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("prb gfx mode");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
-    if (install_sound(DIGI_AUTODETECT, MIDI_NONE, 0) != 0) {
-        printf("Error initialising sound: %s\n", allegro_error);
         allegro_exit();
         exit(EXIT_FAILURE);
     }
@@ -442,12 +436,10 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     return 1;
 }
 
+
 int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
 {
-    /* Calcul la position des etoiles
-    Prend en parametre le tableau d'etoile, le delay d'affichages etoiles, i, la bitmap d'affichage
-    Renvoie la nouvelle valeur de delay*/
-    int color5 = makecol(100,100,100);  //gris foncé
+    int color5 = makecol(50,50,50);  //gris foncé
         if (Stardelay == 10) {
 
             i = 0;
@@ -473,7 +465,7 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
                     TabStar[j].posY = 1000;
                 }
                 else {
-                    TabStar[j].posY = TabStar[j].posY+10;   //vitesse
+                    TabStar[j].posY = TabStar[j].posY+20;   //vitesse
                     ellipsefill(backscreen,TabStar[j].posX+5,TabStar[j].posY,2,10,color5);
                 }
             }
@@ -481,6 +473,177 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
     return Stardelay;
 }
 
+/** pour les attaques **/
 
+void CalculAttaque_zone(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance)
+{
+    /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
+    Prend en parametre la bitmap d'affichage, la carte, la position du soldat, la zone de deplacement, les PM restants
+    Ne renvoie rien */
+    int i,j,tmp;
+    int x=x_soldat;
+    int y=y_soldat-distance;
+    int continuer=1;
+    int continuer1=1;
+
+    for(i=0; i<20;i++)                  //Iniitialisation du tableau avec des 0
+    {
+        for(j=0; j<16;j++)
+        {
+            zoneAttaque[i][j]=0;
+        }
+    }
+    //La zone de deplacement correspond a un losange que l'on sép   re en 2 parties (2 grandes boucles for)
+    for(i=0;i<distance+1 && continuer1;i++)
+    {
+        tmp=x;
+        for(j=0; j<i*2+1;j++)
+        {
+            if(x>=0 && y>=0){
+                if(!(i==distance && j==distance) && carte.map_obstacle[x][y]==0) // Verifie si la case est accessible
+                {
+
+                    zoneAttaque[x][y]=1;                                                           //Si c'est le cas, las case=1 dans le tableau
+                }
+            }
+                if(x<19)
+                    x=x+1;
+                else
+                {
+                    break;
+                }
+        }
+
+        x=tmp-1;
+        if(y<15)
+            y=y+1;
+        else
+            continuer=0;
+    }
+    x=x+2;
+    if(continuer){
+        for(i=0;i<distance;i++)
+        {
+            tmp=x;
+            for(j=0; j<2*distance-(i*2+1);j++)
+            {
+                if(x>=0 && y>=0){
+                    if(carte.map_obstacle[x][y]==0)
+                        zoneAttaque[x][y]=1;
+                }
+                if(x<19)
+                    x=x+1;
+            }
+
+            x=tmp+1;
+            if(y<15)
+                y=y+1;
+        }
+    }
+
+}
+
+void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance)
+{
+    /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
+    Prend en parametre la bitmap d'affichage, la carte, la position du soldat, la zone de deplacement, les PM restants
+    Ne renvoie rien */
+    int i,j;
+    //int tmp;
+    int x=x_soldat;
+    int y=y_soldat;
+    int continuer=1;
+    int continuer1=1;
+
+    for(i=0; i<20;i++)                  //Iniitialisation du tableau avec des 0
+    {
+        for(j=0; j<16;j++)
+        {
+            zoneAttaque[i][j]=0;
+        }
+    }
+
+    //La zone de deplacement correspond a un losange que l'on sép   re en 2 parties (2 grandes boucles for)
+    for(i=0;i<distance+1 && continuer1;i++)
+    {
+
+            if(x>=0 && y>=0){
+
+                if( carte.map_obstacle[x][y]==0) // Verifie si la case est accessible
+                {
+                    printf("%d/%d\n",x,y);
+                    zoneAttaque[x][y-1]=1;                                                           //Si c'est le cas, las case=1 dans le tableau
+                }
+                else
+                {
+                    continuer1=0;
+                    break;
+                }
+            }
+                else
+                {
+                    break;
+                }
+            if(y>0)
+                y=y+1;
+    }
+    y=y+2;
+    if(y<15)
+        y++;
+    else
+        continuer=0;
+    x-=distance;
+
+    if(continuer){
+        for(i=0;i<distance*2+1;i++)
+        {
+
+                if(x>=0 && y>=0){
+                    if(carte.map_obstacle[x][y]==0)
+                        zoneAttaque[x][y]=1;
+                }
+                if(x<19)
+                    x=x+1;
+        }
+        if(y<15)
+            y--;
+        else
+        {
+            continuer=0;
+        }
+        for(i=0;i<distance*2+i;i++)
+        {
+            if(x>=0 && y>=0){
+                    if(carte.map_obstacle[x][y]==0)
+                        zoneAttaque[x][y]=1;
+                    else
+                    {
+                    continuer1=0;
+                    break;
+                    }
+
+                }
+                if(y>0)
+                    y--;
+
+
+
+        }
+
+    }
+
+    /*for(int i=0;i<20;i++)
+    {
+        for(int j=0;j<16;j++)
+        {
+            printf("%d ", zoneAttaque[i][j]);
+
+        }
+        printf("\n");
+    }
+    printf("\n");*/
+
+
+    }
 
 
