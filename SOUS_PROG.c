@@ -122,6 +122,9 @@ void erreur_chargement_image(BITMAP* image)
     TOUJOURS LE FAIRE CAR ON N'EST JAMAIS CERTAIN DE BIEN TROUVER L'IMAGE
     Prend en parametre l'image a testé
     Ne renvoie rien */
+    /*int W=image->w;
+    int H=image->h;
+    printf("%d/%d\n", W,H);*/
     if (!image)
     {
         allegro_message("pas pu trouver/charger mon_image.bmp");

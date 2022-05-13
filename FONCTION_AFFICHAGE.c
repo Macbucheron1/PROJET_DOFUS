@@ -619,21 +619,12 @@ int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, in
     return 0;
 }
 
-void affichage_en_jeu(BITMAP* buffer)
+void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar, BITMAP*avatar2, BITMAP* avatar3, BITMAP* avatar4 )
 {
-    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
     int i;
-    BITMAP* avatar = load_bitmap("avatar.bmp", NULL);
-    erreur_chargement_image(avatar);
     draw_sprite(buffer, avatar,3,90);
-    BITMAP* avatar2 = load_bitmap("avatar2.bmp", NULL);
-    erreur_chargement_image(avatar2);
     draw_sprite(buffer, avatar2,10,20);
-    BITMAP* avatar3 = load_bitmap("avatar3.bmp", NULL);
-    erreur_chargement_image(avatar3);
     draw_sprite(buffer, avatar3,33,90);
-    BITMAP* avatar4 = load_bitmap("avatar4.bmp", NULL);
-    erreur_chargement_image(avatar4);
     draw_sprite(buffer, avatar4,63,90);
 
 
