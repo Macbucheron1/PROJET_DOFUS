@@ -154,6 +154,7 @@ int nombreJoueurs(BITMAP* buffer);
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total); //initialise les differentes classes
 void init_map(t_map* carte); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
+void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y); // Initialise un acteurs
 
 /* ----------- PRINCIPALE ----------- */
 
