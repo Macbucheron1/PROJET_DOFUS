@@ -2,37 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="SOUS_PROG.c" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4546" topLine="9" />
-		</Cursor>
-		<Folding>
-			<Collapse line="9" />
-			<Collapse line="26" />
-			<Collapse line="64" />
-			<Collapse line="80" />
-			<Collapse line="97" />
-			<Collapse line="204" />
-			<Collapse line="234" />
-			<Collapse line="329" />
-			<Collapse line="349" />
-			<Collapse line="370" />
-			<Collapse line="396" />
-			<Collapse line="428" />
-		</Folding>
-	</File>
-	<File name="PRINCIPALE.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1729" topLine="28" />
-		</Cursor>
-		<Folding>
-			<Collapse line="270" />
-			<Collapse line="362" />
-		</Folding>
-	</File>
 	<File name="HEADER.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8621" topLine="126" />
+			<Cursor1 position="5017" topLine="33" />
 		</Cursor>
 	</File>
 	<File name="FONCTION_AFFICHAGE.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
@@ -42,34 +14,58 @@
 		<Folding>
 			<Collapse line="33" />
 			<Collapse line="49" />
-			<Collapse line="58" />
-			<Collapse line="79" />
-			<Collapse line="96" />
-			<Collapse line="173" />
-			<Collapse line="399" />
-			<Collapse line="446" />
-			<Collapse line="493" />
-			<Collapse line="538" />
-			<Collapse line="609" />
-			<Collapse line="622" />
-			<Collapse line="651" />
+			<Collapse line="60" />
+			<Collapse line="81" />
+			<Collapse line="98" />
+			<Collapse line="181" />
+			<Collapse line="400" />
+			<Collapse line="448" />
+			<Collapse line="495" />
+			<Collapse line="542" />
+			<Collapse line="610" />
+			<Collapse line="631" />
+			<Collapse line="652" />
 			<Collapse line="673" />
+		</Folding>
+	</File>
+	<File name="INITIALISATION.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3420" topLine="21" />
+		</Cursor>
+		<Folding>
+			<Collapse line="7" />
+		</Folding>
+	</File>
+	<File name="SOUS_PROG.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2131" topLine="63" />
+		</Cursor>
+		<Folding>
+			<Collapse line="9" />
+			<Collapse line="64" />
+			<Collapse line="80" />
+			<Collapse line="119" />
+			<Collapse line="134" />
+			<Collapse line="203" />
+			<Collapse line="330" />
+			<Collapse line="350" />
+			<Collapse line="445" />
 		</Folding>
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="166" topLine="0" />
+			<Cursor1 position="60" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="INITIALISATION.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+	<File name="PRINCIPALE.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3420" topLine="0" />
+			<Cursor1 position="751" topLine="0" />
 		</Cursor>
 		<Folding>
-			<Collapse line="7" />
-			<Collapse line="65" />
-			<Collapse line="87" />
-			<Collapse line="98" />
+			<Collapse line="196" />
+			<Collapse line="267" />
+			<Collapse line="359" />
+			<Collapse line="482" />
 		</Folding>
 	</File>
 </CodeBlocks_layout_file>

@@ -1,14 +1,14 @@
 #include "HEADER.h"
 
 /* ------------------------------------- INITIALISATION -------------------------------------
-    Les fontions prÃ©sente dans ce fichier sont des fonctions d'initialisation
+    Les fontions présente dans ce fichier sont des fonctions d'initialisation
 */
 
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total) // a decrire
 {
     /* Permet d'initaliser les classes
     Prend en parametre le nom de classe, le numero de classe, les points d'action max, les points vie max, les points mvt max, le nb skin total
-    Renvoie la structure crÃ©Ã©e*/
+    Renvoie la structure créée*/
 
     t_personnage c;
 
@@ -24,7 +24,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
     c.pv_max=p_vie_max;
     c.pv_actuel=c.pv_max;
 
-    //reste des variables (ne seront utilisÃ© que pour certaines classes)
+    //reste des variables (ne seront utilisé que pour certaines classes)
 
     c.max_meditation=3; //ne sert que au mages (jedi/sith)
     strcpy(c.nom_classe,nom_classe);
@@ -36,7 +36,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
 
     c.en_feu=false; //pour tous
     c.tour_en_feu=0;
-    c.tour_en_feu_max=4; //nb de tours brulÃ© au maximum
+    c.tour_en_feu_max=4; //nb de tours brulé au maximum
 
     //pour les chasseurs de prime
     c.nb_bacta=0;
@@ -58,7 +58,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
         }
     }
 
-    //on return la structure crÃ©e
+    //on return la structure crée
     return c;
 }
 
@@ -84,6 +84,7 @@ void init_decor(t_decor* decor)
     decor->position_x = 0;
     decor->position_y = 0;
 }
+
 void init_map(t_map* carte)
 {
     /* Permet d'initialiser une map
@@ -94,6 +95,7 @@ void init_map(t_map* carte)
     remplir_tab_coordonnes(carte);
     remplir_map_obstacle(carte);
 }
+
 
 void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y)
 {
@@ -142,4 +144,3 @@ void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin,
     acteur->fin_bitmap.base_haut.y = 296;
 
 }
-
