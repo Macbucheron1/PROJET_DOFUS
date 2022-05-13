@@ -72,7 +72,6 @@ void menu_principal(void) // A finir
         rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
-        montre_curseur(page);
 
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
 
