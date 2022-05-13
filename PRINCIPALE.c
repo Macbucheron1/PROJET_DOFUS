@@ -230,6 +230,9 @@ int jouer(void) // A finir
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
     int respiration = 0;
+    int quitter = 0;
+    int affiche_son = 0;
+    int affiche_grille = 0;
 
     // CODE PRINCIPAL
     //////////////Pour tester le deplacement////////////////
