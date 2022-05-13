@@ -278,7 +278,7 @@ while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
 
 
         ////////////////////////////////////////////////////////////////////////////
-    
+        affichage_en_jeu(page);
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
         {
 
@@ -328,7 +328,7 @@ while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
         blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(page);
     }
-
+    return quitter;
 }
 
 
