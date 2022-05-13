@@ -33,11 +33,10 @@ void menu_principal(void) // A finir
 
         ///////////////////////////// Dessin Bouton pour quitter /////////////////////////////////////
 
-        rectfill(fond_menu, 10, 10, 30, 32, couleur_quitter);
-        rectfill(page, 10, 10, 33, 34, makecol(190,190,190));
-        rectfill(page, 12, 12, 31, 32, makecol(175,175,175));
-        rectfill(page, 14, 14, 29, 30, makecol(160,160,160));
-        textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
+            rectfill(page, 10, 10, 33, 34, makecol(210,210,210));
+            rectfill(page, 12, 12, 31, 32, makecol(195,195,195));
+            rectfill(page, 14, 14, 29, 30, makecol(180,180,180));
+            textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
 
         ///////////////////////////// Dessin Bouton du menu /////////////////////////////////////
 
