@@ -109,11 +109,6 @@ void prepa_alleg(void)
         allegro_exit();
         exit(EXIT_FAILURE);
     }
-    if (install_sound(DIGI_AUTODETECT, MIDI_NONE, 0) != 0) {
-        printf("Error initialising sound: %s\n", allegro_error);
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
 }
 
 void erreur_chargement_image(BITMAP* image)
@@ -442,12 +437,9 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     return 1;
 }
 
-int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
-{
-    /* Calcul la position des etoiles
-    Prend en parametre le tableau d'etoile, le delay d'affichages etoiles, i, la bitmap d'affichage
-    Renvoie la nouvelle valeur de delay*/
-    int color5 = makecol(100,100,100);  //gris foncé
+
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
+    int color5 = makecol(50,50,50);  //gris foncé
         if (Stardelay == 10) {
 
             i = 0;
@@ -473,7 +465,7 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
                     TabStar[j].posY = 1000;
                 }
                 else {
-                    TabStar[j].posY = TabStar[j].posY+10;   //vitesse
+                    TabStar[j].posY = TabStar[j].posY+20;   //vitesse
                     ellipsefill(backscreen,TabStar[j].posX+5,TabStar[j].posY,2,10,color5);
                 }
             }
