@@ -421,8 +421,77 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
         for (int j=0 ; j<LIMIT_STAR; j++) {
         TabStar[j].posY = 1000;
     }
+    BITMAP* map_desert = load_bitmap("map_desert.bmp", NULL);
+    erreur_chargement_image(map_desert);
 
-    ////////////////////////// BOUCLE EVENEMENT //////////////////////////
+    BITMAP* map_neige = load_bitmap("map_neige.bmp", NULL);
+    erreur_chargement_image(map_neige);
+
+    BITMAP* map_ville = load_bitmap("map_ville.bmp", NULL);
+    erreur_chargement_image(map_ville);
+
+    BITMAP* text_jedi = create_bitmap(300,200);
+    clear_to_color(text_jedi, makecol(40, 40, 40));
+    textout_ex(text_jedi, font, "JEDI : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_jedi, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    BITMAP* text_vador = create_bitmap(300,200);
+    clear_to_color(text_vador, makecol(40, 40, 40));
+    textout_ex(text_vador, font, "DARK VADOR : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    BITMAP* text_clone = create_bitmap(300,200);
+    clear_to_color(text_clone, makecol(40, 40, 40));
+    textout_ex(text_clone, font, "CLONE : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    BITMAP* text_droide = create_bitmap(300,200);
+    clear_to_color(text_droide, makecol(40, 40, 40));
+    textout_ex(text_droide, font, "DROIDE : ", 105, 5, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
+    textout_ex(text_droide, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
+
+    //BITMAP* map_
+    int position_x_bitmap_jedi = 32;
+    int nouvelle_affichage_jedi = 0;
+    int direction_jedi = 0;
+    int sortie_boite_jedi_x = 210;
+    int sortie_boite_jedi_y = 200;
+
+    int position_x_bitmap_vador= 630;
+    int nouvelle_affichage_vador = 20;
+    int direction_vador = 1;
+    int sortie_boite_vador_x = 560;
+    int sortie_boite_vador_y = 200;
+
+    int position_x_bitmap_clone = 630;
+    int nouvelle_affichage_clone = 40;
+    int direction_clone = 2;
+    int sortie_boite_clone_x = 210;
+    int sortie_boite_clone_y = 450;
+
+    //int position_x_bitmap_droid = 630; // a changer quand skin droid
+    //int nouvelle_affichage_droid = 40; // a changer quand skin droid
+    //int direction_droid = 2; // A changer skin droid
+    int sortie_boite_droid_x = 560;
+    int sortie_boite_droid_y = 450;
+
+////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
     while (!key[KEY_ESC])
     {
