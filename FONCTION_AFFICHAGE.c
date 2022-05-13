@@ -1,7 +1,7 @@
 #include "HEADER.h"
 
 /* ------------------------------------- FONCTION d'affichage -------------------------------------
-    Les fontions présente dans ce fichier sont des fonctions d'affichage, elles ne servent à rien d'autre
+    Les fontions prÃ©sente dans ce fichier sont des fonctions d'affichage, elles ne servent Ã  rien d'autre
     que l'affichage
 */
 
@@ -48,8 +48,8 @@ void affichage_grille(BITMAP* buffer)
 
 void montre_curseur(BITMAP* page)
 {
-    /* Permet d'afficher un curseur personnalisé
-    Prend en parametre la bitmap sur laquel affiché le curseur
+    /* Permet d'afficher un curseur personnalisÃ©
+    Prend en parametre la bitmap sur laquel affichÃ© le curseur
     Ne renvoie rien*/
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
@@ -80,7 +80,7 @@ void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20]
 
 void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
-    /* Affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
+    /* Affiche un carrÃ© bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
     Prend en parametre la bitmap d'affichage, la carte et la zone de deplacement
     Ne renvoie rien */
 
@@ -98,10 +98,10 @@ void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, t_joueur joueurActuel, coords chemin[], int PM)
 {
     /* Permet d'animer le deplacement
-    Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnées initial, le joueur qui joue, le chemin, les points de mouvement
+    Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnÃ©es initial, le joueur qui joue, le chemin, les points de mouvement
     Ne renvoie rien */
 
-    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
+    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnÃ©es en pixels de la case initial
     int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
 
     int x2;
@@ -111,7 +111,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
     x1+=8;
         for(int i=0; i<PM;i++)
         {
-            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnées en pixels de la case suivante
+            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnÃ©es en pixels de la case suivante
             y2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_y;
             x=32;
 
@@ -135,7 +135,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
                 //affichage_grille(buffer);
                 affichage_en_jeu(buffer);
-                masked_blit(soldat,buffer, x, 300, x1,y1-30, 32,64);
+                masked_blit(soldat,buffer, x, 296, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
                     x=32;
@@ -165,7 +165,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
                 //affichage_grille(buffer);
                 affichage_en_jeu(buffer);
-                masked_blit(soldat,buffer, x, 207, x1,y1-30, 32,64);
+                masked_blit(soldat,buffer, x, 202, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
                     x=32;
