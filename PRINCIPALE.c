@@ -471,13 +471,9 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 1599)
+        if (visuel_menu->position_x >= 2399)
         {
-            visuel_menu->avancement_x = -1;
-        }
-        else if (visuel_menu->position_x <=1)
-        {
-            visuel_menu->avancement_x = 1;
+            visuel_menu->position_x = 1;
         }
         visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
         rest(1);
@@ -569,13 +565,9 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 1599)
+        if (visuel_menu->position_x >= 2399)
         {
-            visuel_menu->avancement_x = -1;
-        }
-        else if (visuel_menu->position_x <=1)
-        {
-            visuel_menu->avancement_x = 1;
+            visuel_menu->position_x = 1;
         }
         visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
         rest(1);
@@ -661,13 +653,9 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 1599)
+        if (visuel_menu->position_x >= 2399)
         {
-            visuel_menu->avancement_x = -1;
-        }
-        else if (visuel_menu->position_x <=1)
-        {
-            visuel_menu->avancement_x = 1;
+            visuel_menu->position_x = 1;
         }
         visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
         rest(1);
