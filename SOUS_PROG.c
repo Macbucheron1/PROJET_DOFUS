@@ -109,6 +109,11 @@ void prepa_alleg(void)
         allegro_exit();
         exit(EXIT_FAILURE);
     }
+    if (install_sound(DIGI_AUTODETECT, MIDI_NONE, 0) != 0) {
+        printf("Error initialising sound: %s\n", allegro_error);
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
 }
 
 void erreur_chargement_image(BITMAP* image)
@@ -437,8 +442,8 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     return 1;
 }
 
-
-int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
+{
     /* Calcul la position des etoiles
     Prend en parametre le tableau d'etoile, le delay d'affichages etoiles, i, la bitmap d'affichage
     Renvoie la nouvelle valeur de delay*/

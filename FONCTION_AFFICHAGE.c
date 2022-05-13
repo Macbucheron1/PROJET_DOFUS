@@ -1,7 +1,7 @@
 #include "HEADER.h"
 
 /* ------------------------------------- FONCTION d'affichage -------------------------------------
-    Les fontions prÃ©sente dans ce fichier sont des fonctions d'affichage, elles ne servent Ã  rien d'autre
+    Les fontions présente dans ce fichier sont des fonctions d'affichage, elles ne servent à rien d'autre
     que l'affichage
 */
 
@@ -48,8 +48,8 @@ void affichage_grille(BITMAP* buffer)
 
 void montre_curseur(BITMAP* page)
 {
-    /* Permet d'afficher un curseur personnalisÃ©
-    Prend en parametre la bitmap sur laquel affichÃ© le curseur
+    /* Permet d'afficher un curseur personnalisé
+    Prend en parametre la bitmap sur laquel affiché le curseur
     Ne renvoie rien*/
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
@@ -80,7 +80,7 @@ void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20]
 
 void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
-    /* Affiche un carrÃ© bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
+    /* Affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
     Prend en parametre la bitmap d'affichage, la carte et la zone de deplacement
     Ne renvoie rien */
 
@@ -98,10 +98,10 @@ void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, t_joueur joueurActuel, coords chemin[], int PM)
 {
     /* Permet d'animer le deplacement
-    Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnÃ©es initial, le joueur qui joue, le chemin, les points de mouvement
+    Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnées initial, le joueur qui joue, le chemin, les points de mouvement
     Ne renvoie rien */
 
-    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnÃ©es en pixels de la case initial
+    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
     int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
 
     int x2;
@@ -111,15 +111,14 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
     x1+=8;
         for(int i=0; i<PM;i++)
         {
-            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnÃ©es en pixels de la case suivante
+            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnées en pixels de la case suivante
             y2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_y;
             x=32;
 
             while(x1<x2)                                                                                                                                   //Aller a droite
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-                //affichage_grille(buffer);
-                affichage_en_jeu(buffer);
+                affichage_grille(buffer);
                 masked_blit(soldat,buffer, x, 14, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
@@ -133,9 +132,8 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
             while(y1>y2)                                                                                                                                    //Monter
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-                //affichage_grille(buffer);
-                affichage_en_jeu(buffer);
-                masked_blit(soldat,buffer, x, 300, x1,y1-30, 32,64);
+                affichage_grille(buffer);
+                masked_blit(soldat,buffer, x, 296, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
                     x=32;
@@ -148,8 +146,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
             while(x1>x2)                                                                                                                                   //Aller a gauche
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-                //affichage_grille(buffer);
-                affichage_en_jeu(buffer);
+                affichage_grille(buffer);
                 masked_blit(soldat,buffer, x, 108, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
@@ -158,14 +155,12 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
                 rest(100);
                 clear(buffer);
-
             }
             while(y1<y2)                                                                                                                                    //Monter
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-                //affichage_grille(buffer);
-                affichage_en_jeu(buffer);
-                masked_blit(soldat,buffer, x, 207, x1,y1-30, 32,64);
+                affichage_grille(buffer);
+                masked_blit(soldat,buffer, x, 202, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
                     x=32;
@@ -180,13 +175,14 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
 
         }
     blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-    //affichage_grille(buffer);
-    affichage_en_jeu(buffer);
+    affichage_grille(buffer);
 }
 
 int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8)
 {
-
+    /* Permet d'afficher les credits
+    Prend en parametre la police, la vitesse, la hauteur du depart de texte, la bitmap d'affichage et les differentes polices
+    Renvoie la nouvelle valeur de la police*/
         if (police <= 1*vitesse)
         {
             textout_ex(page, arial_28, "DOFUS STAR WARS", 250-20, depart_texte-police, makecol(255, 255, 0), -1);
@@ -400,10 +396,11 @@ int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FO
         return police;
 }
 
+
 void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_desert)
 {
         /* Permet d'afficher la classe jedi
-        Prend en parametre la position du skin dans la bitmap, le temps ecoulÃ© depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
         Ne renvoie rien */
         rectfill(page, 110 - 3, 100 - 3, 210 + 3, 200 + 3, makecol(40, 40, 40));
         rectfill(page, 110, 100, 210, 200, makecol(20, 20, 20));
@@ -451,7 +448,7 @@ void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
 void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige)
 {
         /* Permet d'afficher la classe Dark vador
-        Prend en parametre la position du skin dans la bitmap, le temps ecoulÃ© depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
         Ne renvoie rien */
         rectfill(page, 460 - 3, 100 - 3, 560 + 3, 200 + 3, makecol(40, 40, 40));
         rectfill(page, 460, 100, 560, 200, makecol(20, 20, 20));
@@ -498,7 +495,7 @@ void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
 void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville)
 {
         /* Permet d'afficher la classe clone
-        Prend en parametre la position du skin dans la bitmap, le temps ecoulÃ© depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
         Ne renvoie rien */
         rectfill(page, 460 - 3, 350 - 3, 560 + 3, 450 + 3, makecol(40, 40, 40));
         rectfill(page, 460, 350, 560, 450, makecol(20, 20, 20));
@@ -540,56 +537,159 @@ void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         }
 }
 
-void affichage_en_jeu(BITMAP* buffer)
+
+
+void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_decor* visuel_menu, BITMAP* tableau_map[], unsigned int* temps)
 {
-    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-    int i;
-    BITMAP* avatar = load_bitmap("avatar.bmp", NULL);
-    erreur_chargement_image(avatar);
-    draw_sprite(buffer, avatar,3,90);
-    BITMAP* avatar2 = load_bitmap("avatar2.bmp", NULL);
-    erreur_chargement_image(avatar2);
-    draw_sprite(buffer, avatar2,10,20);
-    BITMAP* avatar3 = load_bitmap("avatar3.bmp", NULL);
-    erreur_chargement_image(avatar3);
-    draw_sprite(buffer, avatar3,33,90);
-    BITMAP* avatar4 = load_bitmap("avatar4.bmp", NULL);
-    erreur_chargement_image(avatar4);
-    draw_sprite(buffer, avatar4,63,90);
+    /* Anime le decor du menu
+    Prend en parametre la bitmap des personnages, le tableau d'acteurs, le delay, le decor du menu, le tableau de bitmap de map et le temps
+    Ne Renvoie rien*/
+        blit(tableau_map[2], visuel_menu->visuel, 0, 0, 2400, 0, 800, 600);
+        blit(tableau_map[0], visuel_menu->visuel, 0, 0, 1600, 0, 800, 600);
+        blit(tableau_map[1], visuel_menu->visuel, 0, 0, 800, 0, 800, 600);
+        blit(tableau_map[2], visuel_menu->visuel, 0, 0, 0, 0, 800, 600);
+        masked_blit(mesActeurs[0].skin, visuel_menu->visuel, mesActeurs[0].position_bitmap.x, mesActeurs[0].position_bitmap.y, mesActeurs[0].position.x, mesActeurs[0].position.y, 32,64);
+        *delay = (*delay+1)%10;
 
 
-    for(i = 0; i<3; i++)
-    {
-        rectfill(buffer, 750+2*i, 10+2*i, 790-2*i, 50-2*i, makecol(190-15*i,190-15*i,190-15*i));
-        //rectfill(buffer, 18+2*i, 20+2*i, 78-2*i, 80-2*i, makecol(190-15*i,190-15*i,190-15*i));
-    }
-    for(i = 0; i<3; i++)
-    {
-        hline(buffer, 760, 22+8*i,780,makecol(96,96,96));
-    }
-    for(i = 0;i<6;i++)
-    {
-        for(int j=0;j<3;j++)
+        if (clock()-(*temps) <= 6000)
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        else if (clock()-(*temps)<6030)
         {
-            rectfill(buffer, 100+108*i+2*j, 555+2*j, 200+108*i-2*j, 585-2*j, makecol(190-15*j,190-15*j,190-15*j));
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_bas.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_bas.x;
+            animation_vers_bas(*delay, &mesActeurs[0], 10, 500);
         }
-    }
-    for(i = 0; i<3;i++)
-    {
-        for(int j = 0; j<3;j++)
+        else if (clock()-(*temps)<7710)
+            animation_vers_bas(*delay, &mesActeurs[0], 1, 800);
+        else if (clock()-(*temps)<7760)
         {
-            //rectfill(buffer, 10+26*i+2*j, 180+2*j, 35+26*i-2*j, 205-2*j, makecol(190-15*j,190-15*j,190-15*j));
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_gauche.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_gauche.x;
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
         }
-    }
+        else if (clock()-(*temps)<16000)
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        else if (clock()-(*temps)<25000)
+        {
+            mesActeurs[0].respiration+=1;
+            mesActeurs[0].position_bitmap.y = 14;
+            if (mesActeurs[0].respiration <= 80)
+                mesActeurs[0].position_bitmap.x = 409;
+            else if (mesActeurs[0].respiration<=120)
+                mesActeurs[0].position_bitmap.x = 409+94;
+            else
+                mesActeurs[0].respiration = 0;
+        }
+        else
+        {
+            *temps = clock();
+            mesActeurs[0].position.y = 150;
+            mesActeurs[0].position.x = 800;
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_gauche.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_gauche.x;
+        }
+
+/*
+        if (animation_vers_gauche(*delay, &mesActeurs[0], 800, 700) == 1)
+        {
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_droite.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_droite.x;
+            animation_vers_droite(*delay, &mesActeurs[0], 700, 800);
+        }*/
+
+        if (visuel_menu->position_x >= 2399)
+        {
+            visuel_menu->position_x = 1;
+        }
+        visuel_menu->position_x += visuel_menu->avancement_x;
 }
 
 
 
+int animation_vers_gauche(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x)
+{
+    /* Anime le joueur vers le gauche
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.x>position_final_x)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_gauche.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_gauche.x;
+            monActeur->position.x -= monActeur->deplacement.x;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
 
+int animation_vers_droite(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x)
+{
+    /* Anime le joueur vers le droite
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.x<position_final_x)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_droite.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_droite.x;
+            monActeur->position.x += monActeur->deplacement.x;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
 
+int animation_vers_bas(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y)
+{
+    /* Anime le joueur vers le bas
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.y<position_final_y)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_bas.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_bas.x;
+            monActeur->position.y += monActeur->deplacement.y;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
 
-
-
+int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y)
+{
+    /* Anime le joueur vers le haut
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.y>position_final_y)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_haut.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_haut.x;
+            monActeur->position.y -= monActeur->deplacement.y;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
 
 
 
