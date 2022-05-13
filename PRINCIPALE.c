@@ -241,7 +241,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     erreur_chargement_image(soldat);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
-    int respiration = 0;
     int quitter = 0;
     int affiche_son = 0;
     int affiche_grille = 0;
