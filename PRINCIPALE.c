@@ -693,7 +693,8 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         rectfill(page, 510 + 3, 350 + 3, 610 - 3, 450 - 3, makecol(0, 0, 0));
 
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
-
+        
+        masked_blit(map_neige, page, 400, 400, 111, 351, 98, 98);
 
 
 
