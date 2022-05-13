@@ -145,7 +145,7 @@ void menu_principal(void) // A finir
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
 
-
+        montre_curseur(page);
         if (visuel_menu.position_x >= 2399)
         {
             visuel_menu.position_x = 1;
