@@ -10,29 +10,69 @@ void menu_principal(void) // A finir
     ///////////////////////////// INITALISATION VARIABLE /////////////////////////////////////
 
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-    t_decor visuel_menu;
-    init_decor(&visuel_menu);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
     FONT* arial_16 = load_font("arial_14.pcx", NULL, NULL);
+    SAMPLE* musique = load_wav("imperial_march.wav");
+    BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
+    erreur_chargement_image(soldat);
 
+    t_decor visuel_menu;
+    BITMAP* tab_bitmap[4];
+    tab_bitmap[0] = load_bitmap("map_desert.bmp", NULL);
+    erreur_chargement_image(tab_bitmap[0]);
+    tab_bitmap[1] = load_bitmap("map_neige.bmp", NULL);
+    erreur_chargement_image(tab_bitmap[1]);
+    tab_bitmap[2] = load_bitmap("map_ville.bmp", NULL);
+    erreur_chargement_image(tab_bitmap[2]);
+    visuel_menu.visuel =  create_bitmap(3200, SCREEN_H);
+    blit(tab_bitmap[2], visuel_menu.visuel, 0, 0, 2400, 0, 800, 600);
+    blit(tab_bitmap[0], visuel_menu.visuel, 0, 0, 1600, 0, 800, 600);
+    blit(tab_bitmap[1], visuel_menu.visuel, 0, 0, 800, 0, 800, 600);
+    blit(tab_bitmap[2], visuel_menu.visuel, 0, 0, 0, 0, 800, 600);
+    visuel_menu.avancement_x = 0;
+    visuel_menu.avancement_y = 1;
+    visuel_menu.position_x = 0;
+    visuel_menu.position_y = 0;
+
+    t_acteur jedi1;
+    init_acteur(&jedi1, 800, 160, soldat, 8, 8, 32, 108, 96, 94);
+
+
+    t_acteur mesActeurs[10];
+    mesActeurs[0] = jedi1;
+
+
+    if (!musique) { //blindage
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+
+    int quitter = 0;
     int couleur_quitter = makecol(0,255,255);
     int couleur_jouer = makecol(255,0,0);
     int couleur_apercu_classe = makecol(0,255,0);
     int couleur_parametre = makecol(0,0,255);
     int couleur_credit = makecol(255,255,0);
-    int quitter = 0;
+    int volume = 200;
+    int delay = 0;
+    unsigned int temps = 0;
+    play_sample(musique, volume, 128, 1000, 1);
 
 
      ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
 
-    while ((quitter!=1) && (!key[KEY_ESC]))
+    while ((quitter != 1) && (!key[KEY_ESC]))
     {
         clear_bitmap(page);
+        animation_decor_menu(soldat, mesActeurs, &delay, &visuel_menu, tab_bitmap, &temps);
+
+
+        blit(visuel_menu.visuel, visuel_menu.visuel, 0, 0, 2400, 0, 800, 600);
         blit(visuel_menu.visuel, page, visuel_menu.position_x, 0, 0, 0, 800, 600);
         clear_to_color(fond_menu, makecol(0, 0, 0));
 
         ///////////////////////////// Dessin Bouton pour quitter /////////////////////////////////////
-        
+
         rectfill(fond_menu, 10, 10, 30, 32, couleur_quitter);
         rectfill(page, 10, 10, 33, 34, makecol(190,190,190));
         rectfill(page, 12, 12, 31, 32, makecol(175,175,175));
@@ -51,6 +91,7 @@ void menu_principal(void) // A finir
         rectfill(fond_menu, 250, 450, 560, 510, couleur_credit); // Credit
 
          ///////////////////////////// DESSIN MENU /////////////////////////////////////
+
 
         rectfill(page, 250, 150, 560, 210, makecol(190,190,190));
         rectfill(page, 253, 153, 557, 207, makecol(175,175,175));
@@ -73,6 +114,7 @@ void menu_principal(void) // A finir
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
 
+
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
@@ -83,7 +125,7 @@ void menu_principal(void) // A finir
             textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
             if (mouse_b & 1)
             {
-                quitter = 1; // Trouver un moyen de quitter autre
+                quitter = 1;
             }
         }
 
@@ -108,7 +150,7 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 270, makecol(20,20,20), -1, "Apercu des classes");
             if (mouse_b & 1)
             {
-                apercu_classe_en_cours(page, &visuel_menu);
+                apercu_classe_en_cours(page, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
             }
         }
 
@@ -120,7 +162,7 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Parametre");
             if (mouse_b & 1)
             {
-                parametre_en_cours(page, &visuel_menu);
+                parametre_en_cours(page, &visuel_menu, musique, &volume, soldat, mesActeurs, &delay, tab_bitmap, &temps);
             }
         }
 
@@ -132,9 +174,11 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "Credit"); // CREDIT
             if (mouse_b & 1)
             {
-                credit_en_cours(page, &visuel_menu);
+                credit_en_cours(page, &visuel_menu, soldat, mesActeurs, &delay, &temps, tab_bitmap);
             }
         }
+
+        montre_curseur(page);
 
         /////////////////////////////  /////////////////////////////////////
 
@@ -143,19 +187,10 @@ void menu_principal(void) // A finir
 
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
-
-
-        montre_curseur(page);
-        if (visuel_menu.position_x >= 2399)
-        {
-            visuel_menu.position_x = 1;
-        }
-        visuel_menu.position_x = (visuel_menu.position_x + visuel_menu.avancement_x);
         rest(1);
-
-
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
+    destroy_sample(musique);
 }
 
 int jouer(void) // A finir
@@ -194,6 +229,7 @@ int jouer(void) // A finir
     erreur_chargement_image(soldat);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
+    int respiration = 0;
     int quitter = 0;
     int affiche_son = 0;
     int affiche_grille = 0;
@@ -207,8 +243,8 @@ int jouer(void) // A finir
     /////////////////////////////////////////////////////////
     int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
     int positionTmpY=-1;
-
-    while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
+    
+while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
     {
         //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         //int positionTmpY=-1;
@@ -219,7 +255,7 @@ int jouer(void) // A finir
         int  zoneDeplacement[20][16];
 
         blit(carte.fond_map,page,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
-        //affichage_grille(page);
+        affichage_grille(page);
 
 
         ////////////////////////////////////DEPLACEMENT/////////////////////////////
@@ -232,7 +268,15 @@ int jouer(void) // A finir
             SurbrillanceDeplacement(page,carte,zoneDeplacement);
             joueurActuel.classe.pm_actuel-=Deplacement(carte, zoneDeplacement, &joueurActuel, page, soldat);
         }
-        masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
+        if (respiration <= 800)
+            masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
+        else if (respiration<=1200)
+            masked_blit(soldat,page, 409+94, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
+        if (respiration == 1200)
+            respiration = 0;
+        respiration++;
+
+
         ////////////////////////////////////////////////////////////////////////////
         affichage_en_jeu(page);
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
@@ -279,6 +323,7 @@ int jouer(void) // A finir
                 rest(100);
             }
         }*/
+    
         montre_curseur(page);
         blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(page);
@@ -389,10 +434,7 @@ int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affich
     return quitter;
 }
 
-
-
-
-void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
+void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
 {
     /* Lance les credits
     Prend en parametre la bitmap d'affichage et le decor
@@ -422,7 +464,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
         TabStar[j].posY = 1000;
     }
 
-////////////////////////// BOUCLE EVENEMENT //////////////////////////
+    ////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
     while (!key[KEY_ESC])
     {
@@ -444,10 +486,13 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
         rectfill(page, 155, 105, 670, 520, makecol(20,20,20));
         rectfill(page, 160, 110, 665, 515, makecol(0,0,0));
 
-        //police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
-        police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
 
         Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond
+
+
+        police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
+
+
 
 
         montre_curseur(page);
@@ -471,11 +516,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 2399)
-        {
-            visuel_menu->position_x = 1;
-        }
-        visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
         rest(1);
 
 
@@ -485,16 +526,24 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
 }
 
 
-void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
+void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps)
 {
     /* Lance les credits
-    Prend en parametre la bitmap d'affichage et le decor
+    Prend en parametre la bitmap d'affichage, le decor, la musique et le volume
     Ne renvoie rien */
 
     /////////////////////////// VARIABLE //////////////////////////
 
     BITMAP* fond_parametre = create_bitmap(SCREEN_W,SCREEN_H);
     int  mode_graphique = 1;
+    int point[6] = {250, 500, 250+255, 500, 250+255, 350};
+    int dernier_point_vert_y = 500;
+    polygon(fond_parametre, 3, point, makecol(0, 255, 0));
+    while(getpixel(fond_parametre, *volume+250, dernier_point_vert_y) == makecol(0, 255, 0))
+        dernier_point_vert_y--;
+    dernier_point_vert_y+=5;
+    printf("Volume+250 : %d / dernier point y : %d", *volume+250, dernier_point_vert_y);
+    int point2[6] = {256, 500, *volume+250, 500, *volume+250, dernier_point_vert_y};
 
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
@@ -518,7 +567,12 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
         textout_ex(page, font, "Pleine ecran", 205, 225, makecol(0, 0, 0), -1);
         textout_ex(page, font, "Fenetre", 525, 225, makecol(0, 0, 0), -1);
 
+        line(page, 251, 501, 251+255, 501, makecol(0,0, 0));
+        line(page, 251+255, 351, 251+255, 501, makecol(0,0, 0));
+        line(page, 251, 501, 251+255, 351, makecol(0,0, 0));
 
+        polygon(page, 3, point2, makecol(0, 255, 0));
+        //while (lo)
 
         montre_curseur(page);
 
@@ -529,6 +583,9 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         rectfill(fond_parametre, 200, 200, 300, 300, makecol(255, 255, 0));
         rectfill(fond_parametre, 500, 200, 600, 300, makecol(255, 0, 255));
+
+        polygon(fond_parametre, 3, point, makecol(0, 255, 0));
+
 
         ////////////////////////// DETECTION BOUTON //////////////////////////
 
@@ -556,20 +613,34 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
         {
             if (mouse_b & 1)
             {
+
                 changement_graphique(1);
+            }
+
+        }
+
+        if (getpixel(fond_parametre, mouse_x, mouse_y) == makecol(0, 255, 0))
+        {
+            if (mouse_b & 1)
+            {
+                point2[2] = mouse_x;
+                point2[4] = mouse_x;
+                dernier_point_vert_y = mouse_y;
+                while(getpixel(fond_parametre, mouse_x, dernier_point_vert_y) == makecol(0, 255, 0))
+                    dernier_point_vert_y--;
+                point2[5] = dernier_point_vert_y+5;
+                adjust_sample(musique, mouse_x-250, 128, 1000, 1);
+                *volume = mouse_x-250;
             }
 
         }
 
 
 
+
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 2399)
-        {
-            visuel_menu->position_x = 1;
-        }
-        visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
         rest(1);
 
 
@@ -578,20 +649,16 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu)
 }
 
 
-void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
+void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)  //soldat, mesActeurs, &delay, &visuel_menu, tab_bitmap, &temps
 {
     /* Lance les credits
     Prend en parametre la bitmap d'affichage et le decor
     Ne renvoie rien */
 
-    /////////////////////////// VARIABLE //////////////////////////
+/////////////////////////// VARIABLE //////////////////////////
 
     BITMAP* fond_apercu_classe = create_bitmap(SCREEN_W,SCREEN_H);
-    BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
-    erreur_chargement_image(soldat);
-    int position_x_bitmap_soldat = 32;
-    int nouvelle_affichage = 0;
-    int direction_soldat = 0;
+
     BITMAP* map_desert = load_bitmap("map_desert.bmp", NULL);
     erreur_chargement_image(map_desert);
 
@@ -662,13 +729,14 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
     int sortie_boite_droid_x = 560;
     int sortie_boite_droid_y = 450;
 
+////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
     while (!key[KEY_ESC])
     {
         clear_bitmap(page);
         blit(visuel_menu->visuel, page, visuel_menu->position_x, 0, 0, 0, 800, 600);
 
-        ////////////////////////// DESSIN MENU //////////////////////////
+////////////////////////// DESSIN MENU //////////////////////////
 
         rect(page, 80, 50, 150, 80, makecol(255, 0, 0));
 
@@ -676,36 +744,39 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         line(page, 80, 100, 40, 65, makecol(255, 0, 0));
         line(page, 80, 100, 80, 30, makecol(255, 0, 0));
 
-        rectfill(page, 110 - 3, 100 - 3, 210 + 3, 200 + 3, makecol(40, 40, 40));
-        rectfill(page, 110, 100, 210, 200, makecol(20, 20, 20));
-        rectfill(page, 110 + 3, 100 + 3, 210 - 3, 200 - 3, makecol(0, 0, 0));
+
 
         rectfill(page, 110 - 3, 350 - 3, 210 + 3, 450 + 3, makecol(40, 40, 40));
         rectfill(page, 110, 350, 210, 450, makecol(20, 20, 20));
         rectfill(page, 110 + 3, 350 + 3, 210 - 3, 450 - 3, makecol(0, 0, 0));
 
-        rectfill(page, 510 - 3, 100 - 3, 610 + 3, 200 + 3, makecol(40, 40, 40));
-        rectfill(page, 510, 100, 610, 200, makecol(20, 20, 20));
-        rectfill(page, 510 + 3, 100 + 3, 610 - 3, 200 - 3, makecol(0, 0, 0));
 
-        rectfill(page, 510 - 3, 350 - 3, 610 + 3, 450 + 3, makecol(40, 40, 40));
-        rectfill(page, 510, 350, 610, 450, makecol(20, 20, 20));
-        rectfill(page, 510 + 3, 350 + 3, 610 - 3, 450 - 3, makecol(0, 0, 0));
+
+
 
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
-        
-        masked_blit(map_neige, page, 400, 400, 111, 351, 98, 98);
+
 
 
 
         // Afficher les classes
 
-        montre_curseur(page);
 
-        ////////////////////////// DESSIN BOUTON //////////////////////////
+
+
+        masked_blit(map_neige, page, 400, 400, 111, 351, 98, 98);
+
+
+
+////////////////////////// DESSIN BOUTON //////////////////////////
 
         clear_to_color(fond_apercu_classe, makecol(0, 0, 0));
         rectfill(fond_apercu_classe, 40, 30, 150, 100, makecol(255, 0, 0));
+
+        rectfill(fond_apercu_classe, 110, 100, 210, 200, makecol(0, 255, 0));
+        rectfill(fond_apercu_classe, 110, 350, 210, 450, makecol(0, 0, 255));
+        rectfill(fond_apercu_classe, 460, 100, 560, 200, makecol(255, 255, 0));
+        rectfill(fond_apercu_classe, 460, 350, 560, 450, makecol(0, 255, 255));
 
 ////////////////////////// DETECTION BOUTON //////////////////////////
 
@@ -846,11 +917,7 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
-        if (visuel_menu->position_x >= 2399)
-        {
-            visuel_menu->position_x = 1;
-        }
-        visuel_menu->position_x = (visuel_menu->position_x + visuel_menu->avancement_x);
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
         rest(1);
 
 
@@ -865,9 +932,6 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
 }
-
-
-
 
 
 

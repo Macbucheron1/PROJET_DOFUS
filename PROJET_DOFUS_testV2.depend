@@ -20,45 +20,25 @@
 1651944412 source:c:\users\natha\desktop\projet_dofus-test-v2\sous_prog.c
 	"HEADER.h"
 
-1652104865 source:c:\users\natha\desktop\projet_dofus-main\fonction_affichage.c
+1652423678 source:c:\users\natha\desktop\projet_dofus-main\fonction_affichage.c
 	"HEADER.h"
 
-1652104597 c:\users\natha\desktop\projet_dofus-main\header.h
+1652425966 c:\users\natha\desktop\projet_dofus-main\header.h
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	<stdbool.h>
+	<time.h>
 
-1652004230 source:c:\users\natha\desktop\projet_dofus-main\initialisation.c
+1652393445 source:c:\users\natha\desktop\projet_dofus-main\initialisation.c
 	"HEADER.h"
 
-1652004230 source:c:\users\natha\desktop\projet_dofus-main\main.c
+1652374194 source:c:\users\natha\desktop\projet_dofus-main\main.c
 	"HEADER.h"
 
-1652104908 source:c:\users\natha\desktop\projet_dofus-main\principale.c
+1652425954 source:c:\users\natha\desktop\projet_dofus-main\principale.c
 	"HEADER.h"
 
-1652104602 source:c:\users\natha\desktop\projet_dofus-main\sous_prog.c
-	"HEADER.h"
-
-1652385036 source:c:\users\maxime\desktop\projet_dofus-main\fonction_affichage.c
-	"HEADER.h"
-
-1652355935 c:\users\maxime\desktop\projet_dofus-main\header.h
-	<stdio.h>
-	<stdlib.h>
-	<allegro.h>
-	<stdbool.h>
-
-1652004230 source:c:\users\maxime\desktop\projet_dofus-main\initialisation.c
-	"HEADER.h"
-
-1652004230 source:c:\users\maxime\desktop\projet_dofus-main\main.c
-	"HEADER.h"
-
-1652355935 source:c:\users\maxime\desktop\projet_dofus-main\principale.c
-	"HEADER.h"
-
-1652104602 source:c:\users\maxime\desktop\projet_dofus-main\sous_prog.c
+1652275901 source:c:\users\natha\desktop\projet_dofus-main\sous_prog.c
 	"HEADER.h"
 
