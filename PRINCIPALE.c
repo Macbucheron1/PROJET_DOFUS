@@ -37,7 +37,7 @@ void menu_principal(void) // A finir
         rectfill(page, 10, 10, 33, 30, makecol(190,190,190));
         rectfill(page, 12, 12, 31, 28, makecol(175,175,175));
         rectfill(page, 14, 14, 29, 26, makecol(160,160,160));
-        textprintf_ex(page, font, 15, 15, makecol(0,0,0), -1, "II");
+        textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
 
         ///////////////////////////// Dessin Bouton du menu /////////////////////////////////////
 
