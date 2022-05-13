@@ -114,6 +114,10 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_parametre) // PARAMETRE
         {
+            rectfill(page, 250, 350, 560, 410, makecol(210,210,210));
+            rectfill(page, 253, 353, 557, 407, makecol(195,195,175));
+            rectfill(page, 256, 356, 554, 404, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Parametre");
             if (mouse_b & 1)
             {
                 parametre_en_cours(page, &visuel_menu);
