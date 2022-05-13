@@ -278,6 +278,52 @@ while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
 
 
         ////////////////////////////////////////////////////////////////////////////
+    
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+        {
+
+            if (mouse_b & 1)
+            {
+                quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
+            }
+        }
+        /*
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 1
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 2
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 3
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 4
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 5
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }*/
+    
         montre_curseur(page);
         blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(page);
