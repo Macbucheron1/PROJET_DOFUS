@@ -147,9 +147,9 @@ void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin,
 
 void menu_principal(void); // Lance le menu principale
 int jouer(void); // Permet de jouer
-void credit_en_cours(BITMAP* page, t_decor* visuel_menu); //Lance les credits
-void parametre_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance les parametres
-void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance l'apercu des classes
+void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[]) ; //Lance les credits
+void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps); // Lance les parametres
+void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[],unsigned int* temps); // Lance l'apercu des classes
 
 
 
