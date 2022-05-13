@@ -186,7 +186,9 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
 
 int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8)
 {
-
+    /* Permet d'afficher les credits
+    Prend en parametre la police, la vitesse, la hauteur du depart de texte, la bitmap d'affichage et les differentes polices
+    Renvoie la nouvelle valeur de la police*/
         if (police <= 1*vitesse)
         {
             textout_ex(page, arial_28, "DOFUS STAR WARS", 250-20, depart_texte-police, makecol(255, 255, 0), -1);
