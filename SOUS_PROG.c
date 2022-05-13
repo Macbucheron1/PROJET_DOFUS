@@ -437,8 +437,8 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     return 1;
 }
 
-int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
-{
+
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
     /* Calcul la position des etoiles
     Prend en parametre le tableau d'etoile, le delay d'affichages etoiles, i, la bitmap d'affichage
     Renvoie la nouvelle valeur de delay*/

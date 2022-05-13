@@ -20,18 +20,19 @@ void menu_principal(void) // A finir
     int couleur_apercu_classe = makecol(0,255,0);
     int couleur_parametre = makecol(0,0,255);
     int couleur_credit = makecol(255,255,0);
+    int quitter = 0;
 
 
      ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
 
-    while (!key[KEY_ESC])
+    while ((quitter!=1) && (!key[KEY_ESC]))
     {
         clear_bitmap(page);
         blit(visuel_menu.visuel, page, visuel_menu.position_x, 0, 0, 0, 800, 600);
         clear_to_color(fond_menu, makecol(0, 0, 0));
 
         ///////////////////////////// Dessin Bouton pour quitter /////////////////////////////////////
-
+        
         rectfill(fond_menu, 10, 10, 30, 32, couleur_quitter);
         rectfill(page, 10, 10, 33, 34, makecol(190,190,190));
         rectfill(page, 12, 12, 31, 32, makecol(175,175,175));
@@ -72,7 +73,6 @@ void menu_principal(void) // A finir
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
 
-
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
@@ -83,7 +83,7 @@ void menu_principal(void) // A finir
             textprintf_ex(page, arial_16, 17, 12, makecol(0,0,0), -1, "X");
             if (mouse_b & 1)
             {
-                return; // Trouver un moyen de quitter autre
+                quitter = 1; // Trouver un moyen de quitter autre
             }
         }
 
@@ -96,7 +96,7 @@ void menu_principal(void) // A finir
             if (mouse_b & 1)
             {
                 rest(100);
-                jouer();
+                quitter = jouer();
             }
         }
 
@@ -136,8 +136,6 @@ void menu_principal(void) // A finir
             }
         }
 
-        montre_curseur(page);
-
         /////////////////////////////  /////////////////////////////////////
 
 
@@ -147,7 +145,7 @@ void menu_principal(void) // A finir
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
 
-
+        montre_curseur(page);
         if (visuel_menu.position_x >= 2399)
         {
             visuel_menu.position_x = 1;
@@ -160,12 +158,31 @@ void menu_principal(void) // A finir
     }
 }
 
-void jouer(void) // A finir
+int jouer(void) // A finir
 {
     // VARIABLE
     t_map carte;
     BITMAP* page;
     BITMAP* soldat;
+
+
+    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
+
+    int couleur_menu = makecol(0,255,255);
+    int couleur_attaque_1 = makecol(255,0,0);
+    int couleur_attaque_2 = makecol(0,255,0);
+    int couleur_attaque_3 = makecol(0,0,255);
+    int couleur_attaque_4 = makecol(255,255,0);
+    int couleur_attaque_5 = makecol(255,255,255);
+
+    clear_to_color(fond_menu, makecol(0, 0, 0));
+
+    rectfill(fond_menu, 750,10,790,50,couleur_menu);
+    rectfill(fond_menu,110,555,210,585,couleur_attaque_1);
+    rectfill(fond_menu,238,555,338,585,couleur_attaque_2);
+    rectfill(fond_menu,366,555,466,585,couleur_attaque_3);
+    rectfill(fond_menu,494,555,594,585,couleur_attaque_4);
+    rectfill(fond_menu,622,555,722,585,couleur_attaque_5);
 
 
     // INITIALISATION VARIABLE
@@ -177,6 +194,9 @@ void jouer(void) // A finir
     erreur_chargement_image(soldat);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
+    int quitter = 0;
+    int affiche_son = 0;
+    int affiche_grille = 0;
 
     // CODE PRINCIPAL
     //////////////Pour tester le deplacement////////////////
@@ -188,7 +208,7 @@ void jouer(void) // A finir
     int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
     int positionTmpY=-1;
 
-    while (!key[KEY_ESC])
+    while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
     {
         //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         //int positionTmpY=-1;
@@ -199,7 +219,7 @@ void jouer(void) // A finir
         int  zoneDeplacement[20][16];
 
         blit(carte.fond_map,page,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
-        affichage_grille(page);
+        //affichage_grille(page);
 
 
         ////////////////////////////////////DEPLACEMENT/////////////////////////////
@@ -214,12 +234,162 @@ void jouer(void) // A finir
         }
         masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_x, carte.tab_coordonnes[joueurActuel.position_colonne][joueurActuel.position_ligne].position_pixel_y-30, 32,64);
         ////////////////////////////////////////////////////////////////////////////
+        affichage_en_jeu(page);
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+        {
+
+            if (mouse_b & 1)
+            {
+                quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
+            }
+        }
+        /*
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 1
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 2
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 3
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 4
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // attaque 5
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+            }
+        }*/
         montre_curseur(page);
         blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(page);
     }
-
+    return quitter;
 }
+
+int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille)
+{
+    rest(100);
+    int couleur_menu = makecol(0,255,255);
+    int couleur_retour_menu = makecol(196,196,196);
+    int couleur_quitter = makecol(175,175,175);
+    int couleur_son = makecol(100,100,100);
+    int couleur_affichage = makecol(50,50,50);
+    int i;
+    int quitter = 0;
+    FONT* arial_26 = load_font("arial_26.pcx", NULL, NULL);
+
+    rectfill(fond_menu,303,173,512,237, couleur_retour_menu);
+    rectfill(fond_menu, 303, 398, 512, 462, couleur_quitter);
+    rectfill(fond_menu, 462, 255, 512, 305, couleur_son);
+    rectfill(fond_menu, 462, 330, 512, 380, couleur_affichage);
+
+    rectfill(buffer, 250, 50, 550, 500, makecol(200,200,200));
+    rectfill(buffer, 754,14,786,46, makecol(160,160,160));
+    line(buffer,754,14,786,46, makecol(96,96,96));
+    line(buffer,786,14,754,46, makecol(96,96,96));
+
+    textprintf_ex(buffer, arial_26, 360, 100, makecol(0,0,0), -1, "Menu");
+    for(i = 0;i<3;i++)
+    {
+        rectfill(buffer, 303+4*i, 173+4*i, 512-4*i, 237-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 303+4*i, 398+4*i, 512-4*i, 462-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 462+4*i, 255+4*i, 512-4*i, 305-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 462+4*i, 330+4*i, 512-4*i, 380-4*i, makecol(190-15*i,190-15*i,190-15*i));
+    }
+    textprintf_ex(buffer, font, 313, 200, makecol(0,0,0), -1, "Retour au menu principal");
+    textprintf_ex(buffer, font, 313, 275, makecol(0,0,0), -1, "Activer le son");
+    textprintf_ex(buffer, font, 313, 350, makecol(0,0,0), -1, "Affichage grille");
+    textprintf_ex(buffer, font, 350, 425, makecol(0,0,0), -1, "Quitter le jeu");
+
+    BITMAP* fond_de_jeu = create_bitmap(800, 600);
+
+    blit(buffer, fond_de_jeu, 0, 0, 0, 0, 800, 600);
+    while((quitter == 0)&&(!key[KEY_ESC]))
+    {
+        blit(fond_de_jeu, buffer, 0, 0, 0, 0, 800, 600);
+        if (*affiche_son == 1)
+        {
+            line(buffer,470,263,504,297, makecol(96,96,96));
+            line(buffer,504,263,470,297, makecol(96,96,96));
+        }
+        if (*affiche_grille == 1)
+        {
+            line(buffer,470,338,504,372, makecol(96,96,96));
+            line(buffer,504,338,470,372, makecol(96,96,96));
+        }
+        montre_curseur(buffer);
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                return 3;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_retour_menu) // retour menu
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                return 2;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_son) // son
+        {
+            if (mouse_b & 1)
+            {
+                if (*affiche_son == 0)
+                    *affiche_son = 1;
+                else
+                    *affiche_son = 0;
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_affichage) // affichage grille
+        {
+            if (mouse_b & 1)
+            {
+                if (*affiche_grille == 0)
+                    *affiche_grille = 1;
+                else
+                    *affiche_grille = 0;
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // quitter
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                quitter = 1;
+            }
+        }
+        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+    }
+    return quitter;
+}
+
+
 
 
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
@@ -252,7 +422,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
         TabStar[j].posY = 1000;
     }
 
-    ////////////////////////// BOUCLE EVENEMENT //////////////////////////
+////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
     while (!key[KEY_ESC])
     {
@@ -274,13 +444,10 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu)
         rectfill(page, 155, 105, 670, 520, makecol(20,20,20));
         rectfill(page, 160, 110, 665, 515, makecol(0,0,0));
 
-
-        Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond
-
-
+        //police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
         police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
 
-
+        Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond
 
 
         montre_curseur(page);
@@ -417,12 +584,14 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
     Prend en parametre la bitmap d'affichage et le decor
     Ne renvoie rien */
 
-/////////////////////////// VARIABLE //////////////////////////
+    /////////////////////////// VARIABLE //////////////////////////
 
     BITMAP* fond_apercu_classe = create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
     erreur_chargement_image(soldat);
-
+    int position_x_bitmap_soldat = 32;
+    int nouvelle_affichage = 0;
+    int direction_soldat = 0;
     BITMAP* map_desert = load_bitmap("map_desert.bmp", NULL);
     erreur_chargement_image(map_desert);
 
@@ -493,14 +662,13 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
     int sortie_boite_droid_x = 560;
     int sortie_boite_droid_y = 450;
 
-////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
     while (!key[KEY_ESC])
     {
         clear_bitmap(page);
         blit(visuel_menu->visuel, page, visuel_menu->position_x, 0, 0, 0, 800, 600);
 
-////////////////////////// DESSIN MENU //////////////////////////
+        ////////////////////////// DESSIN MENU //////////////////////////
 
         rect(page, 80, 50, 150, 80, makecol(255, 0, 0));
 
@@ -508,39 +676,36 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         line(page, 80, 100, 40, 65, makecol(255, 0, 0));
         line(page, 80, 100, 80, 30, makecol(255, 0, 0));
 
-
+        rectfill(page, 110 - 3, 100 - 3, 210 + 3, 200 + 3, makecol(40, 40, 40));
+        rectfill(page, 110, 100, 210, 200, makecol(20, 20, 20));
+        rectfill(page, 110 + 3, 100 + 3, 210 - 3, 200 - 3, makecol(0, 0, 0));
 
         rectfill(page, 110 - 3, 350 - 3, 210 + 3, 450 + 3, makecol(40, 40, 40));
         rectfill(page, 110, 350, 210, 450, makecol(20, 20, 20));
         rectfill(page, 110 + 3, 350 + 3, 210 - 3, 450 - 3, makecol(0, 0, 0));
 
+        rectfill(page, 510 - 3, 100 - 3, 610 + 3, 200 + 3, makecol(40, 40, 40));
+        rectfill(page, 510, 100, 610, 200, makecol(20, 20, 20));
+        rectfill(page, 510 + 3, 100 + 3, 610 - 3, 200 - 3, makecol(0, 0, 0));
 
-
-
+        rectfill(page, 510 - 3, 350 - 3, 610 + 3, 450 + 3, makecol(40, 40, 40));
+        rectfill(page, 510, 350, 610, 450, makecol(20, 20, 20));
+        rectfill(page, 510 + 3, 350 + 3, 610 - 3, 450 - 3, makecol(0, 0, 0));
 
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
-
+        
+        masked_blit(map_neige, page, 400, 400, 111, 351, 98, 98);
 
 
 
         // Afficher les classes
 
+        montre_curseur(page);
 
-
-
-        masked_blit(map_neige, page, 400, 400, 111, 351, 98, 98);
-
-
-
-////////////////////////// DESSIN BOUTON //////////////////////////
+        ////////////////////////// DESSIN BOUTON //////////////////////////
 
         clear_to_color(fond_apercu_classe, makecol(0, 0, 0));
         rectfill(fond_apercu_classe, 40, 30, 150, 100, makecol(255, 0, 0));
-
-        rectfill(fond_apercu_classe, 110, 100, 210, 200, makecol(0, 255, 0));
-        rectfill(fond_apercu_classe, 110, 350, 210, 450, makecol(0, 0, 255));
-        rectfill(fond_apercu_classe, 460, 100, 560, 200, makecol(255, 255, 0));
-        rectfill(fond_apercu_classe, 460, 350, 560, 450, makecol(0, 255, 255));
 
 ////////////////////////// DETECTION BOUTON //////////////////////////
 
@@ -700,6 +865,9 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu)
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
 }
+
+
+
 
 
 
