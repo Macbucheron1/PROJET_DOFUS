@@ -89,6 +89,10 @@ void menu_principal(void) // A finir
 
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_jouer) // JOUER
         {
+            rectfill(page, 250, 150, 560, 210, makecol(210,210,210));
+            rectfill(page, 253, 153, 557, 207, makecol(195,195,195));
+            rectfill(page, 256, 156, 554, 204, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 170, makecol(20,20, 20), -1, "Jouer");
             if (mouse_b & 1)
             {
                 rest(100);
