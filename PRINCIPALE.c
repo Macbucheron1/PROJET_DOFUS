@@ -193,12 +193,31 @@ void menu_principal(void) // A finir
     destroy_sample(musique);
 }
 
-void jouer(void) // A finir
+int jouer(void) // A finir
 {
     // VARIABLE
     t_map carte;
     BITMAP* page;
     BITMAP* soldat;
+
+
+    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
+
+    int couleur_menu = makecol(0,255,255);
+    int couleur_attaque_1 = makecol(255,0,0);
+    int couleur_attaque_2 = makecol(0,255,0);
+    int couleur_attaque_3 = makecol(0,0,255);
+    int couleur_attaque_4 = makecol(255,255,0);
+    int couleur_attaque_5 = makecol(255,255,255);
+
+    clear_to_color(fond_menu, makecol(0, 0, 0));
+
+    rectfill(fond_menu, 750,10,790,50,couleur_menu);
+    rectfill(fond_menu,110,555,210,585,couleur_attaque_1);
+    rectfill(fond_menu,238,555,338,585,couleur_attaque_2);
+    rectfill(fond_menu,366,555,466,585,couleur_attaque_3);
+    rectfill(fond_menu,494,555,594,585,couleur_attaque_4);
+    rectfill(fond_menu,622,555,722,585,couleur_attaque_5);
 
 
     // INITIALISATION VARIABLE
