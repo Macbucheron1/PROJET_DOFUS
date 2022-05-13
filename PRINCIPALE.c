@@ -13,6 +13,7 @@ void menu_principal(void) // A finir
     t_decor visuel_menu;
     init_decor(&visuel_menu);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
+    FONT* arial_16 = load_font("arial_14.pcx", NULL, NULL);
 
     int couleur_quitter = makecol(0,255,255);
     int couleur_jouer = makecol(255,0,0);
