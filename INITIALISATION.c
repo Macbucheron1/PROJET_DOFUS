@@ -82,6 +82,7 @@ void init_decor(t_decor* decor)
     decor->avancement_x = 1;
     decor->avancement_y = 1;
     decor->position_x = 0;
+    decor->position_y = 0;
 }
 
 void init_map(t_map* carte)
