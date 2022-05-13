@@ -79,6 +79,23 @@ typedef struct star {
     int posY;
 } t_star;
 
+typedef struct Base{
+    coords base_gauche;
+    coords base_droite;
+    coords base_haut;
+    coords base_bas;
+} t_base;
+
+typedef struct Acteur{
+    int respiration;
+    coords position;
+    coords deplacement;
+    coords position_bitmap;
+    coords deplacement_bitmap;
+    t_base debut_bitmap;
+    t_base fin_bitmap;
+    BITMAP* skin;
+} t_acteur;
 
 /* ----------- FONCTION AFFICHAGE ----------- */
 
