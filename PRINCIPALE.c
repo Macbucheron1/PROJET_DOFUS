@@ -331,6 +331,108 @@ while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
     return quitter;
 }
 
+int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille)
+{
+    rest(100);
+    int couleur_menu = makecol(0,255,255);
+    int couleur_retour_menu = makecol(196,196,196);
+    int couleur_quitter = makecol(175,175,175);
+    int couleur_son = makecol(100,100,100);
+    int couleur_affichage = makecol(50,50,50);
+    int i;
+    int quitter = 0;
+    FONT* arial_26 = load_font("arial_26.pcx", NULL, NULL);
+
+    rectfill(fond_menu,303,173,512,237, couleur_retour_menu);
+    rectfill(fond_menu, 303, 398, 512, 462, couleur_quitter);
+    rectfill(fond_menu, 462, 255, 512, 305, couleur_son);
+    rectfill(fond_menu, 462, 330, 512, 380, couleur_affichage);
+
+    rectfill(buffer, 250, 50, 550, 500, makecol(200,200,200));
+    rectfill(buffer, 754,14,786,46, makecol(160,160,160));
+    line(buffer,754,14,786,46, makecol(96,96,96));
+    line(buffer,786,14,754,46, makecol(96,96,96));
+
+    textprintf_ex(buffer, arial_26, 360, 100, makecol(0,0,0), -1, "Menu");
+    for(i = 0;i<3;i++)
+    {
+        rectfill(buffer, 303+4*i, 173+4*i, 512-4*i, 237-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 303+4*i, 398+4*i, 512-4*i, 462-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 462+4*i, 255+4*i, 512-4*i, 305-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 462+4*i, 330+4*i, 512-4*i, 380-4*i, makecol(190-15*i,190-15*i,190-15*i));
+    }
+    textprintf_ex(buffer, font, 313, 200, makecol(0,0,0), -1, "Retour au menu principal");
+    textprintf_ex(buffer, font, 313, 275, makecol(0,0,0), -1, "Activer le son");
+    textprintf_ex(buffer, font, 313, 350, makecol(0,0,0), -1, "Affichage grille");
+    textprintf_ex(buffer, font, 350, 425, makecol(0,0,0), -1, "Quitter le jeu");
+
+    BITMAP* fond_de_jeu = create_bitmap(800, 600);
+
+    blit(buffer, fond_de_jeu, 0, 0, 0, 0, 800, 600);
+    while((quitter == 0)&&(!key[KEY_ESC]))
+    {
+        blit(fond_de_jeu, buffer, 0, 0, 0, 0, 800, 600);
+        if (*affiche_son == 1)
+        {
+            line(buffer,470,263,504,297, makecol(96,96,96));
+            line(buffer,504,263,470,297, makecol(96,96,96));
+        }
+        if (*affiche_grille == 1)
+        {
+            line(buffer,470,338,504,372, makecol(96,96,96));
+            line(buffer,504,338,470,372, makecol(96,96,96));
+        }
+        montre_curseur(buffer);
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                return 3;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_retour_menu) // retour menu
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                return 2;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_son) // son
+        {
+            if (mouse_b & 1)
+            {
+                if (*affiche_son == 0)
+                    *affiche_son = 1;
+                else
+                    *affiche_son = 0;
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_affichage) // affichage grille
+        {
+            if (mouse_b & 1)
+            {
+                if (*affiche_grille == 0)
+                    *affiche_grille = 1;
+                else
+                    *affiche_grille = 0;
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // quitter
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                quitter = 1;
+            }
+        }
+        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+    }
+    return quitter;
+}
 
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
 {
