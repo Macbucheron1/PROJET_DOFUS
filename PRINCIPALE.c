@@ -243,8 +243,8 @@ int jouer(void) // A finir
     /////////////////////////////////////////////////////////
     int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
     int positionTmpY=-1;
-
-    while (!key[KEY_ESC])
+    
+while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
     {
         //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         //int positionTmpY=-1;
