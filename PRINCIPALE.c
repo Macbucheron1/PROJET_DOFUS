@@ -138,7 +138,7 @@ void menu_principal(void) // A finir
             if (mouse_b & 1)
             {
                 rest(100);
-                jouer();
+                quitter = jouer();
             }
         }
 
