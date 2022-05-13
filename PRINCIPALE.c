@@ -28,8 +28,8 @@ void menu_principal(void) // A finir
     blit(tab_bitmap[2], visuel_menu.visuel, 0, 0, 2400, 0, 800, 600);
     blit(tab_bitmap[0], visuel_menu.visuel, 0, 0, 1600, 0, 800, 600);
     blit(tab_bitmap[1], visuel_menu.visuel, 0, 0, 800, 0, 800, 600);
-    blit(tab_bitmap[2], visuel_menu.visuel, 0, 0, 0, 0, 800, 600);
-    visuel_menu.avancement_x = 0;
+    blit(tab_bitmap[2], visuel_menu.visuel, 0, 0, 0, 0, 800, 600);X
+    visuel_menu.avancement_x = 1;
     visuel_menu.avancement_y = 1;
     visuel_menu.position_x = 0;
     visuel_menu.position_y = 0;
@@ -53,7 +53,10 @@ void menu_principal(void) // A finir
     int couleur_apercu_classe = makecol(0,255,0);
     int couleur_parametre = makecol(0,0,255);
     int couleur_credit = makecol(255,255,0);
-
+    int delay=0;
+    int volume=200;
+    unsigned int temps=0;
+    play_sample(musique,volume,128,1000,1);
 
      ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
@@ -107,7 +110,7 @@ void menu_principal(void) // A finir
         rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
-        
+
 
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
 
@@ -175,7 +178,7 @@ void menu_principal(void) // A finir
                 credit_en_cours(page, &visuel_menu, soldat, mesActeurs, &delay, &temps, tab_bitmap);
             }
         }
-        montre_curseur(page);
+        montre_curseur(page,curseur);
 
         /////////////////////////////  /////////////////////////////////////
 
@@ -198,7 +201,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     t_map carte;
     BITMAP* page;
     BITMAP* soldat;
-    
+
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
 
     int couleur_menu = makecol(0,255,255);
@@ -284,7 +287,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
                 joueurActuel->classe.pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs);
             }
             ////////////////////////////////////////////////////////////////////////////
-            
+
             AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
             //respiration a faire
             affichage_en_jeu(page);
@@ -296,8 +299,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
                     quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
                 }
         }
-            
-            
+
+
             montre_curseur(page,curseur);
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear_bitmap(page);
@@ -325,6 +328,7 @@ int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affich
     int i;
     int quitter = 0;
     FONT* arial_26 = load_font("arial_26.pcx", NULL, NULL);
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
 
     rectfill(fond_menu,303,173,512,237, couleur_retour_menu);
     rectfill(fond_menu, 303, 398, 512, 462, couleur_quitter);
@@ -365,7 +369,7 @@ int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affich
             line(buffer,470,338,504,372, makecol(96,96,96));
             line(buffer,504,338,470,372, makecol(96,96,96));
         }
-        montre_curseur(buffer);
+        montre_curseur(buffer,curseur);
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
         {
             if (mouse_b & 1)
@@ -424,7 +428,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
     Ne renvoie rien */
 
     /////////////////////////// VARIABLE //////////////////////////
-
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     BITMAP* fond_credit = create_bitmap(SCREEN_W,SCREEN_H);
     FONT* arial_8 = load_font("arial_8.pcx", NULL, NULL);
     FONT* arial_10 = load_font("arial_10.pcx", NULL, NULL);
@@ -510,7 +514,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
     Ne renvoie rien */
 
     /////////////////////////// VARIABLE //////////////////////////
-
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     BITMAP* fond_parametre = create_bitmap(SCREEN_W,SCREEN_H);
     int  mode_graphique = 1;
     int point[6] = {250, 500, 250+255, 500, 250+255, 350};
@@ -522,7 +526,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
     printf("Volume+250 : %d / dernier point y : %d", *volume+250, dernier_point_vert_y);
     int point2[6] = {256, 500, *volume+250, 500, *volume+250, dernier_point_vert_y};
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
-   
+
     while (!key[KEY_ESC])
     {
         clear_bitmap(page);
@@ -670,7 +674,7 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
     textout_ex(text_droide, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
     textout_ex(text_droide, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
     textout_ex(text_droide, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
-
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     //BITMAP* map_
     int position_x_bitmap_jedi = 32;
     int nouvelle_affichage_jedi = 0;
@@ -894,7 +898,7 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
         affichage_classe3(&position_x_bitmap_vador, &nouvelle_affichage_vador, &direction_vador, soldat, page, 490, 150, map_neige);
         affichage_classe2(&position_x_bitmap_clone, &nouvelle_affichage_clone, &direction_clone, soldat, page, 140, 405, map_ville);
 
-        montre_curseur(page);
+        montre_curseur(page,curseur);
 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }

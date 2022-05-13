@@ -146,7 +146,7 @@ int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int ch
 void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
 int caseDisponible(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs);  // permet de determiner si une case est disponible (sans obstacle ou joueur) ou pas
 int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen);
-void nouvellePartie(BITMAP* buffer);
+int nouvellePartie(BITMAP* buffer);
 int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]); // stockage de la totalité de la saisie
 int nombreJoueurs(BITMAP* buffer);
 /* ----------- INITIALISATION ----------- */

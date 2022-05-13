@@ -468,20 +468,34 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
     return 1;
 }
 
-int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
-{
-    /* Calcul la position des etoiles
-    Prend en parametre le tableau d'etoile, le delay d'affichages etoiles, i, la bitmap d'affichage
-    Renvoie la nouvelle valeur de delay*/
+int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) {
     int color5 = makecol(100,100,100);  //gris foncé
         if (Stardelay == 10) {
 
             i = 0;
-	@@ -473,14 +490,391 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
+            while (TabStar[i].posY != 1000) {
+                i++;
+            }
+            TabStar[i].posX = 160 + rand()%500;
+            TabStar[i].posY = 110;
+            Stardelay--;
+        }
+        if (Stardelay != 10) {
+            if (Stardelay < 6) {
+                Stardelay = 10;
+            }
+            else {
+                Stardelay--;
+            }
+        }
+        for (int j=0 ; j<LIMIT_STAR ; j++) {
+
+            if (TabStar[j].posY != 1000) {
+                if (TabStar[j].posY > 490) {
                     TabStar[j].posY = 1000;
                 }
                 else {
-                    TabStar[j].posY = TabStar[j].posY+10;   //vitesse
+                    TabStar[j].posY = TabStar[j].posY+20;   //vitesse
                     ellipsefill(backscreen,TabStar[j].posX+5,TabStar[j].posY,2,10,color5);
                 }
             }
@@ -489,7 +503,7 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
     return Stardelay;
 }
 
-void nouvellePartie(BITMAP* buffer)
+int nouvellePartie(BITMAP* buffer)
 {
 
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
