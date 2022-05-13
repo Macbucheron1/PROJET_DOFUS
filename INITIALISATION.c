@@ -1,14 +1,14 @@
 #include "HEADER.h"
 
 /* ------------------------------------- INITIALISATION -------------------------------------
-    Les fontions présente dans ce fichier sont des fonctions d'initialisation
+    Les fontions prÃ©sente dans ce fichier sont des fonctions d'initialisation
 */
 
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total) // a decrire
 {
     /* Permet d'initaliser les classes
     Prend en parametre le nom de classe, le numero de classe, les points d'action max, les points vie max, les points mvt max, le nb skin total
-    Renvoie la structure créée*/
+    Renvoie la structure crÃ©Ã©e*/
 
     t_personnage c;
 
@@ -24,7 +24,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
     c.pv_max=p_vie_max;
     c.pv_actuel=c.pv_max;
 
-    //reste des variables (ne seront utilisé que pour certaines classes)
+    //reste des variables (ne seront utilisÃ© que pour certaines classes)
 
     c.max_meditation=3; //ne sert que au mages (jedi/sith)
     strcpy(c.nom_classe,nom_classe);
@@ -36,7 +36,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
 
     c.en_feu=false; //pour tous
     c.tour_en_feu=0;
-    c.tour_en_feu_max=4; //nb de tours brulé au maximum
+    c.tour_en_feu_max=4; //nb de tours brulÃ© au maximum
 
     //pour les chasseurs de prime
     c.nb_bacta=0;
@@ -58,7 +58,7 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
         }
     }
 
-    //on return la structure crée
+    //on return la structure crÃ©e
     return c;
 }
 
@@ -68,21 +68,20 @@ void init_decor(t_decor* decor)
     Prend en parametre le decor
     ne renvoie rien*/
 
-    BITMAP* tmp1 = load_bitmap("grandfond_decor.bmp", NULL);
-    erreur_chargement_image(tmp1);
     BITMAP* tmp2 = load_bitmap("map_desert.bmp", NULL);
     erreur_chargement_image(tmp2);
     BITMAP* tmp3 = load_bitmap("map_neige.bmp", NULL);
     erreur_chargement_image(tmp3);
+    BITMAP* tmp4 = load_bitmap("map_ville.bmp", NULL);
+    erreur_chargement_image(tmp4);
     decor->visuel =  create_bitmap(3200, SCREEN_H);
-    blit(tmp1, decor->visuel, 0, 0, 0, 0, 1600, 600);
-    blit(tmp1, decor->visuel, 0, 0, 1600, 0, 1600, 600);
+    blit(tmp4, decor->visuel, 0, 0, 2400, 0, 800, 600);
     blit(tmp2, decor->visuel, 0, 0, 1600, 0, 800, 600);
     blit(tmp3, decor->visuel, 0, 0, 800, 0, 800, 600);
+    blit(tmp4, decor->visuel, 0, 0, 0, 0, 800, 600);
     decor->avancement_x = 1;
     decor->avancement_y = 1;
     decor->position_x = 0;
-    decor->position_y = 0;
 }
 
 void init_map(t_map* carte)
