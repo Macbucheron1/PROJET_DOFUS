@@ -122,9 +122,6 @@ void erreur_chargement_image(BITMAP* image)
     TOUJOURS LE FAIRE CAR ON N'EST JAMAIS CERTAIN DE BIEN TROUVER L'IMAGE
     Prend en parametre l'image a testé
     Ne renvoie rien */
-    /*int W=image->w;
-    int H=image->h;
-    printf("%d/%d\n", W,H);*/
     if (!image)
     {
         allegro_message("pas pu trouver/charger mon_image.bmp");
@@ -686,7 +683,7 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
   derniereSaisie[1]=0;
   clear_keybuf();
   rectfill(buffer,x-10+2,y-10+2,x-10+160-2,y-10+40-2, makecol(0,0,0));
-  textprintf(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),"_"); //Affivhage du curseur
+  textout_ex(buffer, font, "_", x+tailleLettre*(i+1), y+10, makecol(0, 255, 255), -1);  // Ancien : textprintf(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),"_"); //Affivhage du curseur
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 
   while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])     //La touche entree permet de valider le pseudo
@@ -708,9 +705,9 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
         saisie[i+1]=0;
 
         /*  on affiche la touche saisie */
-        textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"%s",derniereSaisie);
+        textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255), -1,"%s",derniereSaisie); // Ancien :textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"%s",derniereSaisie);
         i++;
-        textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"_");
+        textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255), -1, "_"); // textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"_");
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
       }
     }
@@ -725,13 +722,13 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
         i=0;
 
 
-      textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"_");
-      textprintf(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255)," ");
+      textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255), -1, "_");
+      textprintf_ex(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255), -1, " ");
     }
     //* si validation
     if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
     {
-      textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,0,255)," ");
+      textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,0,255), -1, " ");
       if (i==0)
         saisie[0]=32; // space
       saisie[i+1]=0;
@@ -761,11 +758,11 @@ int nombreJoueurs(BITMAP* buffer)
         }
         rectfill(buffer, 250, 350,600,400, makecol(0,0,255));
         textprintf_ex(buffer,arial_20,290,360,makecol(255,255,255),-1," Choix des classes ");
-        textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");
+        textprintf_ex(buffer,arial_28,100,150,makecol(0,0,255), -1," Veuillez saisir le nombre de joueurs : ");
 
         if(nbJoueurs!=0)
         {
-            textprintf(buffer,arial_20,260,260,makecol(0,0,255),"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
+            textprintf_ex(buffer,arial_20,260,260,makecol(0,0,255), -1, "%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
         }
         rect(buffer,250,250,600,300, makecol(0,0,255));         //Zone de selection
 
@@ -778,7 +775,7 @@ int nombreJoueurs(BITMAP* buffer)
             deploye=1;
             for(int i=0; i<118;i++)                                     //Animation du menu Deroulant
             {
-                textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                textprintf_ex(buffer,arial_28,100,150,makecol(0,0,255), -1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                 rect(buffer,250,250,600,300, makecol(0,0,255));
                 int points[6]= {570, 265,   590, 265,  580, 285};
                 polygon(buffer, 3, points, makecol(0,0,255));
@@ -799,7 +796,7 @@ int nombreJoueurs(BITMAP* buffer)
             {
                 for(int i=118; i>0;i--)                                     //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,255), -1, " Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
                     int points[6]= {570, 265,   590, 265,  580, 285};
                     polygon(buffer, 3, points, makecol(0,0,255));
@@ -817,7 +814,7 @@ int nombreJoueurs(BITMAP* buffer)
             {
                 for(int i=118; i>0;i--)                                     //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,255), -1, " Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
                     int points[6]= {570, 265,   590, 265,  580, 285};
                     polygon(buffer, 3, points, makecol(0,0,255));
@@ -836,7 +833,7 @@ int nombreJoueurs(BITMAP* buffer)
             {
                 for(int i=118; i>0;i--)                                     //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,255), -1, " Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
                     int points[6]= {570, 265,   590, 265,  580, 285};
                     polygon(buffer, 3, points, makecol(0,0,255));
@@ -855,7 +852,7 @@ int nombreJoueurs(BITMAP* buffer)
             {
                 for(int i=118; i>0;i--)                                     //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,255), -1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
                     int points[6]= {570, 265,   590, 265,  580, 285};
                     polygon(buffer, 3, points, makecol(0,0,255));
