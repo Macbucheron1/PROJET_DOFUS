@@ -1,7 +1,7 @@
 #include "HEADER.h"
 
 /* ------------------------------------- FONCTION d'affichage -------------------------------------
-    Les fontions présente dans ce fichier sont des fonctions d'affichage, elles ne servent à rien d'autre
+    Les fontions prÃ©sente dans ce fichier sont des fonctions d'affichage, elles ne servent Ã  rien d'autre
     que l'affichage
 */
 
@@ -48,8 +48,8 @@ void affichage_grille(BITMAP* buffer)
 
 void montre_curseur(BITMAP* page)
 {
-    /* Permet d'afficher un curseur personnalisé
-    Prend en parametre la bitmap sur laquel affiché le curseur
+    /* Permet d'afficher un curseur personnalisÃ©
+    Prend en parametre la bitmap sur laquel affichÃ© le curseur
     Ne renvoie rien*/
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
@@ -80,7 +80,7 @@ void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20]
 
 void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
-    /* Affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
+    /* Affiche un carrÃ© bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
     Prend en parametre la bitmap d'affichage, la carte et la zone de deplacement
     Ne renvoie rien */
 
@@ -98,10 +98,10 @@ void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, t_joueur joueurActuel, coords chemin[], int PM)
 {
     /* Permet d'animer le deplacement
-    Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnées initial, le joueur qui joue, le chemin, les points de mouvement
+    Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnÃ©es initial, le joueur qui joue, le chemin, les points de mouvement
     Ne renvoie rien */
 
-    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
+    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnÃ©es en pixels de la case initial
     int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
 
     int x2;
@@ -111,7 +111,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
     x1+=8;
         for(int i=0; i<PM;i++)
         {
-            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnées en pixels de la case suivante
+            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnÃ©es en pixels de la case suivante
             y2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_y;
             x=32;
 
@@ -398,6 +398,146 @@ int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FO
 
 
         return police;
+}
+
+void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_desert)
+{
+        /* Permet d'afficher la classe jedi
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulÃ© depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Ne renvoie rien */
+        rectfill(page, 110 - 3, 100 - 3, 210 + 3, 200 + 3, makecol(40, 40, 40));
+        rectfill(page, 110, 100, 210, 200, makecol(20, 20, 20));
+        rectfill(page, 110 + 3, 100 + 3, 210 - 3, 200 - 3, makecol(0, 0, 0));
+        masked_blit(map_desert, page, 100, 100, 111, 101, 98, 98);
+        *nouvelle_affichage = *nouvelle_affichage + 1;
+        if (*nouvelle_affichage%10 == 0)
+        {
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 96;
+        }
+        if (*position_x_bitmap_soldat>=340)
+        {
+            *position_x_bitmap_soldat = 32;
+        }
+        if (*nouvelle_affichage >= 80)
+        {
+            *direction_soldat = *direction_soldat + 1;
+            *nouvelle_affichage = 0;
+        }
+        if (*direction_soldat >= 4)
+        {
+            *direction_soldat = 0;
+        }
+        else if (*direction_soldat == 0)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 207, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+        else if (*direction_soldat == 1)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 14, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+        else if (*direction_soldat == 2)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 300, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+        else if (*direction_soldat == 3)
+        {
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 108, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+
+
+}
+
+
+void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige)
+{
+        /* Permet d'afficher la classe Dark vador
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulÃ© depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Ne renvoie rien */
+        rectfill(page, 460 - 3, 100 - 3, 560 + 3, 200 + 3, makecol(40, 40, 40));
+        rectfill(page, 460, 100, 560, 200, makecol(20, 20, 20));
+        rectfill(page, 460 + 3, 100 + 3, 560 - 3, 200 - 3, makecol(0, 0, 0));
+        masked_blit(map_neige, page, 100, 200, 461, 101, 98, 98);
+        *nouvelle_affichage = *nouvelle_affichage + 1;
+        if (*nouvelle_affichage%10 == 0)
+        {
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 75;
+        }
+        if (*position_x_bitmap_soldat>=870)
+        {
+            *position_x_bitmap_soldat = 630;
+        }
+        if (*nouvelle_affichage >= 80)
+        {
+            *direction_soldat = *direction_soldat + 1;
+            *nouvelle_affichage = 0;
+        }
+        if (*direction_soldat >= 4)
+        {
+            *direction_soldat = 0;
+        }
+        else if (*direction_soldat == 0)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 492, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+        else if (*direction_soldat == 1)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 417, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+        else if (*direction_soldat == 2)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 566, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+        else if (*direction_soldat == 3)
+        {
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 340, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+
+
+}
+
+void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville)
+{
+        /* Permet d'afficher la classe clone
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulÃ© depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Ne renvoie rien */
+        rectfill(page, 460 - 3, 350 - 3, 560 + 3, 450 + 3, makecol(40, 40, 40));
+        rectfill(page, 460, 350, 560, 450, makecol(20, 20, 20));
+        rectfill(page, 460 + 3, 350 + 3, 560 - 3, 450 - 3, makecol(0, 0, 0));
+        masked_blit(map_ville, page, 180, 200, 111, 351, 98, 98);
+        *nouvelle_affichage = *nouvelle_affichage + 1;
+        if (*nouvelle_affichage%10 == 0)
+        {
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 77;
+        }
+        if (*position_x_bitmap_soldat>=890)
+        {
+            *position_x_bitmap_soldat = 630;
+        }
+        if (*nouvelle_affichage >= 80)
+        {
+            *direction_soldat = *direction_soldat + 1;
+            *nouvelle_affichage = 0;
+        }
+        if (*direction_soldat >= 4)
+        {
+            *direction_soldat = 0;
+        }
+        else if (*direction_soldat == 0)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 166, position_affichage_x,position_affichage_y-30, 36,64);
+        }
+        else if (*direction_soldat == 1)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 7, position_affichage_x,position_affichage_y-30, 36,64);
+        }
+        else if (*direction_soldat == 2)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 247, position_affichage_x,position_affichage_y-30, 36,64);
+        }
+        else if (*direction_soldat == 3)
+        {
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 85, position_affichage_x,position_affichage_y-30, 36,64);
+        }
 }
 
 void affichage_en_jeu(BITMAP* buffer)
