@@ -109,6 +109,11 @@ void prepa_alleg(void)
         allegro_exit();
         exit(EXIT_FAILURE);
     }
+    if (install_sound(DIGI_AUTODETECT, MIDI_NONE, 0) != 0) {
+        printf("Error initialising sound: %s\n", allegro_error);
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
 }
 
 void erreur_chargement_image(BITMAP* image)

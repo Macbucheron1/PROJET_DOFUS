@@ -133,7 +133,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
                 affichage_grille(buffer);
-                masked_blit(soldat,buffer, x, 300, x1,y1-30, 32,64);
+                masked_blit(soldat,buffer, x, 296, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
                     x=32;
@@ -155,13 +155,12 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
                 rest(100);
                 clear(buffer);
-
             }
             while(y1<y2)                                                                                                                                    //Monter
             {
                 blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
                 affichage_grille(buffer);
-                masked_blit(soldat,buffer, x, 207, x1,y1-30, 32,64);
+                masked_blit(soldat,buffer, x, 202, x1,y1-30, 32,64);
                 x=x+96;
                 if (x>=340)
                     x=32;
@@ -540,8 +539,157 @@ void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
 
 
 
+void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_decor* visuel_menu, BITMAP* tableau_map[], unsigned int* temps)
+{
+    /* Anime le decor du menu
+    Prend en parametre la bitmap des personnages, le tableau d'acteurs, le delay, le decor du menu, le tableau de bitmap de map et le temps
+    Ne Renvoie rien*/
+        blit(tableau_map[2], visuel_menu->visuel, 0, 0, 2400, 0, 800, 600);
+        blit(tableau_map[0], visuel_menu->visuel, 0, 0, 1600, 0, 800, 600);
+        blit(tableau_map[1], visuel_menu->visuel, 0, 0, 800, 0, 800, 600);
+        blit(tableau_map[2], visuel_menu->visuel, 0, 0, 0, 0, 800, 600);
+        masked_blit(mesActeurs[0].skin, visuel_menu->visuel, mesActeurs[0].position_bitmap.x, mesActeurs[0].position_bitmap.y, mesActeurs[0].position.x, mesActeurs[0].position.y, 32,64);
+        *delay = (*delay+1)%10;
 
 
+        if (clock()-(*temps) <= 6000)
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        else if (clock()-(*temps)<6030)
+        {
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_bas.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_bas.x;
+            animation_vers_bas(*delay, &mesActeurs[0], 10, 500);
+        }
+        else if (clock()-(*temps)<7710)
+            animation_vers_bas(*delay, &mesActeurs[0], 1, 800);
+        else if (clock()-(*temps)<7760)
+        {
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_gauche.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_gauche.x;
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        }
+        else if (clock()-(*temps)<16000)
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        else if (clock()-(*temps)<25000)
+        {
+            mesActeurs[0].respiration+=1;
+            mesActeurs[0].position_bitmap.y = 14;
+            if (mesActeurs[0].respiration <= 80)
+                mesActeurs[0].position_bitmap.x = 409;
+            else if (mesActeurs[0].respiration<=120)
+                mesActeurs[0].position_bitmap.x = 409+94;
+            else
+                mesActeurs[0].respiration = 0;
+        }
+        else
+        {
+            *temps = clock();
+            mesActeurs[0].position.y = 150;
+            mesActeurs[0].position.x = 800;
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_gauche.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_gauche.x;
+        }
+
+/*
+        if (animation_vers_gauche(*delay, &mesActeurs[0], 800, 700) == 1)
+        {
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_droite.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_droite.x;
+            animation_vers_droite(*delay, &mesActeurs[0], 700, 800);
+        }*/
+
+        if (visuel_menu->position_x >= 2399)
+        {
+            visuel_menu->position_x = 1;
+        }
+        visuel_menu->position_x += visuel_menu->avancement_x;
+}
+
+
+
+int animation_vers_gauche(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x)
+{
+    /* Anime le joueur vers le gauche
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.x>position_final_x)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_gauche.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_gauche.x;
+            monActeur->position.x -= monActeur->deplacement.x;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
+
+int animation_vers_droite(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x)
+{
+    /* Anime le joueur vers le droite
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.x<position_final_x)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_droite.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_droite.x;
+            monActeur->position.x += monActeur->deplacement.x;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
+
+int animation_vers_bas(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y)
+{
+    /* Anime le joueur vers le bas
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.y<position_final_y)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_bas.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_bas.x;
+            monActeur->position.y += monActeur->deplacement.y;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
+
+int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y)
+{
+    /* Anime le joueur vers le haut
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.y>position_final_y)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_haut.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_haut.x;
+            monActeur->position.y -= monActeur->deplacement.y;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
 
 
 
