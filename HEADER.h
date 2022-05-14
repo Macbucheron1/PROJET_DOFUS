@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <allegro.h>
 #include <stdbool.h>
+#include <time.h>
 
 #define LIGNE_TABLEAU 16
 #define COLONNE_TABLEAU 20
