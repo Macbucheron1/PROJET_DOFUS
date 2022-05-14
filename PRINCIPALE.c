@@ -171,13 +171,42 @@ void menu_principal(void) // A finir
     destroy_sample(musique);
 }
 
-void jouer(void) // A finir
+int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
 {
     // VARIABLE
     t_map carte;
     BITMAP* page;
     BITMAP* soldat;
 
+    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
+
+    BITMAP* avatar = load_bitmap("avatar.bmp", NULL);
+    erreur_chargement_image(avatar);
+
+    BITMAP* avatar2 = load_bitmap("avatar2.bmp", NULL);
+    erreur_chargement_image(avatar2);
+
+    BITMAP* avatar3 = load_bitmap("avatar3.bmp", NULL);
+    erreur_chargement_image(avatar3);
+
+    BITMAP* avatar4 = load_bitmap("avatar4.bmp", NULL);
+    erreur_chargement_image(avatar4);
+
+    int couleur_menu = makecol(0,255,255);
+    int couleur_attaque_1 = makecol(255,0,0);
+    int couleur_attaque_2 = makecol(0,255,0);
+    int couleur_attaque_3 = makecol(0,0,255);
+    int couleur_attaque_4 = makecol(255,255,0);
+    int couleur_attaque_5 = makecol(255,255,255);
+
+    clear_to_color(fond_menu, makecol(0, 0, 0));
+
+    rectfill(fond_menu, 750,10,790,50,couleur_menu);
+    rectfill(fond_menu,110,555,210,585,couleur_attaque_1);
+    rectfill(fond_menu,238,555,338,585,couleur_attaque_2);
+    rectfill(fond_menu,366,555,466,585,couleur_attaque_3);
+    rectfill(fond_menu,494,555,594,585,couleur_attaque_4);
+    rectfill(fond_menu,622,555,722,585,couleur_attaque_5);
 
     // INITIALISATION VARIABLE
     init_map(&carte);
@@ -188,141 +217,200 @@ void jouer(void) // A finir
     erreur_chargement_image(soldat);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
-
-
     int quitter = 0;
     int affiche_son = 0;
     int affiche_grille = 0;
 
-
     // CODE PRINCIPAL
 
-    /// pour tester les attaques
+    t_joueur *joueurActuel;
 
-    t_joueur tab_j[2]; // le tableau des joueurs pr les tours
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
+    erreur_chargement_image(curseur);
 
-    t_personnage mage;
-    //t_personnage archer;
-    //t_personnage guerrier;
-    t_personnage tank;
-
-    int skin_mage_taille;
-    //int skin_archer_taille;
-    //int skin_guerrier_taille;
-    int skin_tank_taille;
-
-    skin_mage_taille=1;
-    //skin_archer_taille=1;
-    //skin_guerrier_taille=1;
-    skin_tank_taille=1;
-
-    mage=init_classes("mage",1,6,2000,3,skin_mage_taille);
-    //archer=init_classes("archer",2,6,1700,5,skin_archer_taille);
-    //guerrier=init_classes("guerrier",3,6,2500,4,skin_guerrier_taille);
-    tank=init_classes("tank",4,6,4800,2,skin_tank_taille);
-
-    tab_j[0]=init_joueur("lala",1,tank);
-    tab_j[1]=init_joueur("larzava",2,mage);
-
-    //////////////Pour tester le deplacement////////////////
-
-    tab_j[0].position_colonne=13;
-    tab_j[0].position_ligne=13;
-    tab_j[0].pm_actuel=6;
-
-    tab_j[1].position_colonne=12;
-    tab_j[1].position_ligne=13;
-    tab_j[1].pm_actuel=6;
-
-    /////////////////////////////////////////////////////////
-    //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
-    //int positionTmpY=-1;
-
-    while (!key[KEY_ESC])
+    int indiceActuel= rand()%nbJoueurs;    //indice du joueur actuel choisi aleatoirement
+    time_t temps1;
+    time_t temps2;
+    for(int i=0;i<nbJoueurs;i++)
     {
 
-        //int positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
-        //int positionTmpY=-1;
+        Joueurs[i].classe.pa_actuel=0;      //A supprimer
+        do
+        {
+            Joueurs[i].position_colonne=rand()%20;                      //On donne une position aléatoire à chaque joueur
+            Joueurs[i].position_ligne=rand()%16;
+        }while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0); //Tant que la case est indisponible
 
-        tab_j[0].pm_actuel=6;    //tab_j[0].classe->pm_actuel=tab_j[0].classe->pm_max;
-
-        //boucle tant que temps>0
-        //int  zoneDeplacement[20][16];
-
-        blit(carte.fond_map,page,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
-        affichage_grille(page);
-        ////////////////////////////////////DEPLACEMENT/////////////////////////////
-        /*if(tab_j[0].pm_actuel>0){
-            if(tab_j[0].position_colonne!=positionTmpX || tab_j[0].position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
-                CalculDeplacement(page,carte, tab_j[0].position_colonne,tab_j[0].position_ligne,zoneDeplacement, tab_j[0].pm_actuel);
-                positionTmpX=tab_j[0].position_colonne;
-                positionTmpY=tab_j[0].position_ligne;
-            }
-            SurbrillanceDeplacement(page,carte,zoneDeplacement);
-            tab_j[0].pm_actuel-=Deplacement(carte, zoneDeplacement, &tab_j[0], page, soldat);
-        }*/
-
-        ////////////////////////////////////////////////////////////////////////////
-
-        ////////////////////////////////////ATTAQUE/////////////////////////////////
-
-        int zoneAttaque[20][16];
-        masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[tab_j[0].position_colonne][tab_j[0].position_ligne].position_pixel_x, carte.tab_coordonnes[tab_j[0].position_colonne][tab_j[0].position_ligne].position_pixel_y-30, 32,64);
-
-        /** attaque du mage test **/
-
-        //c_a_c_mage(tab_j,0,page,carte,zoneAttaque,personnage,2);
-        //guerison_mage(tab_j,0,page);
-        //meditation_mage(tab_j,0,page);
-        lancer_sabre(tab_j,0,page,carte,zoneAttaque,personnage,2);
-        //etranglement(tab_j,0,page,carte,zoneAttaque,personnage,2);
-
-        /** attaque archer test **/
-
-        //c_a_c_archer(tab_j,0,page,carte,zoneAttaque,personnage,2);
-        //lancer_grenade_thermique_archer(tab_j,0,page,carte,zoneAttaque,personnage,2);
-        //tir_lourd_archer(tab_j,0,page,carte,zoneAttaque,personnage,2);
-        //tir_basique_archer(tab_j,0,page,carte,zoneAttaque,personnage,2);
-        //tir_de_precision(tab_j,0,page,carte,zoneAttaque,personnage,2);
-
-        /** attaque guerrier test **/
-
-        //c_a_c_guerrier(tab_j,0,page,carte,zoneAttaque,personnage,2);
-
-        /** attaque tank test **/
-
-        //c_a_c_tank(tab_j,0,page,carte,zoneAttaque,personnage,2);
-        //rest(100); //voir si le changement seffectue bien
-        //printf("qui roule ?:%d\n",tab_j[0].PM_roule);
-        //roulement(tab_j,0,page);
-
-        //rest(100); //voir si le changement seffectue bien
-        //printf("bouclier ?:%d\n",tab_j[1].bouclier);
-        //bouclier(tab_j,1,page);
-
-        //rest(100); //voir si le changement seffectue bien
-        //printf("1 en feu ?:%d\n",tab_j[1].en_feu);
-        //lance_flammes(tab_j,0,page,carte,zoneAttaque,personnage,2);
-
-
-        masked_blit(soldat,page, 409, 14, carte.tab_coordonnes[tab_j[0].position_colonne][tab_j[0].position_ligne].position_pixel_x, carte.tab_coordonnes[tab_j[0].position_colonne][tab_j[0].position_ligne].position_pixel_y-30, 32,64);
-        ///les deux masked blit servent a l'affichage de action_impossible
-
-        //pour les test
-
-        printf("pV 0:%d\n",tab_j[0].pv_actuel);
-        printf("pA 0:%d\n",tab_j[0].pa_actuel);
-        printf("pM 0:%d\n",tab_j[0].pm_actuel);
-        printf("pV 1:%d\n",tab_j[1].pv_actuel);
-
-        ////////////////////////////////////////////////////////////////////////////
-
-        montre_curseur(page);
-        blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        clear(page);
+        //Joueurs[i].classe.numero_classe=i+1;
     }
-}
+    joueurActuel=&Joueurs[indiceActuel];
 
+    while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
+    {
+        printf("1\n");
+        int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
+        int positionTmpY=-1;
+
+        joueurActuel->classe.pm_actuel=4; //joueurActuel.classe.pm_actuel=joueurActuel.classe.pm_max;    //On remet le pm max au joueur à chaque tour
+        temps1=clock();  //On stocke le temps en secondes dans temps1
+        temps2=temps1+15000;
+         printf("2\n");
+        while(temps1<=temps2 && (joueurActuel->classe.pm_actuel>0 || joueurActuel->classe.pa_actuel>0))           //rajouter la condition si le joueurtuilise tous ses pm et pa
+        {
+             printf("3\n");
+            temps1=clock(); //time(&temps1);
+            int  zoneDeplacement[20][16];
+            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs);
+             printf("3\n");
+            rect(page,230, 5, 630,25,makecol(0,0,0));                 //Affichage de la barre de temps restant
+            rectfill(page,232, 7, (temps2-temps1)*400/15000+232,23,makecol(0,255,0));
+
+            ////////////////////////////////////DEPLACEMENT/////////////////////////////
+            if(joueurActuel->classe.pm_actuel>0){
+                if(joueurActuel->position_colonne!=positionTmpX || joueurActuel->position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
+                    CalculDeplacement(page,carte, joueurActuel->position_colonne,joueurActuel->position_ligne,zoneDeplacement, joueurActuel->classe.pm_actuel, Joueurs, nbJoueurs,indiceActuel);
+                    positionTmpX=joueurActuel->position_colonne;
+                    positionTmpY=joueurActuel->position_ligne;
+                }
+                SurbrillanceDeplacement(page,carte,zoneDeplacement);
+                joueurActuel->classe.pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs);
+            }
+            ////////////////////////////////////////////////////////////////////////////
+             printf("4\n");
+            AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
+            //respiration a faire
+            affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
+             printf("5\n");
+            if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+            {
+
+                if (mouse_b & 1)
+                {
+                    quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
+                }
+            }
+             printf("6\n");
+
+            montre_curseur(page,curseur);
+            blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+            clear_bitmap(page);
+        }
+         printf("7\n");
+        do{                                 //Passage au joueur suivant
+            indiceActuel=(indiceActuel+1)%nbJoueurs;
+        }while(Joueurs[indiceActuel].elimine==1);
+        joueurActuel=&Joueurs[indiceActuel];
+         printf("8\n");
+    }
+    printf("9\n");
+        destroy_bitmap(soldat);
+        destroy_bitmap(page);
+        return quitter;
+    }
+
+int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille)
+{
+    rest(100);
+    int couleur_menu = makecol(0,255,255);
+    int couleur_retour_menu = makecol(196,196,196);
+    int couleur_quitter = makecol(175,175,175);
+    int couleur_son = makecol(100,100,100);
+    int couleur_affichage = makecol(50,50,50);
+    int i;
+    int quitter = 0;
+    FONT* arial_26 = load_font("arial_26.pcx", NULL, NULL);
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
+
+    rectfill(fond_menu,303,173,512,237, couleur_retour_menu);
+    rectfill(fond_menu, 303, 398, 512, 462, couleur_quitter);
+    rectfill(fond_menu, 462, 255, 512, 305, couleur_son);
+    rectfill(fond_menu, 462, 330, 512, 380, couleur_affichage);
+
+    rectfill(buffer, 250, 50, 550, 500, makecol(200,200,200));
+    rectfill(buffer, 754,14,786,46, makecol(160,160,160));
+    line(buffer,754,14,786,46, makecol(96,96,96));
+    line(buffer,786,14,754,46, makecol(96,96,96));
+
+    textprintf_ex(buffer, arial_26, 360, 100, makecol(0,0,0), -1, "Menu");
+    for(i = 0;i<3;i++)
+    {
+        rectfill(buffer, 303+4*i, 173+4*i, 512-4*i, 237-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 303+4*i, 398+4*i, 512-4*i, 462-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 462+4*i, 255+4*i, 512-4*i, 305-4*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer, 462+4*i, 330+4*i, 512-4*i, 380-4*i, makecol(190-15*i,190-15*i,190-15*i));
+    }
+    textprintf_ex(buffer, font, 313, 200, makecol(0,0,0), -1, "Retour au menu principal");
+    textprintf_ex(buffer, font, 313, 275, makecol(0,0,0), -1, "Activer le son");
+    textprintf_ex(buffer, font, 313, 350, makecol(0,0,0), -1, "Affichage grille");
+    textprintf_ex(buffer, font, 350, 425, makecol(0,0,0), -1, "Quitter le jeu");
+
+    BITMAP* fond_de_jeu = create_bitmap(800, 600);
+
+    blit(buffer, fond_de_jeu, 0, 0, 0, 0, 800, 600);
+    while((quitter == 0)&&(!key[KEY_ESC]))
+    {
+        blit(fond_de_jeu, buffer, 0, 0, 0, 0, 800, 600);
+        if (*affiche_son == 1)
+        {
+            line(buffer,470,263,504,297, makecol(96,96,96));
+            line(buffer,504,263,470,297, makecol(96,96,96));
+        }
+        if (*affiche_grille == 1)
+        {
+            line(buffer,470,338,504,372, makecol(96,96,96));
+            line(buffer,504,338,470,372, makecol(96,96,96));
+        }
+        montre_curseur(buffer,curseur);
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                return 3;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_retour_menu) // retour menu
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                return 2;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_son) // son
+        {
+            if (mouse_b & 1)
+            {
+                if (*affiche_son == 0)
+                    *affiche_son = 1;
+                else
+                    *affiche_son = 0;
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_affichage) // affichage grille
+        {
+            if (mouse_b & 1)
+            {
+                if (*affiche_grille == 0)
+                    *affiche_grille = 1;
+                else
+                    *affiche_grille = 0;
+                rest(100);
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // quitter
+        {
+            if (mouse_b & 1)
+            {
+                rest(100);
+                quitter = 1;
+            }
+        }
+        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+    }
+    return quitter;
+}
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
 {
     /* Lance les credits
