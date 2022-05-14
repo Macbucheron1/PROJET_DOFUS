@@ -110,51 +110,6 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
         AnimationClasse4(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs);*/
 }
 
-void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville)
-{
-        /* Permet d'afficher la classe clone
-        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
-        Ne renvoie rien */
-        rectfill(page, 460 - 3, 350 - 3, 560 + 3, 450 + 3, makecol(40, 40, 40));
-        rectfill(page, 460, 350, 560, 450, makecol(20, 20, 20));
-        rectfill(page, 460 + 3, 350 + 3, 560 - 3, 450 - 3, makecol(0, 0, 0));
-        masked_blit(map_ville, page, 180, 200, 111, 351, 98, 98);
-        *nouvelle_affichage = *nouvelle_affichage + 1;
-        if (*nouvelle_affichage%10 == 0)
-        {
-            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 77;
-        }
-        if (*position_x_bitmap_soldat>=890)
-        {
-            *position_x_bitmap_soldat = 630;
-        }
-        if (*nouvelle_affichage >= 80)
-        {
-            *direction_soldat = *direction_soldat + 1;
-            *nouvelle_affichage = 0;
-        }
-        if (*direction_soldat >= 4)
-        {
-            *direction_soldat = 0;
-        }
-        else if (*direction_soldat == 0)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 166, position_affichage_x,position_affichage_y-30, 36,64);
-        }
-        else if (*direction_soldat == 1)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 7, position_affichage_x,position_affichage_y-30, 36,64);
-        }
-        else if (*direction_soldat == 2)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 247, position_affichage_x,position_affichage_y-30, 36,64);
-        }
-        else if (*direction_soldat == 3)
-        {
-           masked_blit(soldat,page, *position_x_bitmap_soldat, 85, position_affichage_x,position_affichage_y-30, 36,64);
-        }
-}
-
 int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8)
 {
 
