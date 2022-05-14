@@ -131,7 +131,7 @@ void erreur_chargement_image(BITMAP* image)
 }
 
 
-void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant) // a definir
+void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant, t_joueur Joueurs[], int nbJoueurs, int indiceActuel) 
 {
     /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
     Prend en parametre la bitmap d'affichage, la carte, la position du soldat, la zone de deplacement, les PM restants
