@@ -113,12 +113,6 @@ void changement_graphique(int valeur); // Permet de changer de mode graphique
 void affichage_grille(BITMAP* buffer); // Permet d'afficher la grille sur la map
 void montre_curseur(BITMAP* page, BITMAP* curseur); // Permet d'afficher un curseur personnalisé
 void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //permet d'afficher un personnage
-
-void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appel� par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
-void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appel� par SurbrillanceDeplacement et affiche un carr� bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
-void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, t_joueur joueurActuel, coords chemin[], int PM); // Fait l'animation de deplacement
-int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8);
-
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelé par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
 void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelé par SurbrillanceDeplacement et affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
 void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs,t_joueur Joueurs[]); // Fait l'animation de deplacement
