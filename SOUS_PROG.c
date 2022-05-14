@@ -25,7 +25,7 @@ void remplir_tab_coordonnes(t_map* carte)
 
 void remplir_map_obstacle(t_map* carte)
 {
-    /* Permet de remplir la matrice contenant la valeur de chaque  . Avec chaque numero represantant soit un obstacle soit un element de decor
+    /* Permet de remplir la matrice contenant la valeur de chaque case. Avec chaque numero represantant soit un obstacle soit un element de decor
     Prend en parametre un pointeur sur une map
     Ne renvoie rien*/
     int terrain [COLONNE_TABLEAU][LIGNE_TABLEAU] = {
@@ -122,9 +122,6 @@ void erreur_chargement_image(BITMAP* image)
     TOUJOURS LE FAIRE CAR ON N'EST JAMAIS CERTAIN DE BIEN TROUVER L'IMAGE
     Prend en parametre l'image a testé
     Ne renvoie rien */
-    /*int W=image->w;
-    int H=image->h;
-    printf("%d/%d\n", W,H);*/
     if (!image)
     {
         allegro_message("pas pu trouver/charger mon_image.bmp");
@@ -133,7 +130,7 @@ void erreur_chargement_image(BITMAP* image)
     }
 }
 
-//
+
 void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant, t_joueur Joueurs[], int nbJoueurs, int indiceActuel) // a definir
 {
     /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
@@ -145,7 +142,6 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
     int continuer=1;
     int continuer1=1;
     coords chemin[PM_restant];
-
     for(i=0; i<20;i++)                  //Iniitialisation du tableau avec des 0
     {
         for(j=0; j<16;j++)
@@ -173,7 +169,6 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
                     break;
                 }
         }
-
         x=tmp-1;
         if(y<15)
             y=y+1;
@@ -194,7 +189,6 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
                 if(x<19)
                     x=x+1;
             }
-
             x=tmp+1;
             if(y<15)
                 y=y+1;
@@ -208,11 +202,8 @@ int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITM
     /* Recupere la position initiale et finale du deplacement
     Prend en parametre la carte, la zone de deplacement, le joueur actuel, la bitmap, et le skin du joueur
     renvoie le nb de PM utilisés */
-
     int i=0,j=0;
     int PM_utilises=0;
-
-
     if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)                    //Si le curseur et sur la map
     {
         i= position_souris_colonne();
@@ -275,14 +266,12 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
 
             if(caseDisponible(carte, i, j, Joueurs, nbJoueurs))
             {
-
                 if(j<15 && caseDisponible(carte,i, j+1,Joueurs,nbJoueurs))                   //case de droite du tab        en dessous(sur la map)
                 {
                     edges[ajout][0]=tab[i][j];
                     edges[ajout][1]=tab[i][j+1];
                     ajout++;
                 }
-
                 if(i<19 && caseDisponible(carte,i+1, j, Joueurs, nbJoueurs))                   //case d'en dessous du tab     a droite(sur la map)
                 {
                     edges[ajout][0]=tab[i][j];
@@ -308,7 +297,6 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
 
     int chemin_valide=dijkstra(Adj,nbSommets+1,start,finish,chemin, &distance,PM);    //variable qui =-1 si le chemin est invalide
     *PM_utilises=distance;      //PM utilisees pour parcourir le chemin
-
     for(int i=0;i<PM;i++)           //Pour chaque sommet du chemin, on va chercher ses coordonées en (x,y) car plus adapté au tableau (map)
     {
         for(int x=0;x<20;x++)
@@ -334,7 +322,6 @@ int caseDisponible(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs)
     Prend en parametre la carte et la position de la case
      modifie le tableau chemin et le nombre de PM utilisés
      renvoie 1 si la case est valide, sinon renvoie 0 */
-
     if(carte.map_obstacle[x][y]==0 )  //Verifie si la case cotient un obstacle
     {
         /*for(int i=0;i<nbJoueurs;i++)
@@ -367,34 +354,25 @@ int caseDisponible2(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs,
 
     return 0;
 }
-
-
 void createAdjMatrix(int Adj[][320 + 1],int aretes[][2],int nbSommets,int nbAretes)
 {
     /*Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
     Prend en parametre une matrice d'adjacence, une liste contenant toutes les arêtes du graphe, le nombre de sommet et d'arretes
     ne renvoie rien*/
-
 	// Initialise toutes les valeurs à 0
 	for (int i = 0; i < nbSommets + 1; i++) {
-
 		for (int j = 0; j < nbSommets + 1; j++) {
 			Adj[i][j] = 0;
 		}
 	}
 	// recupere les angles et créer la matrice d'adjacence
 	for (int i = 0; i < nbAretes; i++) {
-
 		int x = aretes[i][0];
 		int y = aretes[i][1];
-
-
 		Adj[x][y] = 1;
 		Adj[y][x] = 1;
-
 	}
 }
-
 int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM)
 {
     /*Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
@@ -415,7 +393,6 @@ int dijkstra(int Adj[320 + 1][320 + 1],int n,int startnode, int finishnode, int 
             }
             else
                 cout[i][j]=Adj[i][j];
-
     //initialisation pred[],distance[] et visited[]
     for(i=0; i<n; i++)
     {
@@ -492,7 +469,6 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) 
             }
         }
         for (int j=0 ; j<LIMIT_STAR ; j++) {
-
             if (TabStar[j].posY != 1000) {
                 if (TabStar[j].posY > 490) {
                     TabStar[j].posY = 1000;
@@ -878,11 +854,128 @@ int nombreJoueurs(BITMAP* buffer)
     return nbJoueurs;
 }
 
+/** pour les attaques **/
+
+void CalculAttaque_zone(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance)
+{
+    /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
+    Prend en parametre la bitmap d'affichage, la carte, la position du soldat, la zone de deplacement, les PM restants
+    Ne renvoie rien */
+    int i,j,tmp;
+    int x=x_soldat;
+    int y=y_soldat-distance;
+    int continuer=1;
+    int continuer1=1;
+
+    for(i=0; i<20;i++)                  //Iniitialisation du tableau avec des 0
+    {
+        for(j=0; j<16;j++)
+        {
+            zoneAttaque[i][j]=0;
+        }
+    }
+    //La zone de deplacement correspond a un losange que l'on sép   re en 2 parties (2 grandes boucles for)
+    for(i=0;i<distance+1 && continuer1;i++)
+    {
+        tmp=x;
+        for(j=0; j<i*2+1;j++)
+        {
+            if(x>=0 && y>=0){
+                if(!(i==distance && j==distance) && carte.map_obstacle[x][y]==0) // Verifie si la case est accessible
+                {
+
+                    zoneAttaque[x][y]=1;                                                           //Si c'est le cas, las case=1 dans le tableau
+                }
+            }
+                if(x<19)
+                    x=x+1;
+                else
+                {
+                    break;
+                }
+        }
+
+        x=tmp-1;
+        if(y<15)
+            y=y+1;
+        else
+            continuer=0;
+    }
+    x=x+2;
+    if(continuer){
+        for(i=0;i<distance;i++)
+        {
+            tmp=x;
+            for(j=0; j<2*distance-(i*2+1);j++)
+            {
+                if(x>=0 && y>=0){
+                    if(carte.map_obstacle[x][y]==0)
+                        zoneAttaque[x][y]=1;
+                }
+                if(x<19)
+                    x=x+1;
+            }
+
+            x=tmp+1;
+            if(y<15)
+                y=y+1;
+        }
+    }
+
+}
+
+void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance)
+{
+    /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
+    Prend en parametre la bitmap d'affichage, la carte, la position du soldat, la zone de deplacement, les PM restants
+    Ne renvoie rien */
+    int i,j;
+    //int tmp;
+    int x=x_soldat;
+    int y=y_soldat-1;
+
+    for(i=0; i<20;i++)                  //Iniitialisation du tableau avec des 0
+    {
+        for(j=0; j<16;j++)
+        {
+            zoneAttaque[i][j]=0;
+        }
+    }
+
+    while(y>y_soldat-distance && y>=0 && caseDisponible(carte,x,y))
+    {
+        zoneAttaque[x][y]=1;
+        if(y>0)
+            y--;
+    }
+    y=y_soldat+1;
+
+    while(y<y_soldat+distance && y<=15 && caseDisponible(carte,x,y))
+    {
+        zoneAttaque[x][y]=1;
+        if(y<150)
+            y++;
+    }
+    y=y_soldat;
+    x--;
+    while(x>x_soldat-distance && x>=0 && caseDisponible(carte,x,y))
+    {
+        printf("%d/%d\n", x,y);
+        zoneAttaque[x][y]=1;
+        if(x>0)
+            x--;
+    }
+    x=x_soldat+1;;
+    while(x<x_soldat+distance && x<=19 && caseDisponible(carte,x,y))
+    {
+        zoneAttaque[x][y]=1;
+        if(x<19)
+            x++;
+    }
+    printf("\n");
 
 
 
-
-
-
+    }
 
 

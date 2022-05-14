@@ -55,7 +55,8 @@ void montre_curseur(BITMAP* page, BITMAP* curseur)
 }
 
 
-void SurbrillanceDeplacement(BITMAP* buffer, t_map carte, int zoneDeplacement[20][16])
+
+void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
     /* Affiche les zones sur lesqeuelles peut aller le personnage en vert
     Prend en parametre la bitmap d'affichage, la carte, la zone de deplacement
@@ -464,7 +465,6 @@ void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
            masked_blit(soldat,page, *position_x_bitmap_soldat, 85, position_affichage_x,position_affichage_y-30, 36,64);
         }
 }
-
 
 
 void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_decor* visuel_menu, BITMAP* tableau_map[], unsigned int* temps)
@@ -913,6 +913,51 @@ void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
     blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
     affichage_grille(buffer);
 }
+
+/** pour les attaques **/
+
+void afficheSouris_attaque(BITMAP* buffer,t_map carte, int zoneAttaque[20][16])
+{
+    /* Affiche un carré blanc a la position de la souris (si la souris se trouve dans la zone d'attaque)
+    Prend en parametre la bitmap d'affichage, la carte et la zone de deplacement
+    Ne renvoie rien */
+
+
+    int i=0,j=0;
+    int couleur_case=makecol(255,0,0);
+    if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)
+    {
+        i= position_souris_colonne();
+        j= position_souris_ligne();
+        if(zoneAttaque[i][j]==1)
+            rectfill(buffer,carte.tab_coordonnes[i][j].position_pixel_x+5, carte.tab_coordonnes[i][j].position_pixel_y+5, carte.tab_coordonnes[i][j].position_pixel_x +32-5,carte.tab_coordonnes[i][j].position_pixel_y+32-5, couleur_case);
+    }
+}
+
+void SurbrillanceAttaque(BITMAP* buffer,t_map carte, int zoneAttaque[20][16])
+{
+    /* Affiche en rouge les cases sur lesqeuelles le joueur peut attaquer (ici une attaque de zone)
+    Prend en parametre la bitmap d'affichage, la carte, la zone de deplacement
+    Ne renvoie rien */
+
+    int couleur_case=makecol(255,127,0);
+    for(int i=0; i<20;i++)
+    {
+
+        for(int j=0;j<16;j++)
+        {
+            if(zoneAttaque[i][j]==1)
+            {
+                rectfill(buffer,carte.tab_coordonnes[i][j].position_pixel_x+5, carte.tab_coordonnes[i][j].position_pixel_y+5, carte.tab_coordonnes[i][j].position_pixel_x +32-5,carte.tab_coordonnes[i][j].position_pixel_y+32-5, couleur_case);
+            }
+        }
+    }
+    afficheSouris_attaque(buffer,carte,zoneAttaque);
+}
+
+
+
+
 
 
 

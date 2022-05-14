@@ -20,49 +20,135 @@
 1651944412 source:c:\users\natha\desktop\projet_dofus-test-v2\sous_prog.c
 	"HEADER.h"
 
-1652423678 source:c:\users\natha\desktop\projet_dofus-main\fonction_affichage.c
+1652104865 source:c:\users\natha\desktop\projet_dofus-main\fonction_affichage.c
 	"HEADER.h"
 
-1652425966 c:\users\natha\desktop\projet_dofus-main\header.h
+1652104597 c:\users\natha\desktop\projet_dofus-main\header.h
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	<stdbool.h>
-	<time.h>
 
-1652393445 source:c:\users\natha\desktop\projet_dofus-main\initialisation.c
+1652004230 source:c:\users\natha\desktop\projet_dofus-main\initialisation.c
 	"HEADER.h"
 
-1652374194 source:c:\users\natha\desktop\projet_dofus-main\main.c
+1652004230 source:c:\users\natha\desktop\projet_dofus-main\main.c
 	"HEADER.h"
 
-1652425954 source:c:\users\natha\desktop\projet_dofus-main\principale.c
+1652104908 source:c:\users\natha\desktop\projet_dofus-main\principale.c
 	"HEADER.h"
 
-1652275901 source:c:\users\natha\desktop\projet_dofus-main\sous_prog.c
+1652104602 source:c:\users\natha\desktop\projet_dofus-main\sous_prog.c
 	"HEADER.h"
 
-1652437153 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\fonction_affichage.c
+1652351401 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\fonction_affichage.c
 	"HEADER.h"
 
-1652468957 c:\users\iba20\onedrive\bureau\projet_dofus-version-3\header.h
+1652427015 c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\header.h
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	<stdbool.h>
-	<time.h>
 
-1652437153 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\initialisation.c
+1652189928 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\initialisation.c
 	"HEADER.h"
 
-1652437153 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\main.c
+1652425013 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\main.c
 	"HEADER.h"
 
-1652466232 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\principale.c
+1652436541 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\principale.c
 	"HEADER.h"
-	<time.h>
 
-1652466244 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\sous_prog.c
+1652436907 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\sous_prog.c
+	"HEADER.h"
+
+1652166701 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\attaque.c
+
+1652427094 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\attaque_archer.c
+	"HEADER.h"
+
+1652436907 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\attaque_generale.c
+	"HEADER.h"
+
+1652427091 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\attaque_guerrier.c
+	"HEADER.h"
+
+1652427091 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\attaque_mage.c
+	"HEADER.h"
+
+1652426689 source:c:\users\luc\documents\informatique\programmation structurée avancée\projet_dofus\projet_dofus-main\projet_dofus-main\attaque_tank.c
+	"HEADER.h"
+
+1652427094 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\attaque_archer.c
+	"HEADER.h"
+
+1652427015 c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<stdbool.h>
+
+1652436907 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\attaque_generale.c
+	"HEADER.h"
+
+1652427091 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\attaque_guerrier.c
+	"HEADER.h"
+
+1652471249 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\attaque_mage.c
+	"HEADER.h"
+
+1652426689 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\attaque_tank.c
+	"HEADER.h"
+
+1652351401 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\fonction_affichage.c
+	"HEADER.h"
+
+1652189928 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\initialisation.c
+	"HEADER.h"
+
+1652425013 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\main.c
+	"HEADER.h"
+
+1652471973 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\principale.c
+	"HEADER.h"
+
+1652471002 source:c:\users\iba20\downloads\projet_dofus-main\projet_dofus-main\sous_prog.c
+	"HEADER.h"
+
+1652427096 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\attaque_archer.c
+	"HEADER.h"
+
+1652427016 c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<stdbool.h>
+
+1652474916 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\attaque_generale.c
+	"HEADER.h"
+
+1652427092 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\attaque_guerrier.c
+	"HEADER.h"
+
+1652471250 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\attaque_mage.c
+	"HEADER.h"
+
+1652426690 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\attaque_tank.c
+	"HEADER.h"
+
+1652351402 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\fonction_affichage.c
+	"HEADER.h"
+
+1652189930 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\initialisation.c
+	"HEADER.h"
+
+1652425014 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\main.c
+	"HEADER.h"
+
+1652471974 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\principale.c
+	"HEADER.h"
+
+1652472026 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\sous_prog.c
 	"HEADER.h"
 
 1652469402 source:c:\users\natha\desktop\projet_dofus-version-3\fonction_affichage.c

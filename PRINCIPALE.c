@@ -1,5 +1,5 @@
 #include "HEADER.h"
-#include <time.h>
+
 /* ------------------------------------- PRINCIPALE -------------------------------------
     Les fontions présente dans ce fichier sont les fonctions principales. C'est celle qui permettront de lancer
     toutes les fonctionnalitées principales du jeu
@@ -8,14 +8,12 @@
 void menu_principal(void) // A finir
 {
     ///////////////////////////// INITALISATION VARIABLE /////////////////////////////////////
-
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
     FONT* arial_16 = load_font("arial_14.pcx", NULL, NULL);
     SAMPLE* musique = load_wav("imperial_march.wav");
     BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
     erreur_chargement_image(soldat);
-
     t_decor visuel_menu;
     BITMAP* tab_bitmap[4];
     tab_bitmap[0] = load_bitmap("map_desert.bmp", NULL);
@@ -33,20 +31,14 @@ void menu_principal(void) // A finir
     visuel_menu.avancement_y = 1;
     visuel_menu.position_x = 0;
     visuel_menu.position_y = 0;
-
     t_acteur jedi1;
     init_acteur(&jedi1, 800, 160, soldat, 8, 8, 32, 108, 96, 94);
-
-
     t_acteur mesActeurs[10];
     mesActeurs[0] = jedi1;
-
-
     if (!musique) { //blindage
         allegro_exit();
         exit(EXIT_FAILURE);
     }
-
     int quitter = 0;
     int couleur_quitter = makecol(0,255,255);
     int couleur_jouer = makecol(255,0,0);
@@ -57,7 +49,6 @@ void menu_principal(void) // A finir
     int volume=200;
     unsigned int temps=0;
     play_sample(musique,volume,128,1000,1);
-
      ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
@@ -68,9 +59,7 @@ void menu_principal(void) // A finir
         blit(visuel_menu.visuel, visuel_menu.visuel, 0, 0, 2400, 0, 800, 600);
         blit(visuel_menu.visuel, page, visuel_menu.position_x, 0, 0, 0, 800, 600);
         clear_to_color(fond_menu, makecol(0, 0, 0));
-
         ///////////////////////////// Dessin Bouton pour quitter /////////////////////////////////////
-
         rectfill(fond_menu, 10, 10, 30, 32, couleur_quitter);
         rectfill(page, 10, 10, 33, 34, makecol(190,190,190));
         rectfill(page, 12, 12, 31, 32, makecol(175,175,175));
@@ -110,11 +99,7 @@ void menu_principal(void) // A finir
         rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
-
-
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
-
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
         {
             rectfill(page, 10, 10, 33, 34, makecol(210,210,210));
@@ -126,7 +111,6 @@ void menu_principal(void) // A finir
                 quitter = 1;
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_jouer) // JOUER
         {
             rectfill(page, 250, 150, 560, 210, makecol(210,210,210));
@@ -137,10 +121,8 @@ void menu_principal(void) // A finir
             {
                 rest(100);
                  quitter=nouvellePartie(page);
-
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
         {
             rectfill(page,  250, 250, 560, 310, makecol(210,210,210));
@@ -152,7 +134,6 @@ void menu_principal(void) // A finir
                 apercu_classe_en_cours(page, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_parametre) // PARAMETRE
         {
             rectfill(page, 250, 350, 560, 410, makecol(210,210,210));
@@ -161,11 +142,9 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Parametre");
             if (mouse_b & 1)
             {
-
                 parametre_en_cours(page, &visuel_menu, musique, &volume, soldat, mesActeurs, &delay, tab_bitmap, &temps);
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_credit) // CREDIT
         {
             rectfill(page, 250, 450, 560, 510, makecol(210,210,210));
@@ -174,12 +153,10 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "Credit");
             if (mouse_b & 1)
             {
-
                 credit_en_cours(page, &visuel_menu, soldat, mesActeurs, &delay, &temps, tab_bitmap);
             }
         }
         montre_curseur(page,curseur);
-
         /////////////////////////////  /////////////////////////////////////
 
 
@@ -188,7 +165,6 @@ void menu_principal(void) // A finir
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
         rest(1);
-
 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
@@ -435,7 +411,6 @@ int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affich
     }
     return quitter;
 }
-
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
 {
     /* Lance les credits
@@ -460,7 +435,6 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
     int vitesse = 25;
     int depart_texte = 400;
     int Stardelay = 10;
-
     t_star TabStar[LIMIT_STAR];          //Etoile dans le fond
         for (int j=0 ; j<LIMIT_STAR; j++) {
         TabStar[j].posY = 1000;
@@ -471,17 +445,12 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
     {
         clear_bitmap(page);
         blit(visuel_menu->visuel, page, visuel_menu->position_x, 0, 0, 0, 800, 600);
-
         ////////////////////////// DESSIN MENU //////////////////////////
-
         rect(page, 80, 50, 150, 80, makecol(255, 0, 0));
-
         line(page, 80, 30, 40, 65, makecol(255, 0, 0));
         line(page, 80, 100, 40, 65, makecol(255, 0, 0));
         line(page, 80, 100, 80, 30, makecol(255, 0, 0));
-
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
-
         // Rajouter le texte des crédits
         rectfill(page, 150, 100, 675, 525, makecol(40,40,40));
         rectfill(page, 155, 105, 670, 520, makecol(20,20,20));
@@ -497,18 +466,14 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
 
         clear_to_color(fond_credit, makecol(0, 0, 0));
         rectfill(fond_credit, 40, 30, 150, 100, makecol(255, 0, 0));
-
         ////////////////////////// DETECTION BOUTON //////////////////////////
-
         if (getpixel(fond_credit, mouse_x, mouse_y) == makecol(255, 0, 0))
         {
             if (mouse_b & 1)
             {
                 return;
             }
-
         }
-
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
 
@@ -546,18 +511,13 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
     {
         clear_bitmap(page);
         blit(visuel_menu->visuel, page, visuel_menu->position_x, 0, 0, 0, 800, 600);
-
         ////////////////////////// DESSIN MENU //////////////////////////
-
         rect(page, 80, 50, 150, 80, makecol(255, 0, 0));
-
         line(page, 80, 30, 40, 65, makecol(255, 0, 0));
         line(page, 80, 100, 40, 65, makecol(255, 0, 0));
         line(page, 80, 100, 80, 30, makecol(255, 0, 0));
-
         rectfill(page, 200, 200, 300, 300, makecol(255, 255, 0));
         rectfill(page, 500, 200, 600, 300, makecol(255, 0, 225));
-
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
         textout_ex(page, font, "Pleine ecran", 205, 225, makecol(0, 0, 0), -1);
         textout_ex(page, font, "Fenetre", 525, 225, makecol(0, 0, 0), -1);
@@ -586,9 +546,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
             {
                 return;
             }
-
         }
-
         if (getpixel(fond_parametre, mouse_x, mouse_y) == makecol(255, 255, 0))
         {
             if ((mouse_b & 1) && (mode_graphique == 1))
@@ -597,9 +555,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
                 allegro_message("Fonctionnalite indisponible");
                 mode_graphique = 0;
             }
-
         }
-
         if (getpixel(fond_parametre, mouse_x, mouse_y) == makecol(255, 0, 255))
         {
             if (mouse_b & 1)
@@ -741,8 +697,6 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
 
 
         textout_ex(page, font, "Retour", 90, 60, makecol(255, 0, 0), -1);
-
-
 
 
         // Afficher les classes
@@ -918,19 +872,6 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
