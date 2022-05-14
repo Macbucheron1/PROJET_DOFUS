@@ -8,14 +8,12 @@
 void menu_principal(void) // A finir
 {
     ///////////////////////////// INITALISATION VARIABLE /////////////////////////////////////
-
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
     BITMAP* page = create_bitmap(SCREEN_W,SCREEN_H);
     FONT* arial_16 = load_font("arial_14.pcx", NULL, NULL);
     SAMPLE* musique = load_wav("imperial_march.wav");
     BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
     erreur_chargement_image(soldat);
-
     t_decor visuel_menu;
     BITMAP* tab_bitmap[4];
     tab_bitmap[0] = load_bitmap("map_desert.bmp", NULL);
@@ -33,20 +31,14 @@ void menu_principal(void) // A finir
     visuel_menu.avancement_y = 1;
     visuel_menu.position_x = 0;
     visuel_menu.position_y = 0;
-
     t_acteur jedi1;
     init_acteur(&jedi1, 800, 160, soldat, 8, 8, 32, 108, 96, 94);
-
-
     t_acteur mesActeurs[10];
     mesActeurs[0] = jedi1;
-
-
     if (!musique) { //blindage
         allegro_exit();
         exit(EXIT_FAILURE);
     }
-
     int quitter = 0;
     int couleur_quitter = makecol(0,255,255);
     int couleur_jouer = makecol(255,0,0);
@@ -57,7 +49,6 @@ void menu_principal(void) // A finir
     int volume=200;
     unsigned int temps=0;
     play_sample(musique,volume,128,1000,1);
-
      ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
@@ -68,9 +59,7 @@ void menu_principal(void) // A finir
         blit(visuel_menu.visuel, visuel_menu.visuel, 0, 0, 2400, 0, 800, 600);
         blit(visuel_menu.visuel, page, visuel_menu.position_x, 0, 0, 0, 800, 600);
         clear_to_color(fond_menu, makecol(0, 0, 0));
-
         ///////////////////////////// Dessin Bouton pour quitter /////////////////////////////////////
-
         rectfill(fond_menu, 10, 10, 30, 32, couleur_quitter);
         rectfill(page, 10, 10, 33, 34, makecol(190,190,190));
         rectfill(page, 12, 12, 31, 32, makecol(175,175,175));
@@ -79,15 +68,38 @@ void menu_principal(void) // A finir
 
         ///////////////////////////// Dessin Bouton du menu /////////////////////////////////////
 
-	@@ -110,75 +70,50 @@ void menu_principal(void) // A finir
+
+        rectfill(fond_menu, 250, 150, 560, 210, couleur_jouer); // Jouer
+
+        rectfill(fond_menu, 250, 250, 560, 310, couleur_apercu_classe); // Aperçu des classes
+
+        rectfill(fond_menu, 250, 350, 560, 410, couleur_parametre); // Parametre
+
+        rectfill(fond_menu, 250, 450, 560, 510, couleur_credit); // Credit
+
+         ///////////////////////////// DESSIN MENU /////////////////////////////////////
+
+        rectfill(page, 250, 150, 560, 210, makecol(190,190,190));
+        rectfill(page, 253, 153, 557, 207, makecol(175,175,175));
+        rectfill(page, 256, 156, 554, 204, makecol(160,160,160));
+        textprintf_ex(page, font, 270, 170, makecol(0,0,0), -1, "Jouer"); // JOUER
+
+        rectfill(page,  250, 250, 560, 310, makecol(190,190,190));
+        rectfill(page, 253, 253, 557, 307, makecol(175,175,175));
+        rectfill(page, 256, 256, 554, 304, makecol(160,160,160));
+        textprintf_ex(page, font, 270, 270, makecol(0,0,0), -1, "Apercu des classes"); // APERCU DES CLASSES
+
+        rectfill(page, 250, 350, 560, 410, makecol(190,190,190));
+        rectfill(page, 253, 353, 557, 407, makecol(175,175,175));
+        rectfill(page, 256, 356, 554, 404, makecol(160,160,160));
+        textprintf_ex(page, font, 270, 370, makecol(0,0,0), -1, "Parametre"); // PARAMETRE
+
+        rectfill(page, 250, 450, 560, 510, makecol(190,190,190));
+        rectfill(page, 253, 453, 557, 507, makecol(175,175,175));
         rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
-
-
          ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
-
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
         {
             rectfill(page, 10, 10, 33, 34, makecol(210,210,210));
@@ -99,7 +111,6 @@ void menu_principal(void) // A finir
                 quitter = 1;
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_jouer) // JOUER
         {
             rectfill(page, 250, 150, 560, 210, makecol(210,210,210));
@@ -110,10 +121,8 @@ void menu_principal(void) // A finir
             {
                 rest(100);
                  quitter=nouvellePartie(page);
-
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
         {
             rectfill(page,  250, 250, 560, 310, makecol(210,210,210));
@@ -125,7 +134,6 @@ void menu_principal(void) // A finir
                 apercu_classe_en_cours(page, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_parametre) // PARAMETRE
         {
             rectfill(page, 250, 350, 560, 410, makecol(210,210,210));
@@ -134,11 +142,9 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Parametre");
             if (mouse_b & 1)
             {
-
                 parametre_en_cours(page, &visuel_menu, musique, &volume, soldat, mesActeurs, &delay, tab_bitmap, &temps);
             }
         }
-
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_credit) // CREDIT
         {
             rectfill(page, 250, 450, 560, 510, makecol(210,210,210));
@@ -147,19 +153,18 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "Credit");
             if (mouse_b & 1)
             {
-
                 credit_en_cours(page, &visuel_menu, soldat, mesActeurs, &delay, &temps, tab_bitmap);
             }
         }
         montre_curseur(page,curseur);
-
         /////////////////////////////  /////////////////////////////////////
+
+
 
 
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
         rest(1);
-
 
         blit(page, screen, 0, 0, 0, 0, 800, 600);
     }
