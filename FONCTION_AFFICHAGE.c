@@ -467,6 +467,453 @@ void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
 }
 
 
+void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_decor* visuel_menu, BITMAP* tableau_map[], unsigned int* temps)
+{
+    /* Anime le decor du menu
+    Prend en parametre la bitmap des personnages, le tableau d'acteurs, le delay, le decor du menu, le tableau de bitmap de map et le temps
+    Ne Renvoie rien*/
+        blit(tableau_map[2], visuel_menu->visuel, 0, 0, 2400, 0, 800, 600);
+        blit(tableau_map[0], visuel_menu->visuel, 0, 0, 1600, 0, 800, 600);
+        blit(tableau_map[1], visuel_menu->visuel, 0, 0, 800, 0, 800, 600);
+        blit(tableau_map[2], visuel_menu->visuel, 0, 0, 0, 0, 800, 600);
+        masked_blit(mesActeurs[0].skin, visuel_menu->visuel, mesActeurs[0].position_bitmap.x, mesActeurs[0].position_bitmap.y, mesActeurs[0].position.x, mesActeurs[0].position.y, 32,64);
+        *delay = (*delay+1)%10;
+
+
+        if (clock()-(*temps) <= 6000)
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        else if (clock()-(*temps)<6030)
+        {
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_bas.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_bas.x;
+            animation_vers_bas(*delay, &mesActeurs[0], 10, 500);
+        }
+        else if (clock()-(*temps)<7710)
+            animation_vers_bas(*delay, &mesActeurs[0], 1, 800);
+        else if (clock()-(*temps)<7760)
+        {
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_gauche.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_gauche.x;
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        }
+        else if (clock()-(*temps)<16000)
+            animation_vers_gauche(*delay, &mesActeurs[0], 800, 1);
+        else if (clock()-(*temps)<25000)
+        {
+            mesActeurs[0].respiration+=1;
+            mesActeurs[0].position_bitmap.y = 14;
+            if (mesActeurs[0].respiration <= 80)
+                mesActeurs[0].position_bitmap.x = 409;
+            else if (mesActeurs[0].respiration<=120)
+                mesActeurs[0].position_bitmap.x = 409+94;
+            else
+                mesActeurs[0].respiration = 0;
+        }
+        else
+        {
+            *temps = clock();
+            mesActeurs[0].position.y = 150;
+            mesActeurs[0].position.x = 800;
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_gauche.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_gauche.x;
+        }
+
+/*
+        if (animation_vers_gauche(*delay, &mesActeurs[0], 800, 700) == 1)
+        {
+            mesActeurs[0].position_bitmap.y = mesActeurs[0].debut_bitmap.base_droite.y;
+            mesActeurs[0].position_bitmap.x = mesActeurs[0].debut_bitmap.base_droite.x;
+            animation_vers_droite(*delay, &mesActeurs[0], 700, 800);
+        }*/
+
+        if (visuel_menu->position_x >= 2399)
+        {
+            visuel_menu->position_x = 1;
+        }
+        visuel_menu->position_x += visuel_menu->avancement_x;
+}
+
+
+
+int animation_vers_gauche(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x)
+{
+    /* Anime le joueur vers le gauche
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.x>position_final_x)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_gauche.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_gauche.x;
+            monActeur->position.x -= monActeur->deplacement.x;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
+
+int animation_vers_droite(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x)
+{
+    /* Anime le joueur vers le droite
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.x<position_final_x)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_droite.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_droite.x;
+            monActeur->position.x += monActeur->deplacement.x;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
+
+int animation_vers_bas(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y)
+{
+    /* Anime le joueur vers le bas
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.y<position_final_y)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_bas.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_bas.x;
+            monActeur->position.y += monActeur->deplacement.y;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
+
+int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y)
+{
+    /* Anime le joueur vers le haut
+    Prend en parametre le delay d'animation, un pointeur sur l'acteur, la position du debut et la position de fin
+    Renvoie 0 si animation pas fini
+    Renvoie 1 si animation fini */
+    if (delay == 1)
+    {
+        if (monActeur->position.y>position_final_y)
+        {
+            monActeur->position_bitmap.x = monActeur->position_bitmap.x + monActeur->deplacement_bitmap.x;
+            if (monActeur->position_bitmap.x >= monActeur->fin_bitmap.base_haut.x)
+                monActeur->position_bitmap.x = monActeur->debut_bitmap.base_haut.x;
+            monActeur->position.y -= monActeur->deplacement.y;
+        }
+        else
+            return 1;
+    }
+    return 0;
+}
+
+void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar, BITMAP*avatar2, BITMAP* avatar3, BITMAP* avatar4 )
+{
+    int i;
+    draw_sprite(buffer, avatar,3,90);
+    draw_sprite(buffer, avatar2,10,20);
+    draw_sprite(buffer, avatar3,33,90);
+    draw_sprite(buffer, avatar4,63,90);
+
+
+    for(i = 0; i<3; i++)
+    {
+        rectfill(buffer, 750+2*i, 10+2*i, 790-2*i, 50-2*i, makecol(190-15*i,190-15*i,190-15*i));
+        //rectfill(buffer, 18+2*i, 20+2*i, 78-2*i, 80-2*i, makecol(190-15*i,190-15*i,190-15*i));
+    }
+    for(i = 0; i<3; i++)
+    {
+        hline(buffer, 760, 22+8*i,780,makecol(96,96,96));
+    }
+    for(i = 0;i<6;i++)
+    {
+        for(int j=0;j<3;j++)
+        {
+            rectfill(buffer, 100+108*i+2*j, 555+2*j, 200+108*i-2*j, 585-2*j, makecol(190-15*j,190-15*j,190-15*j));
+        }
+    }
+    for(i = 0; i<3;i++)
+    {
+        for(int j = 0; j<3;j++)
+        {
+            //rectfill(buffer, 10+26*i+2*j, 180+2*j, 35+26*i-2*j, 205-2*j, makecol(190-15*j,190-15*j,190-15*j));
+        }
+    }
+}
+
+void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[])
+{
+    blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);
+    affichage_grille(buffer);
+}
+
+void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception){       //Affiche tous les Perso sauf l'indice exception
+    for(int i=0; i<nbJoueurs;i++)
+            if(i!=exception)
+               {
+                    if(Joueurs[i].classe.numero_classe==1)
+                        masked_blit(soldat,buffer, 409, 14, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-30, 32,64);
+                    else if(Joueurs[i].classe.numero_classe==2)
+                        masked_blit(soldat,buffer, 944, 165, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-30, 32,64);
+                    else if(Joueurs[i].classe.numero_classe==3)
+                        masked_blit(soldat,buffer, 932, 417, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-25, 32,64);
+                    /*else if(Joueurs[i].classe.numero_classe==4)
+                        masked_blit(soldat,buffer, 932, 417, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-25, 32,64);*/
+               }
+}
+
+void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[])
+{
+    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
+    int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
+
+    int x2;
+    int y2;
+
+    int x;
+    x1+=8;
+        for(int i=0; i<PM;i++)
+        {
+            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnées en pixels de la case suivante
+            y2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_y;
+            x=32;
+
+            while(x1<x2)                                                                                                                                   //Aller a droite
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 14, x1,y1-30, 32,64);
+                x=x+96;
+                if (x>=340)
+                    x=32;
+                x1+=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(y1>y2)                                                                                                                                    //Monter
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 300, x1,y1-30, 32,64);
+                x=x+96;
+                if (x>=340)
+                    x=32;
+                y1-=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(x1>x2)                                                                                                                                   //Aller a gauche
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 108, x1,y1-30, 32,64);
+                x=x+96;
+                if (x>=340)
+                    x=32;
+                x1-=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(y1<y2)                                                                                                                                    //Descendre
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 207, x1,y1-30, 32,64);
+                x=x+96;
+                if (x>=340)
+                    x=32;
+                y1+=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+
+
+
+        }
+    blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
+    affichage_grille(buffer);
+}
+
+void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[])
+{
+    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
+    int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
+
+    int x2;
+    int y2;
+
+    int x;
+    x1+=8;
+        for(int i=0; i<PM;i++)
+        {
+            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnées en pixels de la case suivante
+            y2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_y;
+            x=630;
+
+            while(x1<x2)                                                                                                                                   //Aller a droite
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 7, x1,y1-30, 36,64);
+                x=x+77;
+                if (x>=890)
+                    x=630;
+                x1+=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(y1>y2)                                                                                                                                    //Monter
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 247, x1,y1-30, 36,64);
+                x=x+77;
+                if (x>=890)
+                    x=630;
+                y1-=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(x1>x2)                                                                                                                                   //Aller a gauche
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 85, x1,y1-30, 36,64);
+                x=x+77;
+                if (x>=890)
+                    x=630;
+                x1-=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(y1<y2)                                                                                                                                    //Descendre
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 166, x1,y1-30, 36,64);
+                x=x+77;
+                if (x>=890)
+                    x=630;
+                y1+=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+
+
+
+        }
+    blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
+    affichage_grille(buffer);
+}
+
+void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[])
+{
+    int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
+    int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
+
+    int x2;
+    int y2;
+
+    int x;
+    x1+=8;
+        for(int i=0; i<PM;i++)
+        {
+            x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnées en pixels de la case suivante
+            y2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_y;
+            x=630;
+
+            while(x1<x2)                                                                                                                                   //Aller a droite
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 417, x1,y1-30, 33,64);
+                x=x+75;
+                if (x>=870)
+                    x=630;
+                x1+=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(y1>y2)                                                                                                                                    //Monter
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 566, x1,y1-30, 33,64);
+                x=x+75;
+                if (x>=870)
+                    x=630;
+                y1-=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(x1>x2)                                                                                                                                   //Aller a gauche
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 340, x1,y1-30, 33,64);
+                x=x+75;
+                if (x>=870)
+                    x=630;
+                x1-=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+            while(y1<y2)                                                                                                                                    //Descendre
+            {
+                AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                masked_blit(soldat,buffer, x, 492, x1,y1-30, 33,64);
+                x=x+75;
+                if (x>=870)
+                    x=630;
+                y1+=8;
+                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+                rest(100);
+                clear(buffer);
+
+            }
+
+
+
+        }
+    blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
+    affichage_grille(buffer);
+}
+
 /** pour les attaques **/
 
 void afficheSouris_attaque(BITMAP* buffer,t_map carte, int zoneAttaque[20][16])
