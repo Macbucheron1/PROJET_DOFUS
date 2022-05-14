@@ -230,6 +230,7 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
     Prend en parametre la carte, le chemin (vide), la position finale/initiale du joueur et le nombre de pm (determiner par cette fonction)
      modifie le tableau chemin et le nombre de PM utilisés
      renvoie -1 si le chemin est invalide, sinon renvoie 1 */
+
     int nbSommets,nbAretes;
     int tab[20][16]={   {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15},                                //Defini tous les sommets du graphe
                         {16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31},
@@ -247,27 +248,39 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
                         {208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223},
                         {224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239},
                         {240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255},
-	@@ -273,17 +271,16 @@
+                        {256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271},
+                        {272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287},
+                        {288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303},
+                        {304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319} };
+
+
+
+    nbSommets = 320;            //nombre de sommet
+    int edges[384][2];      //Tous les angles reliant les sommets du graphe (cases)
+    int ajout=0;
+
+    for(int i=0; i<20; i++)                                             //bouvle permettant d'initialiser chaques angles du graphe
+    {
         for(int j=0; j<16;j++)
         {
 
             if(caseDisponible(carte, i, j, Joueurs, nbJoueurs))
             {
-
                 if(j<15 && caseDisponible(carte,i, j+1,Joueurs,nbJoueurs))                   //case de droite du tab        en dessous(sur la map)
                 {
                     edges[ajout][0]=tab[i][j];
                     edges[ajout][1]=tab[i][j+1];
                     ajout++;
                 }
-
                 if(i<19 && caseDisponible(carte,i+1, j, Joueurs, nbJoueurs))                   //case d'en dessous du tab     a droite(sur la map)
                 {
                     edges[ajout][0]=tab[i][j];
                     edges[ajout][1]=tab[i+1][j];
                     ajout++;
                 }
+
             }
+
         }
     }
 
@@ -275,14 +288,15 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
     int Adj[nbSommets + 1][nbSommets + 1];      //matrice d'adjacence
 
     createAdjMatrix(Adj, edges,nbSommets,nbAretes);
+
     int chemin[PM];             //tableau contenant le chemin dans le graphe
     int start,finish,distance;
+
     start=tab[x1][y1];          //point de depart ppiur le calcul du chemin
     finish=tab[x2][y2];         //point d'arivée pour le calcul du chemin
 
     int chemin_valide=dijkstra(Adj,nbSommets+1,start,finish,chemin, &distance,PM);    //variable qui =-1 si le chemin est invalide
     *PM_utilises=distance;      //PM utilisees pour parcourir le chemin
-
     for(int i=0;i<PM;i++)           //Pour chaque sommet du chemin, on va chercher ses coordonées en (x,y) car plus adapté au tableau (map)
     {
         for(int x=0;x<20;x++)
@@ -296,6 +310,7 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords ch
                 }
             }
         }
+
     }
     return chemin_valide;
 
