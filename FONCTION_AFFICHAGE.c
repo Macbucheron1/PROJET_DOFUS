@@ -46,15 +46,14 @@ void affichage_grille(BITMAP* buffer)
     }
 }
 
-void montre_curseur(BITMAP* page)
+void montre_curseur(BITMAP* page, BITMAP* curseur)
 {
     /* Permet d'afficher un curseur personnalisé
     Prend en parametre la bitmap sur laquel affiché le curseur
     Ne renvoie rien*/
-    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
-    erreur_chargement_image(curseur);
     draw_sprite(page, curseur, mouse_x, mouse_y);
 }
+
 
 
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
@@ -109,101 +108,6 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
         AnimationClasse3(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs);
     /*else if(Joueurs[indiceActuel].classe.numero_classe==4)
         AnimationClasse4(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs);*/
-}
-
-void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_desert)
-{
-        /* Permet d'afficher la classe jedi
-        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
-        Ne renvoie rien */
-        rectfill(page, 110 - 3, 100 - 3, 210 + 3, 200 + 3, makecol(40, 40, 40));
-        rectfill(page, 110, 100, 210, 200, makecol(20, 20, 20));
-        rectfill(page, 110 + 3, 100 + 3, 210 - 3, 200 - 3, makecol(0, 0, 0));
-        masked_blit(map_desert, page, 100, 100, 111, 101, 98, 98);
-        *nouvelle_affichage = *nouvelle_affichage + 1;
-        if (*nouvelle_affichage%10 == 0)
-        {
-            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 96;
-        }
-        if (*position_x_bitmap_soldat>=340)
-        {
-            *position_x_bitmap_soldat = 32;
-        }
-        if (*nouvelle_affichage >= 80)
-        {
-            *direction_soldat = *direction_soldat + 1;
-            *nouvelle_affichage = 0;
-        }
-        if (*direction_soldat >= 4)
-        {
-            *direction_soldat = 0;
-        }
-        else if (*direction_soldat == 0)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 207, position_affichage_x,position_affichage_y-30, 32,64);
-        }
-        else if (*direction_soldat == 1)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 14, position_affichage_x,position_affichage_y-30, 32,64);
-        }
-        else if (*direction_soldat == 2)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 300, position_affichage_x,position_affichage_y-30, 32,64);
-        }
-        else if (*direction_soldat == 3)
-        {
-           masked_blit(soldat,page, *position_x_bitmap_soldat, 108, position_affichage_x,position_affichage_y-30, 32,64);
-        }
-
-
-}
-
-
-void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige)
-{
-        /* Permet d'afficher la classe Dark vador
-        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
-        Ne renvoie rien */
-        rectfill(page, 460 - 3, 100 - 3, 560 + 3, 200 + 3, makecol(40, 40, 40));
-        rectfill(page, 460, 100, 560, 200, makecol(20, 20, 20));
-        rectfill(page, 460 + 3, 100 + 3, 560 - 3, 200 - 3, makecol(0, 0, 0));
-        masked_blit(map_neige, page, 100, 200, 461, 101, 98, 98);
-        *nouvelle_affichage = *nouvelle_affichage + 1;
-        if (*nouvelle_affichage%10 == 0)
-        {
-            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 75;
-        }
-        if (*position_x_bitmap_soldat>=870)
-        {
-            *position_x_bitmap_soldat = 630;
-        }
-        if (*nouvelle_affichage >= 80)
-        {
-            *direction_soldat = *direction_soldat + 1;
-            *nouvelle_affichage = 0;
-        }
-        if (*direction_soldat >= 4)
-        {
-            *direction_soldat = 0;
-        }
-        else if (*direction_soldat == 0)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 492, position_affichage_x,position_affichage_y-30, 33,64);
-        }
-        else if (*direction_soldat == 1)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 417, position_affichage_x,position_affichage_y-30, 33,64);
-        }
-        else if (*direction_soldat == 2)
-        {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 566, position_affichage_x,position_affichage_y-30, 33,64);
-        }
-        else if (*direction_soldat == 3)
-        {
-           masked_blit(soldat,page, *position_x_bitmap_soldat, 340, position_affichage_x,position_affichage_y-30, 33,64);
-        }
-
-
 }
 
 void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville)
@@ -465,6 +369,101 @@ int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FO
 
 
         return police;
+}
+
+void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_desert)
+{
+        /* Permet d'afficher la classe jedi
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Ne renvoie rien */
+        rectfill(page, 110 - 3, 100 - 3, 210 + 3, 200 + 3, makecol(40, 40, 40));
+        rectfill(page, 110, 100, 210, 200, makecol(20, 20, 20));
+        rectfill(page, 110 + 3, 100 + 3, 210 - 3, 200 - 3, makecol(0, 0, 0));
+        masked_blit(map_desert, page, 100, 100, 111, 101, 98, 98);
+        *nouvelle_affichage = *nouvelle_affichage + 1;
+        if (*nouvelle_affichage%10 == 0)
+        {
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 96;
+        }
+        if (*position_x_bitmap_soldat>=340)
+        {
+            *position_x_bitmap_soldat = 32;
+        }
+        if (*nouvelle_affichage >= 80)
+        {
+            *direction_soldat = *direction_soldat + 1;
+            *nouvelle_affichage = 0;
+        }
+        if (*direction_soldat >= 4)
+        {
+            *direction_soldat = 0;
+        }
+        else if (*direction_soldat == 0)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 207, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+        else if (*direction_soldat == 1)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 14, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+        else if (*direction_soldat == 2)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 300, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+        else if (*direction_soldat == 3)
+        {
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 108, position_affichage_x,position_affichage_y-30, 32,64);
+        }
+
+
+}
+
+
+void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige)
+{
+        /* Permet d'afficher la classe Dark vador
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Ne renvoie rien */
+        rectfill(page, 460 - 3, 100 - 3, 560 + 3, 200 + 3, makecol(40, 40, 40));
+        rectfill(page, 460, 100, 560, 200, makecol(20, 20, 20));
+        rectfill(page, 460 + 3, 100 + 3, 560 - 3, 200 - 3, makecol(0, 0, 0));
+        masked_blit(map_neige, page, 100, 200, 461, 101, 98, 98);
+        *nouvelle_affichage = *nouvelle_affichage + 1;
+        if (*nouvelle_affichage%10 == 0)
+        {
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 75;
+        }
+        if (*position_x_bitmap_soldat>=870)
+        {
+            *position_x_bitmap_soldat = 630;
+        }
+        if (*nouvelle_affichage >= 80)
+        {
+            *direction_soldat = *direction_soldat + 1;
+            *nouvelle_affichage = 0;
+        }
+        if (*direction_soldat >= 4)
+        {
+            *direction_soldat = 0;
+        }
+        else if (*direction_soldat == 0)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 492, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+        else if (*direction_soldat == 1)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 417, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+        else if (*direction_soldat == 2)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 566, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+        else if (*direction_soldat == 3)
+        {
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 340, position_affichage_x,position_affichage_y-30, 33,64);
+        }
+
+
 }
 
 /** pour les attaques **/
