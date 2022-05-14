@@ -93,6 +93,7 @@ int position_souris_ligne(void)
     return -1;
 }
 
+
 void prepa_alleg(void)
 {
     /* Lance alleg init et verifie qu'il fonctionne bien
@@ -105,6 +106,11 @@ void prepa_alleg(void)
     if (set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0)!=0)
     {
         allegro_message("prb gfx mode");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
+	if (install_sound(DIGI_AUTODETECT, MIDI_NONE, 0) != 0) {
+        printf("Error initialising sound: %s\n", allegro_error);
         allegro_exit();
         exit(EXIT_FAILURE);
     }
