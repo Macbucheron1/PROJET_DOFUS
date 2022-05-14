@@ -163,14 +163,16 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
 t_joueur init_joueur(char* nom_joueur,int num_joueur,t_personnage classe_choisie); //initialise les joueurs
 void init_map(t_map* carte); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
+void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y); // Initialise un acteurs
 
 /* ----------- PRINCIPALE ----------- */
 
 void menu_principal(void); // Lance le menu principale
-void jouer(void); // Permet de jouer
-void credit_en_cours(BITMAP* page, t_decor* visuel_menu); //Lance les credits
-void parametre_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance les parametres
-void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu); // Lance l'apercu des classes
+
+int jouer(t_joueur Joueurs[], int nbJoueurs); // Permet de jouer
+void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[]) ; //Lance les credits
+void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps); // Lance les parametres
+void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[],unsigned int* temps); // Lance l'apercu des classes
 
 /* ----------- ATTAQUE ----------- */
 
