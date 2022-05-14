@@ -33,7 +33,7 @@ typedef struct Map{
 }t_map;
 
 typedef struct Personnage{ //les classes
-    int numero_classe; // de 1 à 4 pour differencier les classes plus facilement
+    int numero_classe; // de 1 ï¿½ 4 pour differencier les classes plus facilement
     char nom_classe[TAILLE_NOM_CLASSE];
     int pv_max; //si soin ne pas depasser ce pv max
     int pm_max; // afin de remettre a ca a chaque tour
@@ -61,7 +61,7 @@ typedef struct Joueur{
     bool en_feu; //si true prend des degats sinon rien
     int tour_en_feu; //comme tour bouclier
     int tour_en_feu_max; //pareil
-    int nb_bacta; //initialiser a 0 contre le nombre de seringue utilisée
+    int nb_bacta; //initialiser a 0 contre le nombre de seringue utilisï¿½e
     int nb_bacta_max; //limite l'utilisation de seringue de bacta (pour les chasseur de primes)
 
     int pm_max_actu_mage; //sert a la remise au max (ne pas utiliser pm_max des classe pour les mages) a chaque tout active que pour les mages (prise en compte de meditation)
@@ -86,28 +86,57 @@ typedef struct star {
 
 void changement_graphique(int valeur); // Permet de changer de mode graphique
 void affichage_grille(BITMAP* buffer); // Permet d'afficher la grille sur la map
-void montre_curseur(BITMAP* page); // Permet d'afficher un curseur personnalisé
+void montre_curseur(BITMAP* page); // Permet d'afficher un curseur personnalisï¿½
 void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //permet d'afficher un personnage
-void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelé par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
-void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelé par SurbrillanceDeplacement et affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
+
+void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelï¿½ par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
+void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelï¿½ par SurbrillanceDeplacement et affiche un carrï¿½ bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
 void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, t_joueur joueurActuel, coords chemin[], int PM); // Fait l'animation de deplacement
 int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8);
 
+void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelÃ© par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
+void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelÃ© par SurbrillanceDeplacement et affiche un carrÃ© bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
+void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs,t_joueur Joueurs[]); // Fait l'animation de deplacement
+void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar, BITMAP*avatar2, BITMAP* avatar3, BITMAP* avatar4 ); // A commenter
+int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille); // A commenter
+void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville); // Affiche la classe clone
+void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige); // Affiche la classe dark vador
+void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_desert); // Affiche la classe jedi
+int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8); // Affiche les credits
+void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_decor* visuel_menu, BITMAP* tableau_map[], unsigned int* temps); // Anime tout le decor du mennu
+int animation_vers_gauche(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x); // Anime le personnage vers la gauche
+int animation_vers_droite(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x);// Anime le personnage vers la droite
+int animation_vers_bas(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y);// Anime le personnage vers le bas
+int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y);// Anime le personnage vers le haut
+void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception);
+void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[]);
+void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[]);
+void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[]);
+void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[]);       //Affiche tous les Perso szuf l'indice exception
+
+
 /* ----------- SOUS PROGRAMME ----------- */
 
-void remplir_tab_coordonnes(t_map* carte); // Permet de remplir les coordonnées de la map
+void remplir_tab_coordonnes(t_map* carte); // Permet de remplir les coordonnï¿½es de la map
 void remplir_map_obstacle(t_map* carte); // Permet de remplir les types de chaque case
 int position_souris_colonne(void); // Renvoie la colonne dans lequel se situe la souris, renvoie -1 si pas dans une colonne
 int position_souris_ligne(void); // Renvoie la ligne dans lequel se situe la souris, renvoie -1 si pas dans une ligne
 void prepa_alleg(void); // Lance alleg init et verifie qu'il fonctionne bien
 void erreur_chargement_image(BITMAP* image); // Verifie qu'on a bien charger l'image
 void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int tab[20][16], int PM_restant); //Remplis le tableau tab,avec des 1, sur les cases sur lesquelles peut aller le joueur
-int Deplacement(t_map carte, int zoneDeplacement[20][16], t_joueur* joueurActuel, BITMAP* buffer, BITMAP* soldat ); //Recupere dans la struct position, la position fde la souris lors du click, renvoie le nb de PM utilisés
+int Deplacement(t_map carte, int zoneDeplacement[20][16], t_joueur* joueurActuel, BITMAP* buffer, BITMAP* soldat ); //Recupere dans la struct position, la position fde la souris lors du click, renvoie le nb de PM utilisï¿½s
 int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords chemin1[], int* PM_utilises);//Stock le chemin dans le tableau chemin si il est possible, sinon renvoie -1
-int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM); //Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
-void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
+int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM); //Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case ï¿½ l'autre
+void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Crï¿½ï¿½ une matrice d'adjacence grï¿½ce a un tableau contenant toutes les liaisons d'un graphe
 int caseDisponible(t_map carte, int x, int y);  // permet de determiner si une case est disponible (sans obstacle ou joueur) ou pas
 int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen);
+
+
+int nouvellePartie(BITMAP* buffer);
+int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]); // stockage de la totalitÃ© de la saisie
+int nombreJoueurs(BITMAP* buffer);
+int caseDisponible2(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs, int exception);
+
 
 /* ----------- INITIALISATION ----------- */
 
@@ -139,7 +168,7 @@ void SurbrillanceAttaque(BITMAP* buffer,t_map carte, int zoneAttaque[20][16]); /
 /** GENERALE **/
 
 bool action_possible(t_joueur* tab_j,int i,int point_de_laction); //verification de PA necessaire
-void verif_bouclier(t_joueur* tab_j,int i); //remet a false si tour avc bouclier passé
+void verif_bouclier(t_joueur* tab_j,int i); //remet a false si tour avc bouclier passï¿½
 void verif_roulement(t_joueur* tab_j,int i); //remet a false apres un tour
 void verif_en_feu(t_joueur* tab_j,int i); //si en feu met des degats
 int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueur, BITMAP* buffer, BITMAP* animation, int nbJoueurs ); //verifie si on clique sur une case avc un joueur
@@ -150,7 +179,7 @@ void attaque(t_joueur* tab_j,int i,int j,BITMAP* buffer, BITMAP* page); //on aff
 void affichage_action_impossible(BITMAP* page); // pas assez de pa
 void affichage_action_impossible_nb(BITMAP* page); //trop d'utilisation
 void affichage_attaque_impossible(BITMAP* page); // personne sur la case
-void affichage_attaque_inefficace(BITMAP* page); // joueur attaqué a un bouclier
+void affichage_attaque_inefficace(BITMAP* page); // joueur attaquï¿½ a un bouclier
 
 /// POUR VOIR A QUOI CORRESPOND CHAQUE ATTAQUE VEUILLEZ VOUS REFEREZ AU DIFFERENT .C ASSOCIE
 

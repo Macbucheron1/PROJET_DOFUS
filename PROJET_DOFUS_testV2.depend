@@ -151,3 +151,26 @@
 1652472026 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\sous_prog.c
 	"HEADER.h"
 
+1652469402 source:c:\users\natha\desktop\projet_dofus-version-3\fonction_affichage.c
+	"HEADER.h"
+
+1652478742 c:\users\natha\desktop\projet_dofus-version-3\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<stdbool.h>
+	<time.h>
+
+1652469402 source:c:\users\natha\desktop\projet_dofus-version-3\initialisation.c
+	"HEADER.h"
+
+1652469402 source:c:\users\natha\desktop\projet_dofus-version-3\main.c
+	"HEADER.h"
+
+1652478753 source:c:\users\natha\desktop\projet_dofus-version-3\principale.c
+	"HEADER.h"
+	<time.h>
+
+1652469402 source:c:\users\natha\desktop\projet_dofus-version-3\sous_prog.c
+	"HEADER.h"
+
