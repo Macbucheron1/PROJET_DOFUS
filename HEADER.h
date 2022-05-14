@@ -111,7 +111,7 @@ typedef struct{
 
 void changement_graphique(int valeur); // Permet de changer de mode graphique
 void affichage_grille(BITMAP* buffer); // Permet d'afficher la grille sur la map
-void montre_curseur(BITMAP* page); // Permet d'afficher un curseur personnalis�
+void montre_curseur(BITMAP* page, BITMAP* curseur); // Permet d'afficher un curseur personnalisé
 void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //permet d'afficher un personnage
 
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appel� par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
