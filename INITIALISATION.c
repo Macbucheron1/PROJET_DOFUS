@@ -95,17 +95,17 @@ void init_decor(t_decor* decor)
     Prend en parametre le decor
     ne renvoie rien*/
 
-    BITMAP* tmp1 = load_bitmap("grandfond_decor.bmp", NULL);
-    erreur_chargement_image(tmp1);
     BITMAP* tmp2 = load_bitmap("map_desert.bmp", NULL);
     erreur_chargement_image(tmp2);
     BITMAP* tmp3 = load_bitmap("map_neige.bmp", NULL);
     erreur_chargement_image(tmp3);
+    BITMAP* tmp4 = load_bitmap("map_ville.bmp", NULL);
+    erreur_chargement_image(tmp4);
     decor->visuel =  create_bitmap(3200, SCREEN_H);
-    blit(tmp1, decor->visuel, 0, 0, 0, 0, 1600, 600);
-    blit(tmp1, decor->visuel, 0, 0, 1600, 0, 1600, 600);
+    blit(tmp4, decor->visuel, 0, 0, 2400, 0, 800, 600);
     blit(tmp2, decor->visuel, 0, 0, 1600, 0, 800, 600);
     blit(tmp3, decor->visuel, 0, 0, 800, 0, 800, 600);
+    blit(tmp4, decor->visuel, 0, 0, 0, 0, 800, 600);
     decor->avancement_x = 1;
     decor->avancement_y = 1;
     decor->position_x = 0;
