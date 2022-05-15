@@ -2,200 +2,60 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-
-	<File name="INITIALISATION.c" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="ATTAQUE_TANK.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="879" topLine="13" />
-		</Cursor>
-		<Folding>
-			<Collapse line="46" />
-			<Collapse line="92" />
-			<Collapse line="115" />
-		</Folding>
-	</File>
-	<File name="main.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="64" topLine="0" />
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="HEADER.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+	<File name="ATTAQUE_GENERALE.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5401" topLine="34" />
-
-	<File name="HEADER.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8818" topLine="133" />
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="PRINCIPALE.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="SOUS_PROG.c" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9789" topLine="240" />
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="359" />
-		</Folding>
 	</File>
-	<File name="INITIALISATION.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
+	<File name="PRINCIPALE.c" open="1" top="1" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3420" topLine="0" />
+			<Cursor1 position="3641" topLine="69" />
 		</Cursor>
-		<Folding>
-			<Collapse line="7" />
-			<Collapse line="65" />
-			<Collapse line="87" />
-			<Collapse line="98" />
-		</Folding>
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="ATTAQUE_MAGE.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="166" topLine="0" />
-
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="18" />
-			<Collapse line="23" />
-			<Collapse line="28" />
-			<Collapse line="34" />
-			<Collapse line="43" />
-			<Collapse line="70" />
-			<Collapse line="78" />
-		</Folding>
 	</File>
-	<File name="FONCTION_AFFICHAGE.c" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-4" zoom_2="0">
+	<File name="FONCTION_AFFICHAGE.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-
-			<Cursor1 position="7412" topLine="2" />
-
-			<Cursor1 position="36815" topLine="504" />
-
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="9" />
-			<Collapse line="33" />
-			<Collapse line="49" />
-			<Collapse line="60" />
-			<Collapse line="81" />
-			<Collapse line="82" />
-			<Collapse line="88" />
-			<Collapse line="98" />
-			<Collapse line="182" />
-			<Collapse line="400" />
-			<Collapse line="418" />
-		</Folding>
 	</File>
-	<File name="ATTAQUE_ARCHER.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="ATTAQUE_ARCHER.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1451" topLine="0" />
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-			<Collapse line="41" />
-			<Collapse line="76" />
-			<Collapse line="110" />
-			<Collapse line="144" />
-		</Folding>
 	</File>
-	<File name="ATTAQUE_TANK.c" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="ATTAQUE_GUERRIER.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2556" topLine="0" />
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-			<Collapse line="40" />
-			<Collapse line="46" />
-			<Collapse line="58" />
-			<Collapse line="76" />
-		</Folding>
 	</File>
-	<File name="ATTAQUE_GENERALE.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="INITIALISATION.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4274" topLine="0" />
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-			<Collapse line="20" />
-			<Collapse line="32" />
-			<Collapse line="43" />
-			<Collapse line="54" />
-			<Collapse line="65" />
-			<Collapse line="90" />
-			<Collapse line="146" />
-		</Folding>
 	</File>
-	<File name="PRINCIPALE.c" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="10689" topLine="130" />
+			<Cursor1 position="0" topLine="0" />
 		</Cursor>
-		<Folding>
-			<Collapse line="8" />
-			<Collapse line="386" />
-			<Collapse line="399" />
-
-			<Collapse line="482" />
-		</Folding>
 	</File>
-	<File name="ATTAQUE_MAGE.c" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
+	<File name="HEADER.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3318" topLine="0" />
+			<Cursor1 position="0" topLine="120" />
 		</Cursor>
-		<Folding>
-			<Collapse line="5" />
-			<Collapse line="40" />
-			<Collapse line="66" />
-			<Collapse line="92" />
-			<Collapse line="127" />
-		</Folding>
 	</File>
-	<File name="ATTAQUE_GUERRIER.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="94" topLine="0" />
-		</Cursor>
-		<Folding>
-			<Collapse line="4" />
-		</Folding>
-	</File>
-	<File name="SOUS_PROG.c" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="20064" topLine="29" />
-		</Cursor>
-		<Folding>
-
-			<Collapse line="446" />
-			<Collapse line="493" />
-			<Collapse line="538" />
-			<Collapse line="609" />
-			<Collapse line="622" />
-			<Collapse line="649" />
-			<Collapse line="664" />
-		</Folding>
-	</File>
-	<File name="SOUS_PROG.c" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="32847" topLine="674" />
-		</Cursor>
-		<Folding>
-
-			<Collapse line="9" />
-			<Collapse line="26" />
-			<Collapse line="64" />
-			<Collapse line="80" />
-
-			<Collapse line="96" />
-			<Collapse line="113" />
-			<Collapse line="128" />
-			<Collapse line="197" />
-			<Collapse line="228" />
-			<Collapse line="324" />
-			<Collapse line="344" />
-			<Collapse line="370" />
-			<Collapse line="440" />
-			<Collapse line="478" />
-			<Collapse line="546" />
-
-			<Collapse line="97" />
-			<Collapse line="398" />
-
-		</Folding>
-	</File>
-	<EditorTabsLayout layout="0861b390627ec4180002d7d700000002=0;PROJET_DOFUS_V2:ATTAQUE_GENERALE.c,*1;PROJET_DOFUS_V2:PRINCIPALE.c@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=839;besth=309;minw=839;minh=309;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=0861b390627ec4180002d7d700000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=300;besth=300;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=302|" />
+	<EditorTabsLayout layout="07be125062811b2000011ec000000002=0;PROJET_DOFUS_V2:main.c,1;PROJET_DOFUS_V2:ATTAQUE_ARCHER.c,2;PROJET_DOFUS_V2:ATTAQUE_GENERALE.c,3;PROJET_DOFUS_V2:ATTAQUE_GUERRIER.c,4;PROJET_DOFUS_V2:ATTAQUE_MAGE.c,5;PROJET_DOFUS_V2:ATTAQUE_TANK.c,6;PROJET_DOFUS_V2:FONCTION_AFFICHAGE.c,7;PROJET_DOFUS_V2:INITIALISATION.c,*8;PROJET_DOFUS_V2:PRINCIPALE.c,9;PROJET_DOFUS_V2:SOUS_PROG.c,10;PROJET_DOFUS_V2:HEADER.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=803;besth=309;minw=803;minh=309;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=07be125062811b2000011ec000000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=300;besth=300;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=302|" />
 </CodeBlocks_layout_file>

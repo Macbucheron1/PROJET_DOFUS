@@ -82,7 +82,7 @@ void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAtta
 
     if (action_possible(tab_j,i,PA))
     {
-        CalculAttaque_ligne(buffer,carte,tab_j[i].position_colonne,tab_j[i].position_ligne,zoneAttaque,distance);
+        CalculAttaque_ligne(buffer,carte,tab_j[i].position_colonne,tab_j[i].position_ligne,zoneAttaque,distance,tab_j,nb_joueur);
         SurbrillanceAttaque(buffer,carte,zoneAttaque);
         if((j>=0) && (j<=3)) //verifier que l'on clique sur un joueur lors de lattaque avec la fonction dans attaque generale
         {

@@ -54,6 +54,8 @@ typedef struct Joueur{
     int pm_actuel;
     int pa_actuel;
 
+    int elimine; //1 si elimine 0 s'il joue
+
     //pour les attaques
     bool bouclier; //si la classe tank active son bouclier true, sinon false
     int tour_bouclier; //commence a 0 et sincrement a chaque tour
@@ -179,7 +181,7 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
 /** SOUS-PROG **/
 
 void CalculAttaque_zone(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance); //voir sur quelle case on peut attaquer (en zone)
-void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance); //voir sur quelle case on peut attaquer (en ligne)
+void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance,t_joueur* tab_j,int nb_j)
 
 /** AFFICHAGE **/
 ;

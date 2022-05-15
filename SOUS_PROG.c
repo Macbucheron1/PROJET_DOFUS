@@ -924,7 +924,7 @@ void CalculAttaque_zone(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, 
 
 }
 
-void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance)
+void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneAttaque[20][16], int distance,t_joueur* tab_j,int nb_j)
 {
     /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
     Prend en parametre la bitmap d'affichage, la carte, la position du soldat, la zone de deplacement, les PM restants
@@ -942,7 +942,7 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
         }
     }
 
-    while(y>y_soldat-distance && y>=0 && caseDisponible(carte,x,y))
+    while(y>y_soldat-distance && y>=0 && caseDisponible(carte,x,y,tab_j,nb_j))
     {
         zoneAttaque[x][y]=1;
         if(y>0)
@@ -950,7 +950,7 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
     }
     y=y_soldat+1;
 
-    while(y<y_soldat+distance && y<=15 && caseDisponible(carte,x,y))
+    while(y<y_soldat+distance && y<=15 && caseDisponible(carte,x,y,tab_j,nb_j))
     {
         zoneAttaque[x][y]=1;
         if(y<150)
@@ -958,7 +958,7 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
     }
     y=y_soldat;
     x--;
-    while(x>x_soldat-distance && x>=0 && caseDisponible(carte,x,y))
+    while(x>x_soldat-distance && x>=0 && caseDisponible(carte,x,y,tab_j,nb_j))
     {
         printf("%d/%d\n", x,y);
         zoneAttaque[x][y]=1;
@@ -966,7 +966,7 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
             x--;
     }
     x=x_soldat+1;;
-    while(x<x_soldat+distance && x<=19 && caseDisponible(carte,x,y))
+    while(x<x_soldat+distance && x<=19 && caseDisponible(carte,x,y,tab_j,nb_j))
     {
         zoneAttaque[x][y]=1;
         if(x<19)

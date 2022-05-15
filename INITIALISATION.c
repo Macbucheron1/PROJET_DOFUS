@@ -85,6 +85,8 @@ t_joueur init_joueur(char* nom_joueur,int num_joueur,t_personnage classe_choisie
     j.nb_bacta=0;
     j.nb_bacta_max=5; //peux n'utiliser que 5 seringue au max
 
+    j.elimine=0;
+
     //on return le joueur crée
     return j;
 }

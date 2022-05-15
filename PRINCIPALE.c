@@ -234,7 +234,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     for(int i=0;i<nbJoueurs;i++)
     {
 
-        Joueurs[i].classe.pa_actuel=0;      //A supprimer
+        Joueurs[i].pa_actuel=0;      //A supprimer
         do
         {
             Joueurs[i].position_colonne=rand()%20;                      //On donne une position aléatoire à chaque joueur
@@ -247,62 +247,55 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
 
     while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
     {
-        printf("1\n");
+
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         int positionTmpY=-1;
 
-        joueurActuel->classe.pm_actuel=4; //joueurActuel.classe.pm_actuel=joueurActuel.classe.pm_max;    //On remet le pm max au joueur à chaque tour
+        Joueurs[indiceActuel].pm_actuel=4; //joueurActuel.pm_actuel=joueurActuel.pm_max;    //On remet le pm max au joueur à chaque tour
         temps1=clock();  //On stocke le temps en secondes dans temps1
         temps2=temps1+15000;
-         printf("2\n");
-        while(temps1<=temps2 && (joueurActuel->classe.pm_actuel>0 || joueurActuel->classe.pa_actuel>0))           //rajouter la condition si le joueurtuilise tous ses pm et pa
+        time_t dureeStop=0;     ///permet de determiner combien de temps le timer a été stoppé (A mettre en place)
+        time_t tmp1=0;
+        time_t tmp=0;
+
+        while(temps1<=temps2 && (Joueurs[indiceActuel].pm_actuel>0 || Joueurs[indiceActuel].pa_actuel>0))           //rajouter la condition si le joueurtuilise tous ses pm et pa
         {
-             printf("3\n");
-            temps1=clock(); //time(&temps1);
+            temps1=clock();
+
             int  zoneDeplacement[20][16];
             AfficheTout(page, soldat, carte, nbJoueurs, Joueurs);
-             printf("3\n");
             rect(page,230, 5, 630,25,makecol(0,0,0));                 //Affichage de la barre de temps restant
             rectfill(page,232, 7, (temps2-temps1)*400/15000+232,23,makecol(0,255,0));
 
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
-            if(joueurActuel->classe.pm_actuel>0){
-                if(joueurActuel->position_colonne!=positionTmpX || joueurActuel->position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
-                    CalculDeplacement(page,carte, joueurActuel->position_colonne,joueurActuel->position_ligne,zoneDeplacement, joueurActuel->classe.pm_actuel, Joueurs, nbJoueurs,indiceActuel);
-                    positionTmpX=joueurActuel->position_colonne;
-                    positionTmpY=joueurActuel->position_ligne;
+            if(Joueurs[indiceActuel].pm_actuel>0){
+                if(Joueurs[indiceActuel].position_colonne!=positionTmpX || Joueurs[indiceActuel].position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
+                    CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel);
+                    positionTmpX=Joueurs[indiceActuel].position_colonne;
+                    positionTmpY=Joueurs[indiceActuel].position_ligne;
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
-                joueurActuel->classe.pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs);
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs);
             }
             ////////////////////////////////////////////////////////////////////////////
-             printf("4\n");
             AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
             //respiration a faire
             affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
-             printf("5\n");
-            if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
+            if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
-
-                if (mouse_b & 1)
-                {
                     quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
-                }
+                    rest(100);
             }
-             printf("6\n");
-
             montre_curseur(page,curseur);
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear_bitmap(page);
         }
-         printf("7\n");
-        do{                                 //Passage au joueur suivant
+        do
+        {                                 //Passage au joueur suivant
             indiceActuel=(indiceActuel+1)%nbJoueurs;
         }while(Joueurs[indiceActuel].elimine==1);
         joueurActuel=&Joueurs[indiceActuel];
-         printf("8\n");
     }
-    printf("9\n");
         destroy_bitmap(soldat);
         destroy_bitmap(page);
         return quitter;
