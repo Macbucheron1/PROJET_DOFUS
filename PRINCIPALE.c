@@ -243,9 +243,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
 
         //Joueurs[i].classe.numero_classe=i+1;
     }
-    joueurActuel=&Joueurs[indiceActuel];
 
-    while (((quitter == 0) || (quitter == 3) )&&(!key[KEY_ESC]))
+    while ((quitter != 1) && (quitter != 3) || (!key[KEY_ESC]))
     {
 
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
@@ -255,12 +254,11 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
         temps1=clock();  //On stocke le temps en secondes dans temps1
         temps2=temps1+15000;
         time_t dureeStop=0;     ///permet de determiner combien de temps le timer a été stoppé (A mettre en place)
-        time_t tmp1=0;
         time_t tmp=0;
 
         while(temps1<=temps2 && (Joueurs[indiceActuel].pm_actuel>0 || Joueurs[indiceActuel].pa_actuel>0))           //rajouter la condition si le joueurtuilise tous ses pm et pa
         {
-            temps1=clock();
+            temps1=clock()-dureeStop;
 
             int  zoneDeplacement[20][16];
             AfficheTout(page, soldat, carte, nbJoueurs, Joueurs);
@@ -283,8 +281,13 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
             affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
+                    tmp=clock();
                     quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
-                    rest(100);
+                    printf("%d\n",quitter);
+                    if(quitter==1 || quitter==2)
+                       return quitter;
+                    rest(200);
+                    dureeStop+=clock()-tmp;
             }
             montre_curseur(page,curseur);
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -294,8 +297,9 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
         {                                 //Passage au joueur suivant
             indiceActuel=(indiceActuel+1)%nbJoueurs;
         }while(Joueurs[indiceActuel].elimine==1);
-        joueurActuel=&Joueurs[indiceActuel];
+
     }
+    printf("/////");
         destroy_bitmap(soldat);
         destroy_bitmap(page);
         return quitter;

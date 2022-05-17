@@ -496,6 +496,7 @@ int nouvellePartie(BITMAP* buffer)
     int nbPseudos=0;
     int longueurPseudos[4];             ///contient la longueur de chaque pseudo
      int modifier[nbJoueurs];           ///tableau conteant des 0 quand un pseudo n'a pas été initialisé, 1 pour le contraire
+     int quitter;
     for(i=0;i<nbJoueurs;i++)
     {
         classe[i]=1;
@@ -600,7 +601,9 @@ int nouvellePartie(BITMAP* buffer)
                     }
                     destroy_bitmap(personnage);
                     rest(100);
-                    jouer(Joueurs,nbJoueurs);
+                    quitter=jouer(Joueurs,nbJoueurs);
+                    return quitter;
+                        //menu_prin;
                 }
                 continuer=1;
             }
@@ -649,6 +652,7 @@ int nouvellePartie(BITMAP* buffer)
         clear(buffer);
 
     }
+
 }
 
 int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la totalité de la saisie
