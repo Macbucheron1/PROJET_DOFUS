@@ -197,7 +197,7 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
 
 }
 
-int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[] ) //position du click
+int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2 ) //position du click
 {
     /* Recupere la position initiale et finale du deplacement
     Prend en parametre la carte, la zone de deplacement, le joueur actuel, la bitmap, et le skin du joueur
@@ -217,7 +217,7 @@ int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITM
             Joueurs[indiceActuel].position_ligne=position_souris_ligne();
             coords chemin[10];
             CalculChemin(carte, x_initial,y_initial,Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne, 6,chemin,&PM_utilises, Joueurs, nbJoueurs); //A la place de 6 mettre joueurActuel->classe.pm_max
-            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises ,nbJoueurs,Joueurs);
+            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises ,nbJoueurs,Joueurs,fond_menu,avatar,temps1,temps2);
         }
     }
 
