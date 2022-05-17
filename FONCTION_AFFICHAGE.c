@@ -637,13 +637,18 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar, BITMAP*a
     {
         hline(buffer, 760, 22+8*i,780,makecol(96,96,96));
     }
-    for(i = 0;i<6;i++)
+    for(i = 0;i<5;i++)
     {
         for(int j=0;j<3;j++)
         {
             rectfill(buffer, 100+108*i+2*j, 555+2*j, 200+108*i-2*j, 585-2*j, makecol(190-15*j,190-15*j,190-15*j));
         }
     }
+    for(int j=0;j<3;j++)
+    {
+        rectfill(buffer, 100+108*5+2*j, 555+2*j, 200+108*5-2*j, 585-2*j, makecol(240-15*j,0 ,0));
+    }
+    textout_ex(buffer, font, "Fin de tour", 100+108*5+2*3, 555+2*5, makecol(10, 10, 10), -1);
     for(i = 0; i<3;i++)
     {
         for(int j = 0; j<3;j++)
