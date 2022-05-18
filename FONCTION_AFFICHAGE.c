@@ -99,15 +99,7 @@ void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_ini
     /* Permet d'animer le deplacement
     Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnées initial, le joueur qui joue, le chemin, les points de mouvement
     Ne renvoie rien */
-
-    if(Joueurs[indiceActuel].classe.numero_classe==1)
-        AnimationClasse1(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
-    else if(Joueurs[indiceActuel].classe.numero_classe==2)
-        AnimationClasse2(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
-    else if(Joueurs[indiceActuel].classe.numero_classe==3)
-        AnimationClasse3(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
-    /*else if(Joueurs[indiceActuel].classe.numero_classe==4)
-        AnimationClasse4(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs);*/
+    AnimationClasse1(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
 }
 
 int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8)
@@ -338,11 +330,11 @@ void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         *nouvelle_affichage = *nouvelle_affichage + 1;
         if (*nouvelle_affichage%10 == 0)
         {
-            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 96;
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 48;
         }
-        if (*position_x_bitmap_soldat>=340)
+        if (*position_x_bitmap_soldat>96)
         {
-            *position_x_bitmap_soldat = 32;
+            *position_x_bitmap_soldat = 0;
         }
         if (*nouvelle_affichage >= 80)
         {
@@ -355,19 +347,19 @@ void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         }
         else if (*direction_soldat == 0)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 207, position_affichage_x,position_affichage_y-30, 32,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 128, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 1)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 14, position_affichage_x,position_affichage_y-30, 32,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 64, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 2)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 300, position_affichage_x,position_affichage_y-30, 32,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 0, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 3)
         {
-           masked_blit(soldat,page, *position_x_bitmap_soldat, 108, position_affichage_x,position_affichage_y-30, 32,64);
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 192, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
 
 
@@ -386,11 +378,11 @@ void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         *nouvelle_affichage = *nouvelle_affichage + 1;
         if (*nouvelle_affichage%10 == 0)
         {
-            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 75;
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 48;
         }
-        if (*position_x_bitmap_soldat>=870)
+        if (*position_x_bitmap_soldat>528)
         {
-            *position_x_bitmap_soldat = 630;
+            *position_x_bitmap_soldat = 432;
         }
         if (*nouvelle_affichage >= 80)
         {
@@ -403,19 +395,19 @@ void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         }
         else if (*direction_soldat == 0)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 492, position_affichage_x,position_affichage_y-30, 33,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 384, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 1)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 417, position_affichage_x,position_affichage_y-30, 33,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 320, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 2)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 566, position_affichage_x,position_affichage_y-30, 33,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 256, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 3)
         {
-           masked_blit(soldat,page, *position_x_bitmap_soldat, 340, position_affichage_x,position_affichage_y-30, 33,64);
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 448, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
 
 
@@ -433,11 +425,11 @@ void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         *nouvelle_affichage = *nouvelle_affichage + 1;
         if (*nouvelle_affichage%10 == 0)
         {
-            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 77;
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 48;
         }
-        if (*position_x_bitmap_soldat>=890)
+        if (*position_x_bitmap_soldat>240)
         {
-            *position_x_bitmap_soldat = 630;
+            *position_x_bitmap_soldat = 144;
         }
         if (*nouvelle_affichage >= 80)
         {
@@ -450,19 +442,64 @@ void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         }
         else if (*direction_soldat == 0)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 166, position_affichage_x,position_affichage_y-30, 36,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 128, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 1)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 7, position_affichage_x,position_affichage_y-30, 36,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 64, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 2)
         {
-            masked_blit(soldat,page, *position_x_bitmap_soldat, 247, position_affichage_x,position_affichage_y-30, 36,64);
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 0, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
         else if (*direction_soldat == 3)
         {
-           masked_blit(soldat,page, *position_x_bitmap_soldat, 85, position_affichage_x,position_affichage_y-30, 36,64);
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 196, position_affichage_x-8,position_affichage_y-30, 48,64);
+        }
+}
+
+void affichage_classe4(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville)
+{
+        /* Permet d'afficher la classe clone
+        Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
+        Ne renvoie rien */
+        rectfill(page, 460 - 3, 350 - 3, 560 + 3, 450 + 3, makecol(40, 40, 40));
+        rectfill(page, 460, 350, 560, 450, makecol(20, 20, 20));
+        rectfill(page, 460 + 3, 350 + 3, 560 - 3, 450 - 3, makecol(0, 0, 0));
+        masked_blit(map_ville, page, 180, 200, 461, 351, 98, 98);
+        *nouvelle_affichage = *nouvelle_affichage + 1;
+        if (*nouvelle_affichage%10 == 0)
+        {
+            *position_x_bitmap_soldat = *position_x_bitmap_soldat + 48;
+        }
+        if (*position_x_bitmap_soldat>240)
+        {
+            *position_x_bitmap_soldat = 144;
+        }
+        if (*nouvelle_affichage >= 80)
+        {
+            *direction_soldat = *direction_soldat + 1;
+            *nouvelle_affichage = 0;
+        }
+        if (*direction_soldat >= 4)
+        {
+            *direction_soldat = 0;
+        }
+        else if (*direction_soldat == 0)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 256, position_affichage_x-8,position_affichage_y-30, 48,64);
+        }
+        else if (*direction_soldat == 1)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 256, position_affichage_x-8,position_affichage_y-30, 48,64);
+        }
+        else if (*direction_soldat == 2)
+        {
+            masked_blit(soldat,page, *position_x_bitmap_soldat, 256, position_affichage_x-8,position_affichage_y-30, 48,64);
+        }
+        else if (*direction_soldat == 3)
+        {
+           masked_blit(soldat,page, *position_x_bitmap_soldat, 256, position_affichage_x-8,position_affichage_y-30, 48,64);
         }
 }
 
@@ -663,14 +700,7 @@ void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_
     for(int i=0; i<nbJoueurs;i++)
             if(i!=exception)
                {
-                    if(Joueurs[i].classe.numero_classe==1)
-                        masked_blit(soldat,buffer, 409, 14, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-30, 32,64);
-                    else if(Joueurs[i].classe.numero_classe==2)
-                        masked_blit(soldat,buffer, 944, 165, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-30, 32,64);
-                    else if(Joueurs[i].classe.numero_classe==3)
-                        masked_blit(soldat,buffer, 932, 417, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-25, 32,64);
-                    /*else if(Joueurs[i].classe.numero_classe==4)
-                        masked_blit(soldat,buffer, 932, 417, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-25, 32,64);*/
+                    masked_blit(Joueurs[i].skin, buffer, Joueurs[i].position_bitmap.x+48, Joueurs[i].position_bitmap.y+128, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x-8, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-40, 48,64);
                }
 }
 
@@ -683,21 +713,21 @@ void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
     int y2;
 
     int x;
-    x1+=8;
+    rest(500);
         for(int i=0; i<PM;i++)
         {
             x2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_x;    //On recupere les coordonnées en pixels de la case suivante
             y2 = carte.tab_coordonnes[chemin[i].x][chemin[i].y].position_pixel_y;
-            x=32;
+            x=0;
 
             while(x1<x2)                                                                                                                                   //Aller a droite
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
                 AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
-                masked_blit(soldat,buffer, x, 14, x1,y1-30, 32,64);
-                x=x+96;
-                if (x>=340)
-                    x=32;
+                masked_blit(soldat, buffer, Joueurs[indiceActuel].position_bitmap.x+x, Joueurs[indiceActuel].position_bitmap.y+64, x1-2, y1-40, 48, 64);
+                x=x+48;
+                if (x>96)
+                    x=0;
                 x1+=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
                 rest(100);
@@ -708,10 +738,10 @@ void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
                 AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
-                masked_blit(soldat,buffer, x, 300, x1,y1-30, 32,64);
-                x=x+96;
-                if (x>=340)
-                    x=32;
+                masked_blit(soldat,buffer, Joueurs[indiceActuel].position_bitmap.x+x, Joueurs[indiceActuel].position_bitmap.y, x1-8,y1-40, 48,64);
+                x=x+48;
+                if (x>96)
+                    x=0;
                 y1-=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
                 rest(100);
@@ -722,10 +752,10 @@ void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
                 AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
-                masked_blit(soldat,buffer, x, 108, x1,y1-30, 32,64);
-                x=x+96;
-                if (x>=340)
-                    x=32;
+                masked_blit(soldat,buffer,Joueurs[indiceActuel].position_bitmap.x+x, Joueurs[indiceActuel].position_bitmap.y+192, x1-2,y1-40, 48,64);
+                x=x+48;
+                if (x>96)
+                    x=0;
                 x1-=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
                 rest(100);
@@ -736,10 +766,10 @@ void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
                 AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
-                masked_blit(soldat,buffer, x, 207, x1,y1-30, 32,64);
-                x=x+96;
-                if (x>=340)
-                    x=32;
+                masked_blit(soldat,buffer,Joueurs[indiceActuel].position_bitmap.x+x, Joueurs[indiceActuel].position_bitmap.y+128, x1-8,y1-40, 48,64);
+                x=x+48;
+                if (x>96)
+                    x=0;
                 y1+=8;
                 blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
                 rest(100);
@@ -964,6 +994,19 @@ void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_j
     affichage_en_jeu(buffer,fond_menu,avatar);
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
