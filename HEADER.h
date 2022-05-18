@@ -68,6 +68,8 @@ typedef struct Joueur{
 
     int pm_max_actu_mage; //sert a la remise au max (ne pas utiliser pm_max des classe pour les mages) a chaque tout active que pour les mages (prise en compte de meditation)
 
+    coords position_bitmap;
+    BITMAP* skin;
 } t_joueur;
 
 typedef struct Decor{
