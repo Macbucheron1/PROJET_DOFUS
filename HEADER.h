@@ -39,7 +39,6 @@ typedef struct Personnage{ //les classes
     int pv_max; //si soin ne pas depasser ce pv max
     int pm_max; // afin de remettre a ca a chaque tour
     int pa_max; // pareil
-    BITMAP* skin[TAILLE_SKINS];
 }t_personnage;
 
 typedef struct Joueur{
@@ -137,7 +136,6 @@ void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
 
 
 /* ----------- SOUS PROGRAMME ----------- */
-
 void remplir_tab_coordonnes(t_map* carte); // Permet de remplir les coordonnées de la map
 void remplir_map_obstacle(t_map* carte); // Permet de remplir les types de chaque case
 int position_souris_colonne(void); // Renvoie la colonne dans lequel se situe la souris, renvoie -1 si pas dans une colonne
@@ -166,7 +164,6 @@ t_joueur init_joueur(char* nom_joueur,int num_joueur,t_personnage classe_choisie
 void init_map(t_map* carte); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
 void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y); // Initialise un acteurs
-
 /* ----------- PRINCIPALE ----------- */
 
 void menu_principal(void); // Lance le menu principale
@@ -174,7 +171,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume); // P
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[]) ; //Lance les credits
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps); // Lance les parametres
 void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[],unsigned int* temps); // Lance l'apercu des classes
-
 /* ----------- ATTAQUE ----------- */
 
 /** SOUS-PROG **/
@@ -194,7 +190,7 @@ void verif_bouclier(t_joueur* tab_j,int i); //remet a false si tour avc bouclier
 void verif_roulement(t_joueur* tab_j,int i); //remet a false apres un tour
 void verif_en_feu(t_joueur* tab_j,int i); //si en feu met des degats
 int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueur, BITMAP* buffer, BITMAP* animation, int nbJoueurs ); //verifie si on clique sur une case avc un joueur
-void attaque(t_joueur* tab_j,int i,int j,BITMAP* buffer, BITMAP* page); //on affiche sur la page les icones d'attaques et sur le buffer la detection de clic
+void attaque(t_joueur* tab_j,int i,BITMAP* buffer, BITMAP* page,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int quelle_attaque ); //lance les attaques en fonction de la classe et de la case cliquée
 
 //peut etre a mettre dans les fonctions d'affichages
 
