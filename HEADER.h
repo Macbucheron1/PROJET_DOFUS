@@ -42,7 +42,77 @@ typedef struct Personnage{ //les classes
 }t_personnage;
 
 typedef struct Joueur{
-	@@ -117,7 +116,7 @@ void montre_curseur(BITMAP* page, BITMAP* curseur); // Permet d'afficher un curs
+    char nom_joueur[30];
+    int numero_joueur;
+    t_personnage classe;
+    int position_colonne;
+    int position_ligne;
+
+    //info utile en jeu
+    int pv_actuel;
+    int pm_actuel;
+    int pa_actuel;
+
+    int elimine; //1 si elimine 0 s'il joue
+
+    //pour les attaques
+    bool bouclier; //si la classe tank active son bouclier true, sinon false
+    int tour_bouclier; //commence a 0 et sincrement a chaque tour
+    int tour_bouclier_max; //a partir de cb de tour le bouclier doit se desactiver
+    bool PM_roule; //si true augmente les PM du tank (se desactive au bout d'1 tour)
+    bool en_feu; //si true prend des degats sinon rien
+    int tour_en_feu; //comme tour bouclier
+    int tour_en_feu_max; //pareil
+    int nb_bacta; //initialiser a 0 contre le nombre de seringue utilis�e
+    int nb_bacta_max; //limite l'utilisation de seringue de bacta (pour les chasseur de primes)
+
+    int pm_max_actu_mage; //sert a la remise au max (ne pas utiliser pm_max des classe pour les mages) a chaque tout active que pour les mages (prise en compte de meditation)
+
+} t_joueur;
+
+typedef struct Decor{
+    BITMAP* visuel;
+    int position_x;
+    int position_y;
+    int avancement_x;
+    int avancement_y;
+} t_decor;
+
+typedef struct star {
+    int posX;
+    int posY;
+} t_star;
+
+typedef struct Base{
+    coords base_gauche;
+    coords base_droite;
+    coords base_haut;
+    coords base_bas;
+} t_base;
+
+typedef struct Acteur{
+    int respiration;
+    coords position;
+    coords deplacement;
+    coords position_bitmap;
+    coords deplacement_bitmap;
+    t_base debut_bitmap;
+    t_base fin_bitmap;
+    BITMAP* skin;
+} t_acteur;
+
+typedef struct{
+    int r;
+    int g;
+    int b;
+}color;
+
+
+/* ----------- FONCTION AFFICHAGE ----------- */
+
+void changement_graphique(int valeur); // Permet de changer de mode graphique
+void affichage_grille(BITMAP* buffer); // Permet d'afficher la grille sur la map
+void montre_curseur(BITMAP* page, BITMAP* curseur); // Permet d'afficher un curseur personnalisé
 void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //permet d'afficher un personnage
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelé par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
 void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelé par SurbrillanceDeplacement et affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
