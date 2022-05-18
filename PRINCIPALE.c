@@ -199,6 +199,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     int couleur_attaque_3 = makecol(0,0,255);
     int couleur_attaque_4 = makecol(255,255,0);
     int couleur_attaque_5 = makecol(255,255,255);
+    int couleur_fin_tour = makecol(150, 0, 0);
 
     clear_to_color(fond_menu, makecol(0, 0, 0));
 
