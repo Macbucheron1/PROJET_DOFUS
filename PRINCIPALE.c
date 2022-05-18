@@ -14,8 +14,6 @@ void menu_principal(void) // A finir
     SAMPLE* musique = load_wav("imperial_march.wav");
     BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
     erreur_chargement_image(soldat);
-    BITMAP* perso1 = load_bitmap("nv_perso1.bmp", NULL);
-    erreur_chargement_image(perso1);
     t_decor visuel_menu;
     BITMAP* tab_bitmap[4];
     tab_bitmap[0] = load_bitmap("map_desert.bmp", NULL);
@@ -37,7 +35,8 @@ void menu_principal(void) // A finir
     init_acteur(&jedi1, 800, 160, soldat, 8, 8, 32, 108, 96, 94);
     t_acteur mesActeurs[10];
     mesActeurs[0] = jedi1;
-    if (!musique) { //blindage
+    if (!musique)   //blindage
+    {
         allegro_exit();
         exit(EXIT_FAILURE);
     }
@@ -51,7 +50,22 @@ void menu_principal(void) // A finir
     int volume=200;
     unsigned int temps=0;
     play_sample(musique,volume,128,1000,1);
-     ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
+
+    // initialisation des classes
+
+    t_personnage mage;
+    mage=init_classes("mage",1,6,2000,4);
+
+    t_personnage archer;
+    archer=init_classes("archer",2,6,1700,4);
+
+    t_personnage guerrier;
+    guerrier=init_classes("guerrier",3,6,2500,3);
+
+    t_personnage tank;
+    tank=init_classes("tank",4,6,4800,2);
+
+    ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
     while ((quitter != 1) && (!key[KEY_ESC]))
@@ -79,7 +93,7 @@ void menu_principal(void) // A finir
 
         rectfill(fond_menu, 250, 450, 560, 510, couleur_credit); // Credit
 
-         ///////////////////////////// DESSIN MENU /////////////////////////////////////
+        ///////////////////////////// DESSIN MENU /////////////////////////////////////
 
         rectfill(page, 250, 150, 560, 210, makecol(190,190,190));
         rectfill(page, 253, 153, 557, 207, makecol(175,175,175));
@@ -101,7 +115,7 @@ void menu_principal(void) // A finir
         rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
         textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Credit"); // CREDIT
 
-         ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
+        ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // QUITTER
         {
             rectfill(page, 10, 10, 33, 34, makecol(210,210,210));
@@ -122,7 +136,7 @@ void menu_principal(void) // A finir
             if (mouse_b & 1)
             {
                 rest(100);
-                 quitter=nouvellePartie(page, musique, &volume);
+                quitter=nouvellePartie(page, musique, &volume, mage, archer, guerrier, tank);
             }
         }
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
@@ -133,7 +147,7 @@ void menu_principal(void) // A finir
             textprintf_ex(page, font, 270, 270, makecol(20,20,20), -1, "Apercu des classes");
             if (mouse_b & 1)
             {
-                apercu_classe_en_cours(page, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
+                apercu_classe_en_cours(page, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps, mage, archer, guerrier,tank);
             }
         }
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_parametre) // PARAMETRE
@@ -158,7 +172,6 @@ void menu_principal(void) // A finir
                 credit_en_cours(page, &visuel_menu, soldat, mesActeurs, &delay, &temps, tab_bitmap);
             }
         }
-        masked_blit(perso1, page, 144, 0, 100, 100, 48, 64);
         montre_curseur(page,curseur);
         /////////////////////////////  /////////////////////////////////////
 
@@ -221,14 +234,19 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     clear_bitmap(page);
     soldat = load_bitmap("Starwars-V1.bmp", 0);
     erreur_chargement_image(soldat);
-    BITMAP* perso1 = load_bitmap("nv_perso1.bmp", NULL);
-    erreur_chargement_image(perso1);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
     int quitter = 0;
     int affiche_son = 1;
     int affiche_grille = 1;
     int quelle_attaque = 0;
+
+
+    ///pour les attaques
+    BITMAP* animation_attaque; //pas initialiser car pas encore d'animation pr les attaques
+    int attaqueActive=0;
+
+
     // CODE PRINCIPAL
 
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
@@ -237,33 +255,47 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     int indiceActuel= rand()%nbJoueurs;    //indice du joueur actuel choisi aleatoirement
     time_t temps1;
     time_t temps2;
-    for(int i=0;i<nbJoueurs;i++)
-    {
 
-        Joueurs[i].pa_actuel=0;      //A supprimer
+    for(int i=0; i<nbJoueurs; i++)
+    {
         do
         {
             Joueurs[i].position_colonne=rand()%20;                      //On donne une position aléatoire à chaque joueur
             Joueurs[i].position_ligne=rand()%16;
-        }while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0); //Tant que la case est indisponible
-
-        //Joueurs[i].classe.numero_classe=i+1;
+        }
+        while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0);  //Tant que la case est indisponible
     }
+
 
     while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
     {
+        if(Joueurs[indiceActuel].pv_actuel<=0)
+        {
+            Joueurs[indiceActuel].elimine=1;
+        }
+
 
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         int positionTmpY=-1;
 
-        Joueurs[indiceActuel].pm_actuel=4; //joueurActuel.pm_actuel=joueurActuel.pm_max;    //On remet le pm max au joueur à chaque tour
+        if(Joueurs[indiceActuel].classe.numero_classe==1) //gestion de la meditation du mage
+        {
+            Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].pm_max_actu_mage;
+        }
+        else
+        {
+            Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max;  //On remet le pm max au joueur à chaque tour
+        }
+        Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
+
         temps1=clock();  //On stocke le temps en secondes dans temps1
         temps2=temps1+15000;
         time_t dureeStop=0;     ///permet de determiner combien de temps le timer a été stoppé (A mettre en place)
         time_t tmp=0;
-
+        quelle_attaque=0;
         while(temps1<=temps2 && (Joueurs[indiceActuel].pm_actuel>0 || Joueurs[indiceActuel].pa_actuel>0))           //rajouter la condition si le joueurtuilise tous ses pm et pa
         {
+
             temps1=clock()-dureeStop;
 
             int  zoneDeplacement[20][16];
@@ -271,19 +303,55 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
 
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
 
-            if(Joueurs[indiceActuel].pm_actuel>0){
-                if(Joueurs[indiceActuel].position_colonne!=positionTmpX || Joueurs[indiceActuel].position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
+            if(Joueurs[indiceActuel].pm_actuel>0 && attaqueActive==0)
+            {
+                if(Joueurs[indiceActuel].position_colonne!=positionTmpX || Joueurs[indiceActuel].position_ligne!=positionTmpY)    //Permet d'actualiser le chemin seulement si le joueur change de position
+                {
                     CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel, affiche_son, affiche_grille);
                     positionTmpX=Joueurs[indiceActuel].position_colonne;
                     positionTmpY=Joueurs[indiceActuel].position_ligne;
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
                 tmp=clock();
-                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);
                 dureeStop+=clock()-tmp;
             }
 
             ////////////////////////////////////////////////////////////////////////////
+
+            ////////////////////////////////////ATTAQUE/////////////////////////////////
+
+            int zoneAttaque[20][16];
+
+            if(quelle_attaque==0)
+            {
+                attaqueActive=0; //ne fait rien
+            }
+            else
+            {
+                attaqueActive=1;
+
+                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque);
+                //printf("%d\n",quelle_attaque);
+            }
+            rectfill(fond_menu, 10,550,30,580,makecol(136,136,136));    //BOUTON FIN D'ATTAQUE
+            rectfill(page, 10,550,30,580,makecol(0,125,255));
+
+            for(int i=0;i<nbJoueurs;i++)
+                //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
+
+            if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)==makecol(136,136,136)){
+                attaqueActive=0;
+                quelle_attaque=0;
+            }
+
+            for (int j=0;j<nbJoueurs;j++)
+            {
+                printf("pv %d:%d\n",j,Joueurs[j].pv_actuel);
+            }
+            ////////////////////////////////////////////////////////////////////////////
+
+
             AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
             //respiration a faire
             //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
@@ -295,38 +363,34 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
 
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
-                    tmp=clock();
-                    quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
-                    if(quitter==1 || quitter==2){
-                        rest(100);
-                       return quitter;
-                    }
-                    rest(200);
-                    dureeStop+=clock()-tmp;
+                tmp=clock();
+                quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
+                if(quitter==1 || quitter==2)
+                {
+                    rest(100);
+                    return quitter;
+                }
+                rest(200);
+                dureeStop+=clock()-tmp;
             }
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_1) // Attaque 1
             {
-                textout_ex(page, font, "Attaque 1", 100, 100, makecol(255, 255, 255), -1);
                 quelle_attaque = 1;
             }
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_2) // Attaque 2
             {
-                textout_ex(page, font, "Attaque 2", 100, 100, makecol(255, 255, 255), -1);
                 quelle_attaque = 2;
             }
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_3) // Attaque 3
             {
-                textout_ex(page, font, "Attaque 3", 100, 100, makecol(255, 255, 255), -1);
                 quelle_attaque = 3;
             }
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_4) // Attaque 4
             {
-                textout_ex(page, font, "Attaque 4", 100, 100, makecol(255, 255, 255), -1);
                 quelle_attaque = 4;
             }
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_5) // Attaque 5
             {
-                textout_ex(page, font, "Attaque 5", 100, 100, makecol(255, 255, 255), -1);
                 quelle_attaque = 5;
             }
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_fin_tour) // Fin de tour
@@ -340,18 +404,20 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             clear_bitmap(page);
         }
         do
-        {                                 //Passage au joueur suivant
+        {
+            //Passage au joueur suivant
             indiceActuel=(indiceActuel+1)%nbJoueurs;
-        }while(Joueurs[indiceActuel].elimine==1);
+        }
+        while(Joueurs[indiceActuel].elimine==1);
 
 
 
 
     }
-        destroy_bitmap(soldat);
-        destroy_bitmap(page);
-        return quitter;
-    }
+    destroy_bitmap(soldat);
+    destroy_bitmap(page);
+    return quitter;
+}
 
 int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille)
 {
@@ -377,7 +443,7 @@ int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affich
     line(buffer,786,14,754,46, makecol(96,96,96));
 
     textprintf_ex(buffer, arial_26, 360, 100, makecol(0,0,0), -1, "Menu");
-    for(i = 0;i<3;i++)
+    for(i = 0; i<3; i++)
     {
         rectfill(buffer, 303+4*i, 173+4*i, 512-4*i, 237-4*i, makecol(190-15*i,190-15*i,190-15*i));
         rectfill(buffer, 303+4*i, 398+4*i, 512-4*i, 462-4*i, makecol(190-15*i,190-15*i,190-15*i));
@@ -481,7 +547,8 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
     int depart_texte = 400;
     int Stardelay = 10;
     t_star TabStar[LIMIT_STAR];          //Etoile dans le fond
-        for (int j=0 ; j<LIMIT_STAR; j++) {
+    for (int j=0 ; j<LIMIT_STAR; j++)
+    {
         TabStar[j].posY = 1000;
     }
 
@@ -501,7 +568,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
         rectfill(page, 155, 105, 670, 520, makecol(20,20,20));
         rectfill(page, 160, 110, 665, 515, makecol(0,0,0));
 
-        Stardelay = Star(TabStar ,Stardelay,0,page); //Appel du sous-programme qui gère le fond
+        Stardelay = Star(TabStar,Stardelay,0,page);  //Appel du sous-programme qui gère le fond
         police = affichage_credit(police, vitesse, depart_texte, page, arial_28, arial_26, arial_24, arial_22, arial_20, arial_18, arial_16, arial_14, arial_12, arial_10, arial_8);
 
 
@@ -636,7 +703,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
 }
 
 
-void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)  //soldat, mesActeurs, &delay, &visuel_menu, tab_bitmap, &temps
+void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank)  //soldat, mesActeurs, &delay, &visuel_menu, tab_bitmap, &temps
 {
     /* Lance les credits
     Prend en parametre la bitmap d'affichage et le decor
@@ -658,36 +725,36 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
     BITMAP* text_jedi = create_bitmap(300,200);
     clear_to_color(text_jedi, makecol(40, 40, 40));
     textout_ex(text_jedi, font, "JEDI : ", 105, 5, makecol(255, 255, 255), -1);
-    textout_ex(text_jedi, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
-    textout_ex(text_jedi, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
-    textout_ex(text_jedi, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textprintf_ex(text_jedi, font, 105, 30, makecol(255, 255, 255), -1,"PV : %d", mage.pv_max);
+    textprintf_ex(text_jedi, font,105, 45, makecol(255, 255, 255), -1, "PM : %d", mage.pm_max);
+    textprintf_ex(text_jedi, font,105, 60, makecol(255, 255, 255), -1, "PA : %d", mage.pa_max);
     textout_ex(text_jedi, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
     textout_ex(text_jedi, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
 
     BITMAP* text_vador = create_bitmap(300,200);
     clear_to_color(text_vador, makecol(40, 40, 40));
-    textout_ex(text_vador, font, "DARK VADOR : ", 105, 5, makecol(255, 255, 255), -1);
-    textout_ex(text_vador, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
-    textout_ex(text_vador, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
-    textout_ex(text_vador, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_vador, font, "CLONE : ", 105, 5, makecol(255, 255, 255), -1);
+    textprintf_ex(text_vador, font, 105, 30, makecol(255, 255, 255), -1, "PV : %d", archer.pv_max);
+    textprintf_ex(text_vador, font, 105, 45, makecol(255, 255, 255), -1, "PM : %d", archer.pm_max);
+    textprintf_ex(text_vador, font, 105, 60, makecol(255, 255, 255), -1, "PA : %d", archer.pa_max);
     textout_ex(text_vador, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
     textout_ex(text_vador, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
 
     BITMAP* text_clone = create_bitmap(300,200);
     clear_to_color(text_clone, makecol(40, 40, 40));
-    textout_ex(text_clone, font, "CLONE : ", 105, 5, makecol(255, 255, 255), -1);
-    textout_ex(text_clone, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
-    textout_ex(text_clone, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
-    textout_ex(text_clone, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textout_ex(text_clone, font, "CHASSEUR DE PRIME : ", 105, 5, makecol(255, 255, 255), -1);
+    textprintf_ex(text_clone, font,105, 30, makecol(255, 255, 255), -1, "PV : %d", guerrier.pv_max);
+    textprintf_ex(text_clone, font,105, 45, makecol(255, 255, 255), -1, "PM : %d", guerrier.pm_max);
+    textprintf_ex(text_clone, font,105, 60, makecol(255, 255, 255), -1, "PA : %d", guerrier.pa_max);
     textout_ex(text_clone, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
     textout_ex(text_clone, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
 
     BITMAP* text_droide = create_bitmap(300,200);
     clear_to_color(text_droide, makecol(40, 40, 40));
     textout_ex(text_droide, font, "DROIDE : ", 105, 5, makecol(255, 255, 255), -1);
-    textout_ex(text_droide, font, "PV : ", 105, 30, makecol(255, 255, 255), -1);
-    textout_ex(text_droide, font, "PM : ", 105, 45, makecol(255, 255, 255), -1);
-    textout_ex(text_droide, font, "PA : ", 105, 60, makecol(255, 255, 255), -1);
+    textprintf_ex(text_droide, font, 105, 30, makecol(255, 255, 255), -1, "PV : %d", tank.pv_max);
+    textprintf_ex(text_droide, font, 105, 45, makecol(255, 255, 255), -1, "PM : %d", tank.pm_max);
+    textprintf_ex(text_droide, font, 105, 60, makecol(255, 255, 255), -1, "PA : %d", tank.pa_max);
     textout_ex(text_droide, font, "Attaque corps a corps : ", 5, 105, makecol(255, 255, 255), -1);
     textout_ex(text_droide, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
