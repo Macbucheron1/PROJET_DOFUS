@@ -4,7 +4,7 @@
     Les fontions présente dans ce fichier sont des fonctions d'initialisation
 */
 
-t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total) // a decrire
+t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max)
 {
     /* Permet d'initaliser les classes
     Prend en parametre le nom de classe, le numero de classe, les points d'action max, les points vie max, les points mvt max, le nb skin total
@@ -22,23 +22,6 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
 
     strcpy(c.nom_classe,nom_classe);
 
-/**
-    //initialisation du tableau de bitmap qu'on utilisera pour les animation
-    int i;
-    char nomfichier[256]; //pour charger la bmp que nous voulons utiliser
-
-    for (i=0; i<nb_skin_total; i++)
-    {
-        // sprintf permet de faire un printf dans une chaine
-        sprintf(nomfichier,"img/%s%d.bmp",nom_classe,i+1); //exemple: img/mage1
-
-        c.skin[i] = load_bitmap(nomfichier,NULL);
-        if (!c.skin[i])
-        {
-            allegro_message("pas pu trouver %s",nomfichier);
-            exit(EXIT_FAILURE);
-        }
-    }**/
     //on return la structure crée
     return c;
 }

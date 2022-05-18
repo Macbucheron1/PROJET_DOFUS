@@ -131,7 +131,7 @@ void erreur_chargement_image(BITMAP* image)
 }
 
 
-void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant, t_joueur Joueurs[], int nbJoueurs, int indiceActuel, int affiche_on, int affiche_grille) // a definir
+void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant, t_joueur Joueurs[], int nbJoueurs, int indiceActuel) // a definir
 {
     /* Calcule les zones sur lesqeuelles peut aller le perso et appelle les fonctions d'affichages
     Prend en parametre la bitmap d'affichage, la carte, la position du soldat, la zone de deplacement, les PM restants
@@ -197,14 +197,13 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
 
 }
 
-int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille) //position du click
+int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2 ) //position du click
 {
     /* Recupere la position initiale et finale du deplacement
     Prend en parametre la carte, la zone de deplacement, le joueur actuel, la bitmap, et le skin du joueur
     renvoie le nb de PM utilisés */
     int i=0,j=0;
     int PM_utilises=0;
-
     if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)                    //Si le curseur et sur la map
     {
         i= position_souris_colonne();
@@ -218,7 +217,7 @@ int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITM
             Joueurs[indiceActuel].position_ligne=position_souris_ligne();
             coords chemin[10];
             CalculChemin(carte, x_initial,y_initial,Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne, 6,chemin,&PM_utilises, Joueurs, nbJoueurs); //A la place de 6 mettre joueurActuel->classe.pm_max
-            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises ,nbJoueurs,Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
+            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises ,nbJoueurs,Joueurs,fond_menu,avatar,temps1,temps2);
         }
     }
 
@@ -483,7 +482,7 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen) 
     return Stardelay;
 }
 
-int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume)
+int nouvellePartie(BITMAP* buffer)
 {
 
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
@@ -602,7 +601,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume)
                     }
                     destroy_bitmap(personnage);
                     rest(100);
-                    quitter=jouer(Joueurs,nbJoueurs, musique, volume);
+                    quitter=jouer(Joueurs,nbJoueurs);
                     return quitter;
                         //menu_prin;
                 }
