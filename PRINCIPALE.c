@@ -203,11 +203,11 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     clear_to_color(fond_menu, makecol(0, 0, 0));
 
     rectfill(fond_menu, 750,10,790,50,couleur_menu);
-    rectfill(fond_menu,110,555,210,585,couleur_attaque_1);
-    rectfill(fond_menu,238,555,338,585,couleur_attaque_2);
-    rectfill(fond_menu,366,555,466,585,couleur_attaque_3);
-    rectfill(fond_menu,494,555,594,585,couleur_attaque_4);
-    rectfill(fond_menu,622,555,722,585,couleur_attaque_5);
+    rectfill(fond_menu, 100+108*0, 555, 200+108*0, 585, couleur_attaque_1);
+    rectfill(fond_menu, 100+108*1, 555, 200+108*1, 585, couleur_attaque_2);
+    rectfill(fond_menu, 100+108*2, 555, 200+108*2, 585, couleur_attaque_3);
+    rectfill(fond_menu, 100+108*4, 555, 200+108*4, 585, couleur_attaque_5);
+    rectfill(fond_menu, 100+108*5, 555, 200+108*5, 585, couleur_fin_tour);
 
     // INITIALISATION VARIABLE
     init_map(&carte);
@@ -221,7 +221,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     int quitter = 0;
     int affiche_son = 0;
     int affiche_grille = 0;
-
+    int quelle_attaque = 0;
     // CODE PRINCIPAL
 
     t_joueur *joueurActuel;
@@ -290,6 +290,38 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
                     }
                     rest(200);
                     dureeStop+=clock()-tmp;
+            }
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_1) // Attaque 1
+            {
+                textout_ex(page, font, "Attaque 1", 100, 100, makecol(255, 255, 255), -1);
+                quelle_attaque = 1;
+            }
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_2) // Attaque 2
+            {
+                textout_ex(page, font, "Attaque 2", 100, 100, makecol(255, 255, 255), -1);
+                quelle_attaque = 2;
+            }
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_3) // Attaque 3
+            {
+                textout_ex(page, font, "Attaque 3", 100, 100, makecol(255, 255, 255), -1);
+                quelle_attaque = 3;
+            }
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_4) // Attaque 4
+            {
+                textout_ex(page, font, "Attaque 4", 100, 100, makecol(255, 255, 255), -1);
+                quelle_attaque = 4;
+            }
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_5) // Attaque 5
+            {
+                textout_ex(page, font, "Attaque 5", 100, 100, makecol(255, 255, 255), -1);
+                quelle_attaque = 5;
+            }
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_fin_tour) // Fin de tour
+            {
+                textout_ex(page, font, "Fin de tour", 100, 100, makecol(255, 255, 255), -1);
+                rest(100);
+                break;
+
             }
             montre_curseur(page,curseur);
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
