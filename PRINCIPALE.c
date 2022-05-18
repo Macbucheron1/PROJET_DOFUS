@@ -761,27 +761,27 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
     textout_ex(text_droide, font, "Attaque special : ", 5, 125, makecol(255, 255, 255), -1);
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     //BITMAP* map_
-    int position_x_bitmap_jedi = 32;
+    int position_x_bitmap_jedi = 0;
     int nouvelle_affichage_jedi = 0;
     int direction_jedi = 0;
     int sortie_boite_jedi_x = 210;
     int sortie_boite_jedi_y = 200;
 
-    int position_x_bitmap_vador= 630;
+    int position_x_bitmap_vador= 432;
     int nouvelle_affichage_vador = 20;
     int direction_vador = 1;
     int sortie_boite_vador_x = 560;
     int sortie_boite_vador_y = 200;
 
-    int position_x_bitmap_clone = 630;
+    int position_x_bitmap_clone = 96;
     int nouvelle_affichage_clone = 40;
     int direction_clone = 2;
     int sortie_boite_clone_x = 210;
     int sortie_boite_clone_y = 450;
 
-    //int position_x_bitmap_droid = 630; // a changer quand skin droid
-    //int nouvelle_affichage_droid = 40; // a changer quand skin droid
-    //int direction_droid = 2; // A changer skin droid
+    int position_x_bitmap_droid = 144; // a changer quand skin droid
+    int nouvelle_affichage_droid = 40; // a changer quand skin droid
+    int direction_droid = 2; // A changer skin droid
     int sortie_boite_droid_x = 560;
     int sortie_boite_droid_y = 450;
 
@@ -977,9 +977,10 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
 
         ///////////////////////////// ANIMATION PERSONNAGE /////////////////////////////////////
 
-        affichage_classe1(&position_x_bitmap_jedi, &nouvelle_affichage_jedi, &direction_jedi, soldat, page, 150, 150, map_desert);
-        affichage_classe3(&position_x_bitmap_vador, &nouvelle_affichage_vador, &direction_vador, soldat, page, 490, 150, map_neige);
-        affichage_classe2(&position_x_bitmap_clone, &nouvelle_affichage_clone, &direction_clone, soldat, page, 140, 405, map_ville);
+        affichage_classe1(&position_x_bitmap_jedi, &nouvelle_affichage_jedi, &direction_jedi, perso1, page, 150, 150, map_desert);
+        affichage_classe3(&position_x_bitmap_vador, &nouvelle_affichage_vador, &direction_vador, perso1, page, 490, 150, map_neige);
+        affichage_classe2(&position_x_bitmap_clone, &nouvelle_affichage_clone, &direction_clone, perso1, page, 140, 405, map_ville);
+        affichage_classe4(&position_x_bitmap_droid, &nouvelle_affichage_droid, &direction_droid, perso2, page, 490, 405, map_desert);
 
         montre_curseur(page,curseur);
 
