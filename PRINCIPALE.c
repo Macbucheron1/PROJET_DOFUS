@@ -180,17 +180,18 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
 
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
 
-    BITMAP* avatar = load_bitmap("avatar.bmp", NULL);
-    erreur_chargement_image(avatar);
+    BITMAP* avatar[4];
+    avatar[0] = load_bitmap("avatar.bmp", NULL);
+    erreur_chargement_image(avatar[0]);
 
-    BITMAP* avatar2 = load_bitmap("avatar2.bmp", NULL);
-    erreur_chargement_image(avatar2);
+    avatar[1] = load_bitmap("avatar2.bmp", NULL);
+    erreur_chargement_image(avatar[1]);
 
-    BITMAP* avatar3 = load_bitmap("avatar3.bmp", NULL);
-    erreur_chargement_image(avatar3);
+    avatar[2] = load_bitmap("avatar3.bmp", NULL);
+    erreur_chargement_image(avatar[2]);
 
-    BITMAP* avatar4 = load_bitmap("avatar4.bmp", NULL);
-    erreur_chargement_image(avatar4);
+    avatar[3] = load_bitmap("avatar4.bmp", NULL);
+    erreur_chargement_image(avatar[3]);
 
     int couleur_menu = makecol(0,255,255);
     int couleur_attaque_1 = makecol(255,0,0);
@@ -198,7 +199,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     int couleur_attaque_3 = makecol(0,0,255);
     int couleur_attaque_4 = makecol(255,255,0);
     int couleur_attaque_5 = makecol(255,255,255);
-    int couleur_fin_tour = makecol(150, 0, 0);
 
     clear_to_color(fond_menu, makecol(0, 0, 0));
 
@@ -222,7 +222,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     int affiche_son = 0;
     int affiche_grille = 0;
     int quelle_attaque = 0;
-
     // CODE PRINCIPAL
 
     t_joueur *joueurActuel;
@@ -246,8 +245,9 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
         //Joueurs[i].classe.numero_classe=i+1;
     }
 
-    while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
+    while ((quitter != 1) && (quitter != 3) || (!key[KEY_ESC]))
     {
+
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         int positionTmpY=-1;
 
@@ -262,9 +262,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
             temps1=clock()-dureeStop;
 
             int  zoneDeplacement[20][16];
-            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs);
-            rect(page,230, 5, 630,25,makecol(0,0,0));                 //Affichage de la barre de temps restant
-            rectfill(page,232, 7, (temps2-temps1)*400/15000+232,23,makecol(0,255,0));
+            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2);
 
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
             if(Joueurs[indiceActuel].pm_actuel>0){
@@ -274,26 +272,25 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
                     positionTmpY=Joueurs[indiceActuel].position_ligne;
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
-                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs);
+                tmp=clock();
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2);
+                dureeStop+=clock()-tmp;
             }
             ////////////////////////////////////////////////////////////////////////////
             AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
             //respiration a faire
-            affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
-
+            //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
                     tmp=clock();
                     quitter = menu_en_jeu(page, fond_menu, &affiche_son, &affiche_grille);
-                    if(quitter==1 || quitter==2)
-                    {
+                    if(quitter==1 || quitter==2){
                         rest(100);
                        return quitter;
                     }
                     rest(200);
                     dureeStop+=clock()-tmp;
             }
-
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_1) // Attaque 1
             {
                 textout_ex(page, font, "Attaque 1", 100, 100, makecol(255, 255, 255), -1);
@@ -327,7 +324,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
 
             }
             montre_curseur(page,curseur);
-
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear_bitmap(page);
         }
@@ -337,7 +333,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
         }while(Joueurs[indiceActuel].elimine==1);
 
     }
-    printf("/////");
         destroy_bitmap(soldat);
         destroy_bitmap(page);
         return quitter;
