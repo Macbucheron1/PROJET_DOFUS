@@ -120,7 +120,7 @@ void menu_principal(void) // A finir
             if (mouse_b & 1)
             {
                 rest(100);
-                 quitter=nouvellePartie(page, musique, &volume);
+                 quitter=nouvellePartie(page);
             }
         }
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
@@ -171,7 +171,7 @@ void menu_principal(void) // A finir
     destroy_sample(musique);
 }
 
-int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A finir
+int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
 {
     // VARIABLE
     t_map carte;
@@ -221,10 +221,12 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
     int quitter = 0;
-    int affiche_son = 1;
-    int affiche_grille = 1;
+    int affiche_son = 0;
+    int affiche_grille = 0;
     int quelle_attaque = 0;
     // CODE PRINCIPAL
+
+    t_joueur *joueurActuel;
 
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
@@ -245,7 +247,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         //Joueurs[i].classe.numero_classe=i+1;
     }
 
-    while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
+    while ((quitter != 1) && (quitter != 3) || (!key[KEY_ESC]))
     {
 
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
@@ -262,32 +264,24 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             temps1=clock()-dureeStop;
 
             int  zoneDeplacement[20][16];
-            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_son, affiche_grille);
+            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2);
 
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
-
             if(Joueurs[indiceActuel].pm_actuel>0){
                 if(Joueurs[indiceActuel].position_colonne!=positionTmpX || Joueurs[indiceActuel].position_ligne!=positionTmpY){   //Permet d'actualiser le chemin seulement si le joueur change de position
-                    CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel, affiche_son, affiche_grille);
+                    CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel);
                     positionTmpX=Joueurs[indiceActuel].position_colonne;
                     positionTmpY=Joueurs[indiceActuel].position_ligne;
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
                 tmp=clock();
-                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2);
                 dureeStop+=clock()-tmp;
             }
-
             ////////////////////////////////////////////////////////////////////////////
             AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
             //respiration a faire
             //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
-
-            if (affiche_son == 1)
-                adjust_sample(musique, *volume, 128, 1000, 1);
-            else
-                adjust_sample(musique, 0, 128, 1000, 1);
-
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
                     tmp=clock();
@@ -329,6 +323,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
                 textout_ex(page, font, "Fin de tour", 100, 100, makecol(255, 255, 255), -1);
                 rest(100);
                 break;
+
             }
             montre_curseur(page,curseur);
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
@@ -338,9 +333,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         {                                 //Passage au joueur suivant
             indiceActuel=(indiceActuel+1)%nbJoueurs;
         }while(Joueurs[indiceActuel].elimine==1);
-
-
-
 
     }
         destroy_bitmap(soldat);

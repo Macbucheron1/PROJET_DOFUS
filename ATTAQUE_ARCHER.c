@@ -72,7 +72,8 @@ void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map 
     }
 }
 
-/** pas finie **/ //integrer la gestion de distance lineaire
+/** finie sans animation **/
+
 void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
 {
     /*attaque a distance qui inflige bcp de degat (courte distance)*/
@@ -106,7 +107,8 @@ void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneA
     }
 }
 
-/** pas finie **/ //integrer la gestion de distance lineaire
+/** finie sans animation **/
+
 void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
 {
     /*attaque a distance qui inflige de leger de degat (moyenne distance)*/
@@ -140,7 +142,8 @@ void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zon
     }
 }
 
-/** pas finie **/ //integrer la gestion de distance lineaire
+/** finie sans animation **/
+
 void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
 {
     /*attaque a distance qui inflige de moyen de degat (longue distance)*/
