@@ -815,7 +815,6 @@ void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
 
         }
     blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
-    affichage_grille(buffer);
 }
 
 void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP *fond_menu, BITMAP* avatar[],time_t temps1, time_t temps2, int affiche_on, int affiche_grille){
