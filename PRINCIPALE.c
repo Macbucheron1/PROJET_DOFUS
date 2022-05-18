@@ -234,6 +234,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     clear_bitmap(page);
     soldat = load_bitmap("Starwars-V1.bmp", 0);
     erreur_chargement_image(soldat);
+    BITMAP* perso1 = load_bitmap("nv_perso1.bmp", NULL);
+    erreur_chargement_image(perso1);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
     int quitter = 0;
