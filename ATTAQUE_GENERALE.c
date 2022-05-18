@@ -143,13 +143,111 @@ int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueu
 
 /** fonction d'attaque globale **/
 
-void attaque(t_joueur* tab_j,int i,int j,BITMAP* buffer, BITMAP* page) //on affiche sur la page les icones d'attaques et sur le buffer la detection de clic
+void attaque(t_joueur* tab_j,int i,BITMAP* buffer, BITMAP* page,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int quelle_attaque ) //on affiche sur la page les icones d'attaques et sur le buffer la detection de clic
 {
     /** a faire **/
     //doit gerer chaque attaque en fonction des classes (4 grnads if) puis affichage des logos des attaques et detection du clic
     //faire la verification de bouclier a chaque fois car si actif le perso ne recoit pas de degats
     verif_bouclier(tab_j,i);//au debut de la fonction car doit savoir si le tank est protege ou pas
     verif_en_feu(tab_j,i); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
+
+    int num_classe; //1 mage ; 2 archer ; 3 guerrier ; 4 tank
+    num_classe=tab_j[i].classe.numero_classe;
+
+    switch (num_classe)
+    {
+    case 1: //le joueur est un mage
+        if(quelle_attaque==1)
+        {
+            c_a_c_mage(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==2)
+        {
+            guerison_mage(tab_j,i,buffer);
+        }
+        if(quelle_attaque==3)
+        {
+            meditation_mage(tab_j,i,buffer);
+        }
+        if(quelle_attaque==4)
+        {
+            lancer_sabre(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==5)
+        {
+            etranglement(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+
+    case 2:
+        if(quelle_attaque==1)
+        {
+            c_a_c_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==2)
+        {
+            lancer_grenade_thermique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==3)
+        {
+            tir_lourd_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==4)
+        {
+            tir_basique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==5)
+        {
+            tir_de_precision(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+
+    case 3:
+        if(quelle_attaque==1)
+        {
+            c_a_c_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==2)
+        {
+            /// a integrer
+        }
+        if(quelle_attaque==3)
+        {
+            /// a integrer
+        }
+        if(quelle_attaque==4)
+        {
+            /// a integrer
+        }
+        if(quelle_attaque==5)
+        {
+            /// a integrer
+        }
+
+    case 4:
+        if(quelle_attaque==1)
+        {
+            c_a_c_tank(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+        if(quelle_attaque==2)
+        {
+            roulement(tab_j,i,buffer);
+        }
+        if(quelle_attaque==3)
+        {
+            bouclier(tab_j,i,buffer);
+        }
+        if(quelle_attaque==4)
+        {
+            /// a integrer
+        }
+        if(quelle_attaque==5)
+        {
+            lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+        }
+
+    default:
+        break;
+    }
+
 
     verif_roulement(tab_j,i); //a metre a la fin car remise a false
 }
