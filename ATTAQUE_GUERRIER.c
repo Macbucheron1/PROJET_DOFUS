@@ -1,6 +1,6 @@
 #include "HEADER.h"
 
-/** finie sans animation **/ //integrer la gestion de distance lineaire
+/** finie sans animation **/
 void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
 {
     /*attaque au corps a corps
