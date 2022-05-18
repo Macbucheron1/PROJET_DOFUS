@@ -14,6 +14,8 @@ void menu_principal(void) // A finir
     SAMPLE* musique = load_wav("imperial_march.wav");
     BITMAP* soldat = load_bitmap("Starwars-V1.bmp", NULL);
     erreur_chargement_image(soldat);
+    BITMAP* perso1 = load_bitmap("nv_perso1.bmp", NULL);
+    erreur_chargement_image(perso1);
     t_decor visuel_menu;
     BITMAP* tab_bitmap[4];
     tab_bitmap[0] = load_bitmap("map_desert.bmp", NULL);
@@ -156,6 +158,7 @@ void menu_principal(void) // A finir
                 credit_en_cours(page, &visuel_menu, soldat, mesActeurs, &delay, &temps, tab_bitmap);
             }
         }
+        masked_blit(perso1, page, 144, 0, 100, 100, 48, 64);
         montre_curseur(page,curseur);
         /////////////////////////////  /////////////////////////////////////
 
@@ -218,6 +221,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     clear_bitmap(page);
     soldat = load_bitmap("Starwars-V1.bmp", 0);
     erreur_chargement_image(soldat);
+    BITMAP* perso1 = load_bitmap("nv_perso1.bmp", NULL);
+    erreur_chargement_image(perso1);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
     int quitter = 0;
@@ -275,7 +280,11 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
                 tmp=clock();
+
                 Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, soldat,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2);
+
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);
+
                 dureeStop+=clock()-tmp;
             }
             ////////////////////////////////////////////////////////////////////////////

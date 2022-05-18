@@ -204,6 +204,7 @@ int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITM
     renvoie le nb de PM utilisés */
     int i=0,j=0;
     int PM_utilises=0;
+
     if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)                    //Si le curseur et sur la map
     {
         i= position_souris_colonne();
