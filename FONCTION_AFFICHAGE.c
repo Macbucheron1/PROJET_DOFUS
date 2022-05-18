@@ -94,18 +94,18 @@ void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 
 }
 
-void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2)
+void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille)
 {
     /* Permet d'animer le deplacement
     Prend en parametre la bitmap d'image, le skin du joueur, la carte, les coordonnées initial, le joueur qui joue, le chemin, les points de mouvement
     Ne renvoie rien */
 
     if(Joueurs[indiceActuel].classe.numero_classe==1)
-        AnimationClasse1(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2);
+        AnimationClasse1(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
     else if(Joueurs[indiceActuel].classe.numero_classe==2)
-        AnimationClasse2(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2);
+        AnimationClasse2(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
     else if(Joueurs[indiceActuel].classe.numero_classe==3)
-        AnimationClasse3(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2);
+        AnimationClasse3(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
     /*else if(Joueurs[indiceActuel].classe.numero_classe==4)
         AnimationClasse4(buffer, soldat, carte, x_initial, y_initial, indiceActuel, chemin, PM, nbJoueurs, Joueurs);*/
 }
