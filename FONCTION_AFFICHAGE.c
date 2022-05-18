@@ -698,10 +698,14 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[])
 
 void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception){       //Affiche tous les Perso sauf l'indice exception
     for(int i=0; i<nbJoueurs;i++)
-            if(i!=exception)
+    {
+
+               if(i!=exception)
                {
+
                     masked_blit(Joueurs[i].skin, buffer, Joueurs[i].position_bitmap.x+48, Joueurs[i].position_bitmap.y+128, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_x-8, carte.tab_coordonnes[Joueurs[i].position_colonne][Joueurs[i].position_ligne].position_pixel_y-40, 48,64);
                }
+    }
 }
 
 void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille)

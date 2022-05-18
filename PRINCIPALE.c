@@ -315,7 +315,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
                 tmp=clock();
-                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);                
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);
                 dureeStop+=clock()-tmp;
             }
 
@@ -346,15 +346,15 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
                 attaqueActive=0;
                 quelle_attaque=0;
             }
-
+            /*
             for (int j=0;j<nbJoueurs;j++)
             {
                 printf("pv %d:%d\n",j,Joueurs[j].pv_actuel);
-            }
+            }*/
             ////////////////////////////////////////////////////////////////////////////
 
 
-            AffichePerso(page, soldat, carte, nbJoueurs, Joueurs,9999);
+            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999);
             //respiration a faire
             //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
 
@@ -401,6 +401,9 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
                 rest(100);
                 break;
             }
+            textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
+            textprintf_ex(page, font, 10, 275, makecol(0, 0, 0), -1, "PM : %d/%d", Joueurs[indiceActuel].pm_actuel, Joueurs[indiceActuel].classe.pm_max);
+            textprintf_ex(page, font, 10, 300, makecol(0, 0, 0), -1, "PA : %d/%d", Joueurs[indiceActuel].pa_actuel, Joueurs[indiceActuel].classe.pa_max);
             montre_curseur(page,curseur);
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear_bitmap(page);
@@ -723,6 +726,11 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
 
     BITMAP* map_ville = load_bitmap("map_ville.bmp", NULL);
     erreur_chargement_image(map_ville);
+
+    BITMAP* perso1 = load_bitmap("nv_perso1.bmp", NULL);
+    erreur_chargement_image(perso1);
+    BITMAP* perso2 = load_bitmap("nv_perso2.bmp", NULL);
+    erreur_chargement_image(perso2);
 
     BITMAP* text_jedi = create_bitmap(300,200);
     clear_to_color(text_jedi, makecol(40, 40, 40));

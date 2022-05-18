@@ -79,14 +79,14 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
     {
         j.position_bitmap.x=0;
         j.position_bitmap.y=0;
-        j.skin=load_bitmap("nv_perso1",NULL);
+        j.skin=load_bitmap("nv_perso1.bmp",NULL);
     }
 
     else if(num_classe==2) //le joueur est un archer
     {
         j.position_bitmap.x=432;
         j.position_bitmap.y=256;
-        j.skin=load_bitmap("nv_perso1",NULL);
+        j.skin=load_bitmap("nv_perso1.bmp",NULL);
     }
 
 
@@ -94,15 +94,16 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
     {
         j.position_bitmap.x=144;
         j.position_bitmap.y=0;
-        j.skin=load_bitmap("nv_perso1",NULL);
+        j.skin=load_bitmap("nv_perso1.bmp",NULL);
     }
 
     else if(num_classe==4) //le joueur est un tank
     {
         j.position_bitmap.x=144;
         j.position_bitmap.y=256;
-        j.skin=load_bitmap("nv_perso2",NULL);
+        j.skin=load_bitmap("nv_perso2.bmp",NULL);
     }
+    erreur_chargement_image(j.skin);
     //on return le joueur crée
     return j;
 }
