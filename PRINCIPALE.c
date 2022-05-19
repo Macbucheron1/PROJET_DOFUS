@@ -288,6 +288,17 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         {
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max;  //On remet le pm max au joueur à chaque tour
         }
+
+        verif_en_feu(Joueurs,indiceActuel); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
+        verif_bouclier(Joueurs,indiceActuel);//au debut de la fonction car doit savoir si le tank est protege ou pas
+
+        if(Joueurs[indiceActuel].PM_roule) // verifie que le joueur a activer le sort au tour precedent et ainsi l'active
+        {
+            Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
+            verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
+        }
+
+
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
 
         temps1=clock();  //On stocke le temps en secondes dans temps1
@@ -339,13 +350,14 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             rectfill(fond_menu, 10,550,30,580,makecol(136,136,136));    //BOUTON FIN D'ATTAQUE
             rectfill(page, 10,550,30,580,makecol(0,125,255));
 
-            for(int i=0;i<nbJoueurs;i++)
+            for(int i=0; i<nbJoueurs; i++)
                 //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
 
-            if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)==makecol(136,136,136)){
-                attaqueActive=0;
-                quelle_attaque=0;
-            }
+                if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)==makecol(136,136,136))
+                {
+                    attaqueActive=0;
+                    quelle_attaque=0;
+                }
             /*
             for (int j=0;j<nbJoueurs;j++)
             {
@@ -408,9 +420,13 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear_bitmap(page);
         }
+
+
+
         do
         {
             //Passage au joueur suivant
+
             indiceActuel=(indiceActuel+1)%nbJoueurs;
         }
         while(Joueurs[indiceActuel].elimine==1);
@@ -527,6 +543,7 @@ int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affich
     }
     return quitter;
 }
+
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
 {
     /* Lance les credits
@@ -603,7 +620,6 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
 
 }
 
-
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps)
 {
     /* Lance les credits
@@ -620,7 +636,6 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
     while(getpixel(fond_parametre, *volume+250, dernier_point_vert_y) == makecol(0, 255, 0))
         dernier_point_vert_y--;
     dernier_point_vert_y+=5;
-    printf("Volume+250 : %d / dernier point y : %d", *volume+250, dernier_point_vert_y);
     int point2[6] = {256, 500, *volume+250, 500, *volume+250, dernier_point_vert_y};
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
 

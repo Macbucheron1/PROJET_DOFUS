@@ -11,10 +11,9 @@ void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque
     int degat=250; //PV enlever a ladversaire
     int distance = 1;//distance d'attaque
     int j=joueur_sur_case_ou_pas(carte,zoneAttaque,tab_j,buffer,animation,nb_joueur); //indice du joueur attaqué (4 si ce n'est personne)
-    printf("////////");
+
     if (action_possible(tab_j,i,PA))
     {
-
         CalculAttaque_zone(buffer,carte,tab_j[i].position_colonne,tab_j[i].position_ligne,zoneAttaque,distance);
         SurbrillanceAttaque(buffer,carte,zoneAttaque);
         if((j>=0) && (j<=3)) //verifier que l'on clique sur un joueur lors de lattaque avec la fonction dans attaque generale
@@ -23,7 +22,7 @@ void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
-
+                affichage_degat(tab_j,j,buffer,degat);
             }
             else
             {
@@ -58,7 +57,7 @@ void guerison_mage(t_joueur* tab_j,int i, BITMAP* page, int *quelle_attaque)
             tab_j[i].pv_actuel=tab_j[i].classe.pv_max; //si l'on arrive au max en restaurant les pv alors on bloque le nb de pv au pv max
         }
         tab_j[i].pa_actuel-=PA;
-        rest(100);
+        //rest(100);
     }
     else
     {
@@ -69,19 +68,19 @@ void guerison_mage(t_joueur* tab_j,int i, BITMAP* page, int *quelle_attaque)
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
 void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque)
 {
-     /* permet au mage de gagner des pm */
+    /* permet au mage de gagner des pm */
 
     int PA=5; //cout en point d'action
 
-    if (action_possible(tab_j,i,PA)&&(tab_j[i].pm_max_actu_mage)<=(tab_j[i].classe.pm_max)) //on verifie aussi si l'on a pas fait trop de meditation car le sort est limité
+    if ((action_possible(tab_j,i,PA))&&((tab_j[i].pm_max_actu_mage)<(tab_j[i].classe.pm_max))) //on verifie aussi si l'on a pas fait trop de meditation car le sort est limité
     {
         *quelle_attaque=0;
         tab_j[i].pm_max_actu_mage+=1;
         tab_j[i].pa_actuel-=PA;
     }
+
     else
     {
-        //dans la fonction generale dattaque faudarait faire un truc d'affichage pour montrer que lattaque a trop ete utilisé
         if(!(action_possible(tab_j,i,PA)))
         {
             affichage_action_impossible(page);
@@ -147,6 +146,7 @@ void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaq
         {
             tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
             tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+            affichage_degat(tab_j,j,buffer,degat);
         }
     }
     else
