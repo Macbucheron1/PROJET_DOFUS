@@ -210,41 +210,41 @@
 1652629461 source:c:\users\luc\onedrive\bureau\projet_dofus-version-3\sous_prog.c
 	"HEADER.h"
 
-1652629429 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_archer.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_archer.c
 	"HEADER.h"
 
-1652629399 c:\users\iba20\downloads\projet_dofus-version-3\header.h
+1652867133 c:\users\iba20\downloads\projet_dofus-version-3\header.h
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	<stdbool.h>
 	<time.h>
 
-1652533755 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_generale.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_generale.c
 	"HEADER.h"
 
-1652533755 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_guerrier.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_guerrier.c
 	"HEADER.h"
 
-1652629431 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_mage.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_mage.c
 	"HEADER.h"
 
-1652629435 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_tank.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\attaque_tank.c
 	"HEADER.h"
 
-1652533755 source:c:\users\iba20\downloads\projet_dofus-version-3\fonction_affichage.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\fonction_affichage.c
 	"HEADER.h"
 
-1652629260 source:c:\users\iba20\downloads\projet_dofus-version-3\initialisation.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\initialisation.c
 	"HEADER.h"
 
-1652533755 source:c:\users\iba20\downloads\projet_dofus-version-3\main.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\main.c
 	"HEADER.h"
 
-1652634055 source:c:\users\iba20\downloads\projet_dofus-version-3\principale.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\principale.c
 	"HEADER.h"
 
-1652629461 source:c:\users\iba20\downloads\projet_dofus-version-3\sous_prog.c
+1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\sous_prog.c
 	"HEADER.h"
 
 1652904045 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_archer.c
@@ -260,5 +260,42 @@
 	"HEADER.h"
 
 1652904045 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_tank.c
+	"HEADER.h"
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\attaque_archer.c
+	"HEADER.h"
+
+1652955760 c:\users\iba20\onedrive\bureau\projet_dofus-version-3\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<stdbool.h>
+	<time.h>
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\attaque_generale.c
+	"HEADER.h"
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\attaque_guerrier.c
+	"HEADER.h"
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\attaque_mage.c
+	"HEADER.h"
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\attaque_tank.c
+	"HEADER.h"
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\fonction_affichage.c
+	"HEADER.h"
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\initialisation.c
+	"HEADER.h"
+
+1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\main.c
+	"HEADER.h"
+
+1652877016 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\principale.c
+	"HEADER.h"
+
+1652955564 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\sous_prog.c
 	"HEADER.h"
 

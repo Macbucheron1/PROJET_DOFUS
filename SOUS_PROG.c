@@ -502,12 +502,12 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
     return Stardelay;
 }
 
-int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank)
+int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
 {
 
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     erreur_chargement_image(personnage);
-    int nbJoueurs=nombreJoueurs(buffer);
+    int nbJoueurs=nombreJoueurs(buffer,visuel_menu, soldat, delay, mesActeurs, tab_bitmap, temps);
     t_joueur Joueurs[nbJoueurs];
 
     int classe[nbJoueurs];
@@ -538,31 +538,33 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
     while(1)
     {
 
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+        blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+        rest(1);
 
-        //rectfill(buffer, 0,500,800,600, makecol(0,255, 127));                     //Fais crash
-
-        textprintf_ex(buffer, arial_28, 325, 530, makecol(255,255,255),-1, "JOUER");
-
-
+        for(x=200; x<=800;x+=200)                                                       //Dessin des demarcations des persp
+        {
+            line(buffer,x,0,x,500, makecol(100,100,100));
+            //rect(buffer, x-180, 30,x-20,70,makecol(0,0,255));
+            if(x<=200*nbJoueurs){
+                rectfill(buffer,x-180,30,x-20,70, makecol(100,100,100));         //Zone de selection
+                rectfill(buffer,x-180+3,30+3,x-20-3,70-3, makecol(160,160,160));
+            }
+        }
+        line(buffer,0,500,800,500, makecol(100,100,100));
 
         for(int i=200; i<=nbJoueurs*200; i+=200)
         {
             if(modifier[i/200-1]==1)
-                textprintf_ex(buffer, font, i-170, 40, makecol(255, 255,255),-1,"%s",pseudos[i/200-1]);
-            else
-            {
+                textprintf_ex(buffer, font, i-170, 40, makecol(0,0,0),-1,"%s",pseudos[i/200-1]);
+            else{
                 textprintf_ex(buffer, font, i-170, 40, makecol(125,125,125),-1,"Pseudo joueur %d",i/200);
             }
         }
+        textprintf_ex(buffer, arial_28, 325, 530, makecol(0,0,0),-1, "JOUER");
 
-        show_mouse(buffer);
 
-        for(x=200; x<=800; x+=200)                                                      //Dessin des demarcations des persp
-        {
-            line(buffer,x,0,x,500, makecol(0,0,255));
-            rect(buffer, x-180, 30,x-20,70,makecol(0,0,255));
-        }
-        line(buffer,0,500,800,500, makecol(0,0,255));                                   //Dessin de la demarcation avec le bouton jouer
+        //show_mouse(buffer);
 
         cpt=0;
         for(x=200; x<=200*nbJoueurs; x+=200)
@@ -700,96 +702,107 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
     int i=0;              //position curseur
     int saisie_max=12;
     int tailleLettre=9;
-    char derniereSaisie[2];    // stockage la derniere touche saisie
-    saisie[saisie_max]=0;
-    derniereSaisie[1]=0;
-    clear_keybuf();
-    rectfill(buffer,x-10+2,y-10+2,x-10+160-2,y-10+40-2, makecol(0,0,0));
-    textprintf(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),"_"); //Affivhage du curseur
+  char derniereSaisie[2];    // stockage la derniere touche saisie
+  saisie[saisie_max]=0;
+  derniereSaisie[1]=0;
+  clear_keybuf();
+  rectfill(buffer,x-10+2,y-10+2,x-10+160-2,y-10+40-2, makecol(160,160,160));
+  textprintf_ex(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),-1,"_"); //Affivhage du curseur
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 
-    while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])     //La touche entree permet de valider le pseudo
+  while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])     //La touche entree permet de valider le pseudo
+  {
+    textprintf_ex(buffer,font,x-10,y+50,makecol(0,0,0),-1,"'Entree' pour valider");
+    touche=readkey();
+    touche1=touche & 0xFF; // code ASCII
+    touche2=touche >> 8;   // scancode
+
+    if (( touche1>31 && touche1<58) || ( touche1>64 && touche1<123))    //Si la touche est une lettre
     {
+      if (i>=saisie_max)
+       i=saisie_max;
+      else
+      {
+        saisie[i]=touche1;
+        derniereSaisie[0]=touche1;
+        saisie[i+1]=0;
 
-        touche=readkey();
-        touche1=touche & 0xFF; // code ASCII
-        touche2=touche >> 8;   // scancode
+        /*  on affiche la touche saisie */
+        textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"%s",derniereSaisie);
+        i++;
+        textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"_");
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+      }
+    }
 
-
-        if (( touche1>31 && touche1<58) || ( touche1>64 && touche1<123))    //Si la touche est une lettre
-        {
-            if (i>=saisie_max)
-                i=saisie_max;
-            else
-            {
-                saisie[i]=touche1;
-                derniereSaisie[0]=touche1;
-                saisie[i+1]=0;
-
-                /*  on affiche la touche saisie */
-                textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"%s",derniereSaisie);
-                i++;
-                textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"_");
-                blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-            }
-        }
-
-        if ( touche2==KEY_BACKSPACE )   //Effacer
-        {
-            rectfill(buffer,x+(tailleLettre)*i+tailleLettre,y+10,x+i*tailleLettre+2*tailleLettre, y+20, makecol(0,0,0)); //Rectangle noir recouvrant la surface effacée
-            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+    if ( touche2==KEY_BACKSPACE )   //Effacer
+    {
+        rectfill(buffer,x+(tailleLettre)*i+tailleLettre,y+10,x+i*tailleLettre+2*tailleLettre, y+20, makecol(160,160,160)); //Rectangle noir recouvrant la surface effacée
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 
             i--;
             if ( i<0 )
                 i=0;
-
-
-            textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),"_");
-            textprintf(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255)," ");
-        }
-        //* si validation
-        if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
-        {
-            textprintf(buffer,font,x+tailleLettre*i,y+10,makecol(0,0,255)," ");
-            if (i==0)
-                saisie[0]=32; // space
-            saisie[i+1]=0;
-        }
+      textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"_");
+      textprintf_ex(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),-1," ");
+    }
+    //* si validation
+    if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
+    {
+      textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,0,255),-1," ");
+      if (i==0)
+        saisie[0]=32; // space
+      saisie[i+1]=0;
     }
     clear_keybuf();
     return i;     //taille du pseudo
 
 
-
 }
 
-int nombreJoueurs(BITMAP* buffer)
+int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
 {
     FONT* arial_28 = load_font("arial_28.pcx", NULL, NULL);
     FONT* arial_20 = load_font("arial_20.pcx", NULL, NULL);
     BITMAP* menuDeroulant=load_bitmap("nbJoueurs.bmp", NULL);
-    erreur_chargement_image(menuDeroulant);
-    int deploye=0;
+
     int nbJoueurs=0;
     int continuer=1;
+    int deploye=0;
+
     while(continuer)
     {
-        if(nbJoueurs!=0 && mouse_b && mouse_x>=250 && mouse_x<=600 && mouse_y>=350 && mouse_y<=400 && deploye==0)
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+        blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+        rest(1);
+
+        if(mouse_x>=250 && mouse_x<=600 && mouse_y>=350 && mouse_y<=400 && deploye==0)
         {
-            continuer=0;
+            rectfill(buffer, 250, 350, 600, 400, makecol(210,210,210));
+            rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(195,195,195));
+            rectfill(buffer, 250+6, 350+6, 600-6, 400-6, makecol(180,180,180));
+            textprintf_ex(buffer,arial_20,290,360,makecol(0,0,0),-1," Choix des classes ");
+            if(mouse_b && nbJoueurs!=0)
+                continuer=0;
         }
-        rectfill(buffer, 250, 350,600,400, makecol(0,0,255));
-        textprintf_ex(buffer,arial_20,290,360,makecol(255,255,255),-1," Choix des classes ");
-        textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");
+        else{
+            rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
+            rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
+            rectfill(buffer, 250+6, 350+6, 600-6, 400-6, makecol(160,160,160));
+            textprintf_ex(buffer,arial_20,290,360,makecol(0,0,0),-1," Choix des classes ");
+        }
+        textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");
+
+        rectfill(buffer,250,250,600,300, makecol(100,100,100));         //Zone de selection
+        rectfill(buffer,253,253,597,297, makecol(160,160,160));
+
+        int points[6]= {570, 265,   590, 265,  580, 285};               //triangle
+        polygon(buffer, 3, points, makecol(100,100,100));
 
         if(nbJoueurs!=0)
         {
-            textprintf(buffer,arial_20,260,260,makecol(0,0,255),"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
+            textprintf_ex(buffer,arial_20,260,260,makecol(0,0,0),-1,"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
         }
-        rect(buffer,250,250,600,300, makecol(0,0,255));         //Zone de selection
-
-        int points[6]= {570, 265,   590, 265,  580, 285};               //triangle
-        polygon(buffer, 3, points, makecol(0,0,255));
         //masked_blit(menuDeroulant,screen,0,0,250,250,350,156);
         //rest(1000);
         if(mouse_b && mouse_x>=250 && mouse_x<=600 && mouse_y>=250 && mouse_y<=300 && deploye==0)
@@ -797,17 +810,29 @@ int nombreJoueurs(BITMAP* buffer)
             deploye=1;
             for(int i=0; i<118; i++)                                    //Animation du menu Deroulant
             {
-                textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
-                rect(buffer,250,250,600,300, makecol(0,0,255));
-                int points[6]= {570, 265,   590, 265,  580, 285};
-                polygon(buffer, 3, points, makecol(0,0,255));
+                animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+                blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+                rest(1);
+                textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
+                rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
+                rectfill(buffer, 250+6, 350+6, 600-6, 400-6, makecol(160,160,160));
+                textprintf_ex(buffer,arial_20,290,360,makecol(0,0,0),-1," Choix des classes ");
+                rectfill(buffer,250,250,600,300, makecol(100,100,100));         //Zone de selection
+                rectfill(buffer,253,253,597,297, makecol(160,160,160));
 
+                int points[6]= {570, 265,   590, 265,  580, 285};               //triangle
+                polygon(buffer, 3, points, makecol(100,100,100));
+                if(nbJoueurs!=0)
+                {
+                    textprintf_ex(buffer,arial_20,260,260,makecol(0,0,0),-1,"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
+                }
                 masked_blit(menuDeroulant,buffer,0,0,250,300,350,i);
                 blit(buffer, screen,0,0,0,0,SCREEN_W,SCREEN_H);
                 clear_bitmap(buffer);
-                rest(0.1);
+                //rest(0.1);
             }
-            rest(200);
+            rest(100);
         }
 
         if(deploye==1)
@@ -818,74 +843,125 @@ int nombreJoueurs(BITMAP* buffer)
             {
                 for(int i=118; i>0; i--)                                    //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
-                    rect(buffer,250,250,600,300, makecol(0,0,255));
-                    int points[6]= {570, 265,   590, 265,  580, 285};
-                    polygon(buffer, 3, points, makecol(0,0,255));
+                    animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+                    blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+                    rest(1);
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
+                    rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
+                    rectfill(buffer, 250+6, 350+6, 600-6, 400-6, makecol(160,160,160));
+                    textprintf_ex(buffer,arial_20,290,360,makecol(0,0,0),-1," Choix des classes ");
+                    rectfill(buffer,250,250,600,300, makecol(100,100,100));         //Zone de selection
+                    rectfill(buffer,253,253,597,297, makecol(160,160,160));
 
+                    int points[6]= {570, 265,   590, 265,  580, 285};               //triangle
+                    polygon(buffer, 3, points, makecol(100,100,100));
+                    if(nbJoueurs!=0)
+                    {
+                        textprintf_ex(buffer,arial_20,260,260,makecol(0,0,0),-1,"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
+                    }
                     masked_blit(menuDeroulant,buffer,0,0,250,300,350,i);
                     blit(buffer, screen,0,0,0,0,SCREEN_W,SCREEN_H);
                     clear_bitmap(buffer);
-                    rest(0.1);
+                    //rest(0.1);
                     deploye=0;
                 }
                 nbJoueurs=2;
-                rest(200);
+                rest(100);
             }
             else if(mouse_b && mouse_x>=250 && mouse_x<=600 && mouse_y>338 && mouse_y<=378)   //3 JOUEURS
             {
                 for(int i=118; i>0; i--)                                    //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+                    blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+                    rest(1);
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
-                    int points[6]= {570, 265,   590, 265,  580, 285};
-                    polygon(buffer, 3, points, makecol(0,0,255));
+                    rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
+                    rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
+                    rectfill(buffer, 250+6, 350+6, 600-6, 400-6, makecol(160,160,160));
+                    textprintf_ex(buffer,arial_20,290,360,makecol(0,0,0),-1," Choix des classes ");
+                    rectfill(buffer,250,250,600,300, makecol(100,100,100));         //Zone de selection
+                    rectfill(buffer,253,253,597,297, makecol(160,160,160));
 
+                    int points[6]= {570, 265,   590, 265,  580, 285};               //triangle
+                    polygon(buffer, 3, points, makecol(100,100,100));
+                    if(nbJoueurs!=0)
+                    {
+                        textprintf_ex(buffer,arial_20,260,260,makecol(0,0,0),-1,"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
+                    }
                     masked_blit(menuDeroulant,buffer,0,0,250,300,350,i);
                     blit(buffer, screen,0,0,0,0,SCREEN_W,SCREEN_H);
                     clear_bitmap(buffer);
-                    rest(0.1);
+                    //rest(0.1);
                     deploye=0;
                 }
                 nbJoueurs=3;
-                rest(200);
+                rest(100);
             }
 
             else if(mouse_b && mouse_x>=250 && mouse_x<=600 && mouse_y>378 && mouse_y<=418)   //4 JOUEURS
             {
                 for(int i=118; i>0; i--)                                    //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+                    blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+                    rest(1);
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
-                    int points[6]= {570, 265,   590, 265,  580, 285};
-                    polygon(buffer, 3, points, makecol(0,0,255));
+                    rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
+                    rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
+                    rectfill(buffer, 250+6, 350+6, 600-6, 400-6, makecol(160,160,160));
+                    textprintf_ex(buffer,arial_20,290,360,makecol(0,0,0),-1," Choix des classes ");
+                    rectfill(buffer,250,250,600,300, makecol(100,100,100));         //Zone de selection
+                    rectfill(buffer,253,253,597,297, makecol(160,160,160));
 
+                    int points[6]= {570, 265,   590, 265,  580, 285};               //triangle
+                    polygon(buffer, 3, points, makecol(100,100,100));
+                    if(nbJoueurs!=0)
+                    {
+                        textprintf_ex(buffer,arial_20,260,260,makecol(0,0,0),-1,"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
+                    }
                     masked_blit(menuDeroulant,buffer,0,0,250,300,350,i);
                     blit(buffer, screen,0,0,0,0,SCREEN_W,SCREEN_H);
                     clear_bitmap(buffer);
-                    rest(0.1);
+                    //rest(0.1);
                     deploye=0;
                 }
                 nbJoueurs=4;
-                rest(200);
+                rest(100);
             }
 
             if(mouse_b && mouse_x>=250 && mouse_x<=600 && mouse_y>=250 && mouse_y<=300)   //Faire derouler, sans selectionner le nombre de joueur
             {
                 for(int i=118; i>0; i--)                                    //Animation inverse du menu Deroulant
                 {
-                    textprintf(buffer,arial_28,100,150,makecol(0,0,255)," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
+                    animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+                    blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+                    rest(1);
+                    textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
-                    int points[6]= {570, 265,   590, 265,  580, 285};
-                    polygon(buffer, 3, points, makecol(0,0,255));
+                    rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
+                    rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
+                    rectfill(buffer, 250+6, 350+6, 600-6, 400-6, makecol(160,160,160));
+                    textprintf_ex(buffer,arial_20,290,360,makecol(0,0,0),-1," Choix des classes ");
+                    rectfill(buffer,250,250,600,300, makecol(100,100,100));         //Zone de selection
+                    rectfill(buffer,253,253,597,297, makecol(160,160,160));
 
+                    int points[6]= {570, 265,   590, 265,  580, 285};               //triangle
+                    polygon(buffer, 3, points, makecol(100,100,100));
+                    if(nbJoueurs!=0)
+                    {
+                        textprintf_ex(buffer,arial_20,260,260,makecol(0,0,0),-1,"%d JOUEURS ",nbJoueurs);       //Affichage du nombre de joueurs
+                    }
                     masked_blit(menuDeroulant,buffer,0,0,250,300,350,i);
                     blit(buffer, screen,0,0,0,0,SCREEN_W,SCREEN_H);
                     clear_bitmap(buffer);
-                    rest(0.1);
+                    //rest(0.1);
                     deploye=0;
                 }
-                rest(200);
+                rest(100);
             }
             show_mouse(buffer);
 

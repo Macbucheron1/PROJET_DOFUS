@@ -136,7 +136,7 @@ void menu_principal(void) // A finir
             if (mouse_b & 1)
             {
                 rest(100);
-                quitter=nouvellePartie(page, musique, &volume, mage, archer, guerrier, tank);
+                quitter=nouvellePartie(page, musique, &volume, mage, archer, guerrier, tank, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
             }
         }
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
