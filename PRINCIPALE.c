@@ -663,7 +663,6 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
     while(getpixel(fond_parametre, *volume+250, dernier_point_vert_y) == makecol(0, 255, 0))
         dernier_point_vert_y--;
     dernier_point_vert_y+=5;
-    printf("Volume+250 : %d / dernier point y : %d", *volume+250, dernier_point_vert_y);
     int point2[6] = {256, 500, *volume+250, 500, *volume+250, dernier_point_vert_y};
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
 
