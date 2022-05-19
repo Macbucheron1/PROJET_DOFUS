@@ -1032,7 +1032,7 @@ void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_j
     rect(buffer,230, 5, 630,25,makecol(0,0,0));                 //Affichage de la barre de temps restant
     rectfill(buffer,232, 7, (temps2-temps1)*400/30000+232,23,makecol(0,255,0));
 
-    affichage_en_jeu(buffer,fond_menu,avatar, Joueurs, indiceActuel);
+    affichage_en_jeu(buffer,fond_menu,avatar, Joueurs, indiceActuel, nbJoueurs);
 
 }
 
