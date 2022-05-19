@@ -53,53 +53,17 @@ void menu_principal(void) // A finir
 
     // initialisation des classes
 
-    BITMAP* icone_mage0_grand = load_bitmap("vador_grand.bmp",  NULL);
-    erreur_chargement_image(icone_mage0_grand);
-    BITMAP* icone_mage0_petit = load_bitmap("vador_petit.bmp",  NULL);
-    erreur_chargement_image(icone_mage0_petit);
-    BITMAP* icone_mage1_grand = load_bitmap("obi_wan_grand.bmp",  NULL);
-    erreur_chargement_image(icone_mage1_grand);
-    BITMAP* icone_mage1_petit = load_bitmap("obi_wan_petit.bmp",  NULL);
-    erreur_chargement_image(icone_mage1_petit);
-
-    BITMAP* icone_archer0_grand = load_bitmap("clone_grand.bmp",  NULL);
-    erreur_chargement_image(icone_archer0_grand);
-    BITMAP* icone_archer0_petit = load_bitmap("clone_petit.bmp",  NULL);
-    erreur_chargement_image(icone_archer0_petit);
-    BITMAP* icone_archer1_grand = load_bitmap("clone2_grand.bmp",  NULL);
-    erreur_chargement_image(icone_archer1_grand);
-    BITMAP* icone_archer1_petit = load_bitmap("clone2_petit.bmp",  NULL);
-    erreur_chargement_image(icone_archer1_petit);
-
-    BITMAP* icone_guerrier0_grand = load_bitmap("han_solo_grand.bmp",  NULL);
-    erreur_chargement_image(icone_guerrier0_grand);
-    BITMAP* icone_guerrier0_petit = load_bitmap("han_solo_petit.bmp",  NULL);
-    erreur_chargement_image(icone_guerrier0_petit);
-    BITMAP* icone_guerrier1_grand = load_bitmap("chewbacca_grand.bmp",  NULL);
-    erreur_chargement_image(icone_guerrier1_grand);
-    BITMAP* icone_guerrier1_petit = load_bitmap("chewbacca_petit.bmp",  NULL);
-    erreur_chargement_image(icone_guerrier1_petit);
-
-    BITMAP* icone_tank0_grand = load_bitmap("c3po_grand.bmp",  NULL);
-    erreur_chargement_image(icone_tank0_grand);
-    BITMAP* icone_tank0_petit = load_bitmap("c3po_petit.bmp",  NULL);
-    erreur_chargement_image(icone_tank0_petit);
-    BITMAP* icone_tank1_grand = load_bitmap("r2d2_grand.bmp",  NULL);
-    erreur_chargement_image(icone_tank1_grand);
-    BITMAP* icone_tank1_petit = load_bitmap("r2d2_petit.bmp",  NULL);
-    erreur_chargement_image(icone_tank1_petit);
-
     t_personnage mage;
-    mage=init_classes("mage",1,6,2000,4, icone_mage0_grand, icone_mage0_petit, icone_mage1_grand, icone_mage1_petit);
+    mage=init_classes("mage",1,6,2000,4);
 
     t_personnage archer;
-    archer=init_classes("archer",2,6,1700,4, icone_archer0_grand, icone_archer0_petit, icone_archer1_grand, icone_archer1_petit);
+    archer=init_classes("archer",2,6,1700,4);
 
     t_personnage guerrier;
-    guerrier=init_classes("guerrier",3,6,2500,3, icone_guerrier0_grand, icone_guerrier0_petit, icone_guerrier1_grand, icone_guerrier1_petit);
+    guerrier=init_classes("guerrier",3,6,2500,3);
 
     t_personnage tank;
-    tank=init_classes("tank",4,6,4800,2, icone_tank0_grand, icone_tank0_petit, icone_tank1_grand, icone_tank1_petit);
+    tank=init_classes("tank",4,6,4800,2);
 
     ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
@@ -252,16 +216,18 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     int couleur_attaque_4 = makecol(255,255,0);
     int couleur_attaque_5 = makecol(255,255,255);
     int couleur_fin_tour = makecol(150, 0, 0);
+    int couleur_fin_attaque = makecol(136,136,136);
 
     clear_to_color(fond_menu, makecol(0, 0, 0));
 
     rectfill(fond_menu, 750,10,790,50,couleur_menu);
-    rectfill(fond_menu, 100+108*0, 555, 200+108*0, 585, couleur_attaque_1);
-    rectfill(fond_menu, 100+108*1, 555, 200+108*1, 585, couleur_attaque_2);
-    rectfill(fond_menu, 100+108*2, 555, 200+108*2, 585, couleur_attaque_3);
-    rectfill(fond_menu, 100+108*3, 555, 200+108*3, 585, couleur_attaque_4);
-    rectfill(fond_menu, 100+108*4, 555, 200+108*4, 585, couleur_attaque_5);
-    rectfill(fond_menu, 100+108*5, 555, 200+108*5, 585, couleur_fin_tour);
+    rectfill(fond_menu, 100+78*0, 555, 150+78*0, 595, couleur_attaque_1);
+    rectfill(fond_menu, 100+78*1, 555, 150+78*1, 595, couleur_attaque_2);
+    rectfill(fond_menu, 256+128*0, 555, 356+128*0, 595, couleur_attaque_3);
+    rectfill(fond_menu, 256+128*1, 555, 356+128*1, 595, couleur_attaque_4);
+    rectfill(fond_menu, 256+128*2, 555, 356+128*2, 595, couleur_attaque_5);
+    rectfill(fond_menu, 256+128*3, 555, 356+128*3, 595, couleur_fin_tour);
+    rectfill(fond_menu, 22,555,72,595,couleur_fin_attaque);
 
     // INITIALISATION VARIABLE
     init_map(&carte);
@@ -304,6 +270,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0);  //Tant que la case est indisponible
     }
 
+
     while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
     {
         if(Joueurs[indiceActuel].pv_actuel<=0)
@@ -323,17 +290,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         {
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max;  //On remet le pm max au joueur à chaque tour
         }
-
-        verif_en_feu(Joueurs,indiceActuel); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
-        verif_bouclier(Joueurs,indiceActuel);//au debut de la fonction car doit savoir si le tank est protege ou pas
-
-        if(Joueurs[indiceActuel].PM_roule) // verifie que le joueur a activer le sort au tour precedent et ainsi l'active
-        {
-            Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
-            verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
-        }
-
-
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
 
         temps1=clock();  //On stocke le temps en secondes dans temps1
@@ -382,17 +338,15 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
                 attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque);
                 //printf("%d\n",quelle_attaque);
             }
-            rectfill(fond_menu, 10,550,30,580,makecol(136,136,136));    //BOUTON FIN D'ATTAQUE
-            rectfill(page, 10,550,30,580,makecol(0,125,255));
 
-            for(int i=0; i<nbJoueurs; i++)
+
+            for(int i=0;i<nbJoueurs;i++)
                 //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
 
-                if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)==makecol(136,136,136))
-                {
-                    attaqueActive=0;
-                    quelle_attaque=0;
-                }
+            if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)== couleur_fin_attaque){
+                attaqueActive=0;
+                quelle_attaque=0;
+            }
             /*
             for (int j=0;j<nbJoueurs;j++)
             {
@@ -445,23 +399,20 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_fin_tour) // Fin de tour
             {
                 textout_ex(page, font, "Fin de tour", 100, 100, makecol(255, 255, 255), -1);
-                rest(200);
+                rest(100);
                 break;
             }
-            textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
-            textprintf_ex(page, font, 10, 275, makecol(0, 0, 0), -1, "PM : %d/%d", Joueurs[indiceActuel].pm_actuel, Joueurs[indiceActuel].classe.pm_max);
-            textprintf_ex(page, font, 10, 300, makecol(0, 0, 0), -1, "PA : %d/%d", Joueurs[indiceActuel].pa_actuel, Joueurs[indiceActuel].classe.pa_max);
+
+            //textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
+           // textprintf_ex(page, font, 10, 275, makecol(0, 0, 0), -1, "PM : %d/%d", Joueurs[indiceActuel].pm_actuel, Joueurs[indiceActuel].classe.pm_max);
+            //textprintf_ex(page, font, 10, 300, makecol(0, 0, 0), -1, "PA : %d/%d", Joueurs[indiceActuel].pa_actuel, Joueurs[indiceActuel].classe.pa_max);
             montre_curseur(page,curseur);
             blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear_bitmap(page);
         }
-
-
-
         do
         {
             //Passage au joueur suivant
-
             indiceActuel=(indiceActuel+1)%nbJoueurs;
         }
         while(Joueurs[indiceActuel].elimine==1);
@@ -578,7 +529,6 @@ int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affich
     }
     return quitter;
 }
-
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
 {
     /* Lance les credits
@@ -655,6 +605,7 @@ void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteu
 
 }
 
+
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps)
 {
     /* Lance les credits
@@ -671,6 +622,7 @@ void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int
     while(getpixel(fond_parametre, *volume+250, dernier_point_vert_y) == makecol(0, 255, 0))
         dernier_point_vert_y--;
     dernier_point_vert_y+=5;
+    printf("Volume+250 : %d / dernier point y : %d", *volume+250, dernier_point_vert_y);
     int point2[6] = {256, 500, *volume+250, 500, *volume+250, dernier_point_vert_y};
     ////////////////////////// BOUCLE EVENEMENT //////////////////////////
 

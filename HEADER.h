@@ -33,19 +33,12 @@ typedef struct Map{
     t_cases tab_coordonnes[COLONNE_TABLEAU][LIGNE_TABLEAU];
 }t_map;
 
-typedef struct icone{
-    BITMAP* icone_grand;
-    BITMAP* icone_petit;
-}t_icone;
-
-
 typedef struct Personnage{ //les classes
     int numero_classe; // de 1 � 4 pour differencier les classes plus facilement
     char nom_classe[TAILLE_NOM_CLASSE];
     int pv_max; //si soin ne pas depasser ce pv max
     int pm_max; // afin de remettre a ca a chaque tour
     int pa_max; // pareil
-    t_icone icone[2];
 }t_personnage;
 
 typedef struct Joueur{
@@ -77,7 +70,6 @@ typedef struct Joueur{
 
     coords position_bitmap;
     BITMAP* skin;
-    int num_skin;
 } t_joueur;
 
 typedef struct Decor{
@@ -117,6 +109,7 @@ typedef struct{
     int b;
 }color;
 
+
 /* ----------- FONCTION AFFICHAGE ----------- */
 
 void changement_graphique(int valeur); // Permet de changer de mode graphique
@@ -126,7 +119,7 @@ void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelé par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
 void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelé par SurbrillanceDeplacement et affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
 void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs,t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille); // Fait l'animation de deplacement
-void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joueur Joueurs[], int indiceActuel, int nbJoueurs); // A commenter
+void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[],t_joueur Joueurs[], int indiceActuel); // A commenter
 int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille); // A commenter
 void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville); // Affiche la classe clone
 void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige); // Affiche la classe dark vador
@@ -140,7 +133,7 @@ int animation_vers_droite(int delay, t_acteur* monActeur, int position_debut_x, 
 int animation_vers_bas(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y);// Anime le personnage vers le bas
 int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y);// Anime le personnage vers le haut
 void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception);
-void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu, BITMAP* avatar[], time_t temps1, time_t temps2, int affiche_son, int affiche_grille, int indiceActuel);
+void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu, BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int indiceActuel);
 void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille);
 void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille);
 void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille);       //Affiche tous les Perso szuf l'indice exception
@@ -172,8 +165,8 @@ int caseDisponible2(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs,
 
 /* ----------- INITIALISATION ----------- */
 
-t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max, BITMAP* icone0_grand, BITMAP* icone0_petit, BITMAP* icone1_grand, BITMAP* icone1_petit); //initialise les differentes classes
-t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur, int num_skin); //initialise les joueurs
+t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max); //initialise les differentes classes
+t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur); //initialise les joueurs
 void init_map(t_map* carte); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
 void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y); // Initialise un acteurs
