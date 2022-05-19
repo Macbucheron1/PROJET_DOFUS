@@ -313,27 +313,27 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         {
             Joueurs[indiceActuel].elimine=1;
         }
-
-
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         int positionTmpY=-1;
-
         if(Joueurs[indiceActuel].classe.numero_classe==1) //gestion de la meditation du mage
         {
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].pm_max_actu_mage;
         }
         else
         {
-            verif_en_feu(Joueurs,indiceActuel); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
-            verif_bouclier(Joueurs,indiceActuel);//au debut de la fonction car doit savoir si le tank est protege ou pas
-
-            if(Joueurs[indiceActuel].PM_roule) // verifie que le joueur a activer le sort au tour precedent et ainsi l'active
-            {
-                Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
-                verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
-            }
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max;  //On remet le pm max au joueur à chaque tour
         }
+
+        verif_en_feu(Joueurs,indiceActuel); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
+        verif_bouclier(Joueurs,indiceActuel);//au debut de la fonction car doit savoir si le tank est protege ou pas
+
+        if(Joueurs[indiceActuel].PM_roule) // verifie que le joueur a activer le sort au tour precedent et ainsi l'active
+        {
+            Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
+            verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
+        }
+
+
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
 
         temps1=clock();  //On stocke le temps en secondes dans temps1
@@ -343,12 +343,9 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         quelle_attaque=0;
         while(temps1<=temps2 && (Joueurs[indiceActuel].pm_actuel>0 || Joueurs[indiceActuel].pa_actuel>0))           //rajouter la condition si le joueurtuilise tous ses pm et pa
         {
-
             temps1=clock()-dureeStop;
-
             int  zoneDeplacement[20][16];
             AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_son, affiche_grille, indiceActuel);
-
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
 
             if(Joueurs[indiceActuel].pm_actuel>0 && attaqueActive==0)
