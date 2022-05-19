@@ -656,7 +656,7 @@ int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, in
     return 0;
 }
 
-void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[],t_joueur Joueurs[], int indiceActuel)
+void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joueur Joueurs[], int indiceActuel, int nbJoueurs)
 {
     int i;
 
