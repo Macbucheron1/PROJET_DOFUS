@@ -89,13 +89,16 @@ void verif_roulement(t_joueur* tab_j,int i)
 
 void verif_en_feu(t_joueur* tab_j,int i)
 {
+    int degat=20;
     if((tab_j[i].en_feu)&&(tab_j[i].tour_en_feu<tab_j[i].tour_en_feu_max))
     {
-        tab_j[i].pv_actuel-=20; //infilge 20 de degats a chaque tour que le joueur est en feu
+        tab_j[i].pv_actuel-=degat; //infilge 20 de degats a chaque tour que le joueur est en feu
         tab_j[i].tour_en_feu+=1;
+        printf("yo1\n");
     }
     else
     {
+        printf("yo2\n");
         tab_j[i].tour_en_feu=0;
         tab_j[i].en_feu=false;
     }
@@ -126,30 +129,35 @@ int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueu
                 {
 
                     indice_joueur_attaque=(joueur[k].numero_joueur); // car num de joueur de 1 a 4 mais indice de 0 a 3
-                    rest(200);
                     return indice_joueur_attaque;
                 }
             }
-
             affichage_attaque_impossible(buffer); //si on clique sur une casse ou personne n'est
-            blit(buffer, screen,0,0,0,0,SCREEN_W,SCREEN_H);
-            rest(500);
         }
-        //printf("id_j3:%d\n",indice_joueur_attaque);
         return indice_joueur_attaque;
     }
     return indice_joueur_attaque;
 }
 
+void affichage_degat(t_joueur* tab_j,int j,BITMAP* buffer,int degat)//j joueur attaqué
+{
+    int x=tab_j[j].position_colonne*32+80;
+    int y=tab_j[j].position_ligne*32-16;
+    int couleur_degats = makecol(255,0,0);
+    int decalage=5; //decalage en px
+    for (int i = 0; i<100; i++)
+    {
+        textprintf_ex(buffer, font, x, y-10, couleur_degats, -1, "- %d", degat);
+        rest(1);
+        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+    }
+}
+
+
 /** fonction d'attaque globale **/
 
 void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque) //on affiche sur la page les icones d'attaques et sur le buffer la detection de clic
 {
-    /** a faire **/
-    //doit gerer chaque attaque en fonction des classes (4 grnads if) puis affichage des logos des attaques et detection du clic
-    //faire la verification de bouclier a chaque fois car si actif le perso ne recoit pas de degats
-    verif_bouclier(tab_j,i);//au debut de la fonction car doit savoir si le tank est protege ou pas
-    verif_en_feu(tab_j,i); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
     int quelle_attaque=*quelleAttaque;
     int num_classe; //1 mage ; 2 archer ; 3 guerrier ; 4 tank
     num_classe=tab_j[i].classe.numero_classe;
@@ -162,10 +170,7 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
         }
         if(quelle_attaque==2)
         {
-
             guerison_mage(tab_j,i,buffer,quelleAttaque);
-
-
         }
         if(quelle_attaque==3)
         {
@@ -253,6 +258,5 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
             lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
         }
     }
-    verif_roulement(tab_j,i); //a metre a la fin car remise a false
     rest(100);
 }

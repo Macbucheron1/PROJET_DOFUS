@@ -58,7 +58,7 @@ void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque)
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
 void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque)
 {
-    int PA=-6; //cout en point d'action
+    int PA=6; //cout en point d'action
 
     if (action_possible(tab_j,i,PA))
     {

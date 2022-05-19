@@ -54,8 +54,6 @@ void montre_curseur(BITMAP* page, BITMAP* curseur)
     draw_sprite(page, curseur, mouse_x, mouse_y);
 }
 
-
-
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
     /* Affiche les zones sur lesqeuelles peut aller le personnage en vert
@@ -75,7 +73,6 @@ void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int zoneDeplacement[20]
     }
     afficheSouris(buffer,carte,zoneDeplacement);
 }
-
 
 void afficheSouris(BITMAP* buffer,t_map carte, int zoneDeplacement[20][16])
 {
@@ -365,7 +362,6 @@ void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
 
 }
 
-
 void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige)
 {
         /* Permet d'afficher la classe Dark vador
@@ -503,7 +499,6 @@ void affichage_classe4(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
         }
 }
 
-
 void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_decor* visuel_menu, BITMAP* tableau_map[], unsigned int* temps)
 {
     /* Anime le decor du menu
@@ -569,8 +564,6 @@ void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_d
         }
         visuel_menu->position_x += visuel_menu->avancement_x;
 }
-
-
 
 int animation_vers_gauche(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x)
 {
@@ -992,6 +985,7 @@ void SurbrillanceAttaque(BITMAP* buffer,t_map carte, int zoneAttaque[20][16])
     }
     afficheSouris_attaque(buffer,carte,zoneAttaque);
 }
+
 
 
 void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu, BITMAP* avatar[], time_t temps1, time_t temps2, int affiche_son, int affiche_grille, int indiceActuel)
