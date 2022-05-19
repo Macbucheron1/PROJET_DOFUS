@@ -324,6 +324,14 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         }
         else
         {
+            verif_en_feu(Joueurs,indiceActuel); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
+            verif_bouclier(Joueurs,indiceActuel);//au debut de la fonction car doit savoir si le tank est protege ou pas
+
+            if(Joueurs[indiceActuel].PM_roule) // verifie que le joueur a activer le sort au tour precedent et ainsi l'active
+            {
+                Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
+                verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
+            }
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max;  //On remet le pm max au joueur à chaque tour
         }
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
