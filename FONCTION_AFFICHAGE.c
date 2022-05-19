@@ -660,10 +660,17 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
 {
     int i;
 
-    draw_sprite(buffer, avatar[0],3,90);
-    draw_sprite(buffer, avatar[1],10,20);
-    draw_sprite(buffer, avatar[2],33,90);
-    draw_sprite(buffer, avatar[3],63,90);
+    draw_sprite(buffer, Joueurs[indiceActuel].classe.icone[Joueurs[indiceActuel].num_skin].icone_grand,3,70);
+    draw_sprite(buffer, Joueurs[(indiceActuel+1)%nbJoueurs].classe.icone[Joueurs[(indiceActuel+1)%nbJoueurs].num_skin].icone_petit,3,150);
+    if (nbJoueurs == 3)
+    {
+        draw_sprite(buffer, Joueurs[(indiceActuel+2)%nbJoueurs].classe.icone[Joueurs[(indiceActuel+2)%nbJoueurs].num_skin].icone_petit,34,150);
+    }
+    else if (nbJoueurs == 4)
+    {
+        draw_sprite(buffer, Joueurs[(indiceActuel+2)%nbJoueurs].classe.icone[Joueurs[(indiceActuel+2)%nbJoueurs].num_skin].icone_petit,34,150);
+        draw_sprite(buffer, Joueurs[(indiceActuel+3)%nbJoueurs].classe.icone[Joueurs[(indiceActuel+3)%nbJoueurs].num_skin].icone_petit, 65,150);
+    }
 
     textprintf_ex(buffer,font,13,190,makecol(0,0,0), -1,"PV");
     rect(buffer,10, 200, 30, 350,makecol(0,0,0));
