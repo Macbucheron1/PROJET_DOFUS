@@ -33,12 +33,19 @@ typedef struct Map{
     t_cases tab_coordonnes[COLONNE_TABLEAU][LIGNE_TABLEAU];
 }t_map;
 
+typedef struct icone{
+    BITMAP* icone_grand;
+    BITMAP* icone_petit;
+}t_icone;
+
+
 typedef struct Personnage{ //les classes
     int numero_classe; // de 1 � 4 pour differencier les classes plus facilement
     char nom_classe[TAILLE_NOM_CLASSE];
     int pv_max; //si soin ne pas depasser ce pv max
     int pm_max; // afin de remettre a ca a chaque tour
     int pa_max; // pareil
+    t_icone icone[2];
 }t_personnage;
 
 typedef struct Joueur{
