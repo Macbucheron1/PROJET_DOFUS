@@ -120,7 +120,7 @@ void menu_principal(void) // A finir
             if (mouse_b & 1)
             {
                 rest(100);
-                 quitter=nouvellePartie(page);
+                 quitter=nouvellePartie(page,&visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
             }
         }
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
@@ -199,6 +199,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs) // A finir
     int couleur_attaque_3 = makecol(0,0,255);
     int couleur_attaque_4 = makecol(255,255,0);
     int couleur_attaque_5 = makecol(255,255,255);
+    int couleur_fin_tour = makecol(150, 0, 0);
 
     clear_to_color(fond_menu, makecol(0, 0, 0));
 

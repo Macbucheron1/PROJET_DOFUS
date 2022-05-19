@@ -153,9 +153,9 @@ int caseDisponible(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs);
 int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen);
 
 
-int nouvellePartie(BITMAP* buffer);
+int nouvellePartie(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps);
 int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]); // stockage de la totalité de la saisie
-int nombreJoueurs(BITMAP* buffer);
+int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps);
 int caseDisponible2(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs, int exception);
 
 
