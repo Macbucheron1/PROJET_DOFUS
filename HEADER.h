@@ -173,8 +173,8 @@ int caseDisponible2(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs,
 
 /* ----------- INITIALISATION ----------- */
 
-t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max); //initialise les differentes classes
-t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur); //initialise les joueurs
+t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max, BITMAP* icone0_grand, BITMAP* icone0_petit, BITMAP* icone1_grand, BITMAP* icone1_petit); //initialise les differentes classes
+t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur, int num_skin); //initialise les joueurs
 void init_map(t_map* carte); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
 void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y); // Initialise un acteurs
