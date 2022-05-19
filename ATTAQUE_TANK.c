@@ -37,7 +37,7 @@ void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque
 }
 
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
-void roulement(t_joueur* tab_j,int i,BITMAP* page)
+void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque)
 {
     /*permet pendant un tour (le tour suivant) d'augmenter les PM du tank à 4*/
 
@@ -45,6 +45,7 @@ void roulement(t_joueur* tab_j,int i,BITMAP* page)
 
     if (action_possible(tab_j,i,PA))
     {
+        *quelle_attaque=0;
         tab_j[i].PM_roule=true;
         tab_j[i].pa_actuel-=PA;
     }
@@ -55,12 +56,13 @@ void roulement(t_joueur* tab_j,int i,BITMAP* page)
 }
 
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
-void bouclier(t_joueur* tab_j,int i,BITMAP* page)
+void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque)
 {
     int PA=-6; //cout en point d'action
 
     if (action_possible(tab_j,i,PA))
     {
+        *quelle_attaque=0;
         tab_j[i].bouclier=true;
         tab_j[i].pa_actuel-=PA;
     }

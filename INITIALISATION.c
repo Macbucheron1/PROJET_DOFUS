@@ -4,7 +4,7 @@
     Les fontions présente dans ce fichier sont des fonctions d'initialisation
 */
 
-t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max,int nb_skin_total) // a decrire
+t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max) // a decrire
 {
     /* Permet d'initaliser les classes
     Prend en parametre le nom de classe, le numero de classe, les points d'action max, les points vie max, les points mvt max, le nb skin total
@@ -22,44 +22,27 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
 
     strcpy(c.nom_classe,nom_classe);
 
-/**
-    //initialisation du tableau de bitmap qu'on utilisera pour les animation
-    int i;
-    char nomfichier[256]; //pour charger la bmp que nous voulons utiliser
-
-    for (i=0; i<nb_skin_total; i++)
-    {
-        // sprintf permet de faire un printf dans une chaine
-        sprintf(nomfichier,"img/%s%d.bmp",nom_classe,i+1); //exemple: img/mage1
-
-        c.skin[i] = load_bitmap(nomfichier,NULL);
-        if (!c.skin[i])
-        {
-            allegro_message("pas pu trouver %s",nomfichier);
-            exit(EXIT_FAILURE);
-        }
-    }**/
     //on return la structure crée
     return c;
 }
 
-t_joueur init_joueur(char* nom_joueur,int num_joueur,t_personnage classe_choisie)
+t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur)
 {
     t_joueur j;
 
     //variables propre a chaque joueur
 
     strcpy(j.nom_joueur,nom_joueur);
-    j.numero_joueur=num_joueur;
     j.classe=classe_choisie;
+    j.numero_joueur=num_joueur;
 
     //variable utilise en jeu
 
     j.pa_actuel=j.classe.pa_max;
 
-    if(j.classe.numero_classe==0) //pour les mages car leur PM max = 6 avc la mediatation
+    if(j.classe.numero_classe==1) //pour les mages car leur PM max = 4 avc la mediatation
     {
-        j.pm_actuel=3;
+        j.pm_actuel=2;
     }
     else
     {
@@ -85,8 +68,42 @@ t_joueur init_joueur(char* nom_joueur,int num_joueur,t_personnage classe_choisie
     j.nb_bacta=0;
     j.nb_bacta_max=5; //peux n'utiliser que 5 seringue au max
 
+    //si le joueur est mort =1
     j.elimine=0;
 
+    //pour les skins
+    int num_classe; //1 mage ; 2 archer ; 3 guerrier ; 4 tank
+    num_classe=j.classe.numero_classe;
+
+    if(num_classe==1) //le joueur est un mage
+    {
+        j.position_bitmap.x=0;
+        j.position_bitmap.y=0;
+        j.skin=load_bitmap("nv_perso1.bmp",NULL);
+    }
+
+    else if(num_classe==2) //le joueur est un archer
+    {
+        j.position_bitmap.x=432;
+        j.position_bitmap.y=256;
+        j.skin=load_bitmap("nv_perso1.bmp",NULL);
+    }
+
+
+    else if(num_classe==3) //le joueur est un guerrier
+    {
+        j.position_bitmap.x=144;
+        j.position_bitmap.y=0;
+        j.skin=load_bitmap("nv_perso1.bmp",NULL);
+    }
+
+    else if(num_classe==4) //le joueur est un tank
+    {
+        j.position_bitmap.x=144;
+        j.position_bitmap.y=256;
+        j.skin=load_bitmap("nv_perso2.bmp",NULL);
+    }
+    erreur_chargement_image(j.skin);
     //on return le joueur crée
     return j;
 }
