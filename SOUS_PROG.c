@@ -754,9 +754,9 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
         saisie[0]=32; // space
       saisie[i+1]=0;
     }
+  }
     clear_keybuf();
     return i;     //taille du pseudo
-  }
 
 }
 
