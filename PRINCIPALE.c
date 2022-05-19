@@ -440,7 +440,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_fin_tour) // Fin de tour
             {
                 textout_ex(page, font, "Fin de tour", 100, 100, makecol(255, 255, 255), -1);
-                rest(100);
+                rest(200);
                 break;
             }
 
