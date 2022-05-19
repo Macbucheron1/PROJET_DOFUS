@@ -291,7 +291,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
 
         temps1=clock();  //On stocke le temps en secondes dans temps1
-        temps2=temps1+15000;
+        temps2=temps1+30000;
         time_t dureeStop=0;     ///permet de determiner combien de temps le timer a été stoppé (A mettre en place)
         time_t tmp=0;
         quelle_attaque=0;

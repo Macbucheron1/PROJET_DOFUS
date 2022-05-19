@@ -756,7 +756,7 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
     }
     clear_keybuf();
     return i;     //taille du pseudo
-
+  }
 
 }
 
@@ -1095,8 +1095,7 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
             x++;
     }
 
-
-
 }
+
 
 
