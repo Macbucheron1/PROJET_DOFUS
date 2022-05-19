@@ -4,7 +4,7 @@
     Les fontions présente dans ce fichier sont des fonctions d'initialisation
 */
 
-t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max) // a decrire
+t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max, BITMAP* icone0_grand, BITMAP* icone0_petit, BITMAP* icone1_grand, BITMAP* icone1_petit) // a decrire
 {
     /* Permet d'initaliser les classes
     Prend en parametre le nom de classe, le numero de classe, les points d'action max, les points vie max, les points mvt max, le nb skin total
@@ -20,13 +20,18 @@ t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int 
     c.pm_max=p_mvt_max;
     c.pv_max=p_vie_max;
 
+    c.icone[0].icone_grand = icone0_grand;
+    c.icone[0].icone_petit = icone0_petit;
+    c.icone[1].icone_grand = icone1_grand;
+    c.icone[1].icone_petit = icone1_petit;
+
     strcpy(c.nom_classe,nom_classe);
 
     //on return la structure crée
     return c;
 }
 
-t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur)
+t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur, int num_skin)
 {
     t_joueur j;
 
@@ -39,6 +44,7 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
     //variable utilise en jeu
 
     j.pa_actuel=j.classe.pa_max;
+    j.num_skin = num_skin;
 
     if(j.classe.numero_classe==1) //pour les mages car leur PM max = 4 avc la mediatation
     {
@@ -77,31 +83,67 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
 
     if(num_classe==1) //le joueur est un mage
     {
-        j.position_bitmap.x=0;
-        j.position_bitmap.y=0;
-        j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        if (num_skin == 0)
+        {
+            j.position_bitmap.x=144;
+            j.position_bitmap.y=256;
+            j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        }
+        else
+        {
+            j.position_bitmap.x=0;
+            j.position_bitmap.y=256;
+            j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        }
     }
 
     else if(num_classe==2) //le joueur est un archer
     {
-        j.position_bitmap.x=432;
-        j.position_bitmap.y=256;
-        j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        if (num_skin == 0)
+        {
+            j.position_bitmap.x=432;
+            j.position_bitmap.y=256;
+            j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        }
+        else
+        {
+            j.position_bitmap.x=384;
+            j.position_bitmap.y=256;
+            j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        }
     }
 
 
     else if(num_classe==3) //le joueur est un guerrier
     {
-        j.position_bitmap.x=144;
-        j.position_bitmap.y=0;
-        j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        if (num_skin == 0)
+        {
+            j.position_bitmap.x=144;
+            j.position_bitmap.y=0;
+            j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        }
+        else
+        {
+            j.position_bitmap.x=144+48*3;
+            j.position_bitmap.y=0;
+            j.skin=load_bitmap("nv_perso1.bmp",NULL);
+        }
     }
 
     else if(num_classe==4) //le joueur est un tank
     {
-        j.position_bitmap.x=144;
-        j.position_bitmap.y=256;
-        j.skin=load_bitmap("nv_perso2.bmp",NULL);
+        if (num_skin == 0)
+        {
+            j.position_bitmap.x=144;
+            j.position_bitmap.y=256;
+            j.skin=load_bitmap("nv_perso2.bmp",NULL);
+        }
+        else
+        {
+            j.position_bitmap.x=0;
+            j.position_bitmap.y=256;
+            j.skin=load_bitmap("nv_perso2.bmp",NULL);
+        }
     }
     erreur_chargement_image(j.skin);
     //on return le joueur crée

@@ -511,23 +511,33 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
     t_joueur Joueurs[nbJoueurs];
 
     int classe[nbJoueurs];
+    int num_skin[nbJoueurs];
     int x,y,i,cpt;
     char pseudos[nbJoueurs][13];
     int nbPseudos=0;
     int longueurPseudos[4];             ///contient la longueur de chaque pseudo
     int modifier[nbJoueurs];           ///tableau conteant des 0 quand un pseudo n'a pas été initialisé, 1 pour le contraire
     int quitter;
+    int cpt2 = 0;
     for(i=0; i<nbJoueurs; i++)
     {
+        num_skin[i]=0;
         classe[i]=1;
         modifier[i]=0;
     }
     color couleur_click[2* nbJoueurs];   //une couleur pour chaque triangle
+    color couleur_rect[nbJoueurs];
     for(i=0; i<2*nbJoueurs; i++)
     {
         couleur_click[i].r=i*30+40;
         couleur_click[i].g=i*10+100;
         couleur_click[i].b=i*20+100;
+    }
+    for(i=0; i<nbJoueurs; i++)
+    {
+        couleur_rect[i].r=i*30+50;
+        couleur_rect[i].g=i*10+110;
+        couleur_rect[i].b=i*20+110;
     }
 
 
@@ -567,39 +577,51 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
         //show_mouse(buffer);
 
         cpt=0;
+        cpt2 = 0;
         for(x=200; x<=200*nbJoueurs; x+=200)
         {
             int points[6] = { x-180, 207,   x-160, 197,  x-160, 217};
             int points2[6]= {x-40, 197,   x-40, 217,  x-20, 207};
             polygon(buffer, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
             polygon(buffer, 3, points2, makecol(couleur_click[cpt+1].r, couleur_click[cpt+1].g, couleur_click[cpt+1].b));
+            rectfill(buffer, x-140, 250, x-60, 300, makecol(couleur_rect[cpt2].r, couleur_rect[cpt2].g, couleur_rect[cpt2].b));
+            // printf("Joueur %d : rouge = %d green = %d  bleu = %d\n",i,couleur_rect[cpt].r,couleur_rect[cpt].g,couleur_rect[cpt].b);
 
             cpt+=2;
+            cpt2++;
         }
 
         cpt=0;
         for(i=200; i<=nbJoueurs*200; i+=200)
         {
-            if(classe[cpt]==1 || classe[cpt]==4)
+            if(classe[cpt]==1) // JEDI SITH
             {
 
-                x=811;
-                y=33;
+                x=144+48;
+                y=256+2*64;
+                masked_blit(mage.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
             }
-            else if(classe[cpt]==2)   //stormtrooper
+            else if(classe[cpt]==2)   //CLONE
             {
 
-                x=1881;
-                y=327;
+                x=480;
+                y=256+2*64;
+                masked_blit(archer.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
 
             }
-            else if(classe[cpt]==3)   //dark vador
+            else if(classe[cpt]==3)   //Chasseur de prime
             {
-                x=1860;
-                y=820;
+                x=144+48;
+                y=2*64;
+                masked_blit(guerrier.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
+            }
+            else if(classe[cpt]==4)   //Droide
+            {
+                y=256+2*64;
+                x=144+48;
+                masked_blit(tank.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
             }
 
-            masked_blit(personnage,buffer, x, y, i-140,150, 75,115);
 
             cpt++;
         }
@@ -624,19 +646,19 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
                     {
                         if (classe[i]==1) // mage
                         {
-                            Joueurs[i]=init_joueur(pseudos[i],mage,i);
+                            Joueurs[i]=init_joueur(pseudos[i],mage,i, num_skin[i]);
                         }
                         else if (classe[i]==2) // archer
                         {
-                            Joueurs[i]=init_joueur(pseudos[i],archer,i);
+                            Joueurs[i]=init_joueur(pseudos[i],archer,i, num_skin[i]);
                         }
                         else if (classe[i]==3) // guerrier
                         {
-                            Joueurs[i]=init_joueur(pseudos[i],guerrier,i);
+                            Joueurs[i]=init_joueur(pseudos[i],guerrier,i, num_skin[i]);
                         }
                         else if (classe[i]==4) // tank
                         {
-                            Joueurs[i]=init_joueur(pseudos[i],tank,i);
+                            Joueurs[i]=init_joueur(pseudos[i],tank,i, num_skin[i]);
                         }
                     }
                     destroy_bitmap(personnage);
@@ -668,7 +690,6 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
             int r=getr(couleur);
             int g=getg(couleur);
             int b=getb(couleur);
-
             for(i=0; i<nbJoueurs; i++)
             {
 
@@ -682,6 +703,12 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
                     classe[i]++;
                     rest(100);
                 }
+                if(r==couleur_rect[i].r && g==couleur_rect[i].g && b==couleur_rect[i].b)  //fleche de droite
+                {
+                    num_skin[i] = (num_skin[i]+1)%2;
+                    rest(100);
+                }
+
 
             }
 
@@ -758,6 +785,7 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
     clear_keybuf();
     return i;     //taille du pseudo
 
+
 }
 
 int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
@@ -812,7 +840,7 @@ int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* del
             {
                 animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
                 blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
-                rest(1);
+                rest(0.01);
                 textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                 rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
                 rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
@@ -845,7 +873,7 @@ int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* del
                 {
                     animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
                     blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
-                    rest(1);
+                    rest(0.01);
                     textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
                     rectfill(buffer, 250+3, 350+3, 600-3, 400-3, makecol(175,175,175));
@@ -875,7 +903,7 @@ int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* del
                 {
                     animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
                     blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
-                    rest(1);
+                    rest(0.01);
                     textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
                     rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
@@ -907,7 +935,7 @@ int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* del
                 {
                     animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
                     blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
-                    rest(1);
+                    rest(0.01);
                     textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
                     rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));
@@ -939,7 +967,7 @@ int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* del
                 {
                     animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
                     blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
-                    rest(1);
+                    rest(0.01);
                     textprintf_ex(buffer,arial_28,100,150,makecol(0,0,0),-1," Veuillez saisir le nombre de joueurs : ");    ///On reaffiche tout
                     rect(buffer,250,250,600,300, makecol(0,0,255));
                     rectfill(buffer, 250, 350, 600, 400, makecol(190,190,190));

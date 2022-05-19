@@ -53,17 +53,53 @@ void menu_principal(void) // A finir
 
     // initialisation des classes
 
+    BITMAP* icone_mage0_grand = load_bitmap("vador_grand.bmp",  NULL);
+    erreur_chargement_image(icone_mage0_grand);
+    BITMAP* icone_mage0_petit = load_bitmap("vador_petit.bmp",  NULL);
+    erreur_chargement_image(icone_mage0_petit);
+    BITMAP* icone_mage1_grand = load_bitmap("obi_wan_grand.bmp",  NULL);
+    erreur_chargement_image(icone_mage1_grand);
+    BITMAP* icone_mage1_petit = load_bitmap("obi_wan_petit.bmp",  NULL);
+    erreur_chargement_image(icone_mage1_petit);
+
+    BITMAP* icone_archer0_grand = load_bitmap("clone_grand.bmp",  NULL);
+    erreur_chargement_image(icone_archer0_grand);
+    BITMAP* icone_archer0_petit = load_bitmap("clone_petit.bmp",  NULL);
+    erreur_chargement_image(icone_archer0_petit);
+    BITMAP* icone_archer1_grand = load_bitmap("clone2_grand.bmp",  NULL);
+    erreur_chargement_image(icone_archer1_grand);
+    BITMAP* icone_archer1_petit = load_bitmap("clone2_petit.bmp",  NULL);
+    erreur_chargement_image(icone_archer1_petit);
+
+    BITMAP* icone_guerrier0_grand = load_bitmap("han_solo_grand.bmp",  NULL);
+    erreur_chargement_image(icone_guerrier0_grand);
+    BITMAP* icone_guerrier0_petit = load_bitmap("han_solo_petit.bmp",  NULL);
+    erreur_chargement_image(icone_guerrier0_petit);
+    BITMAP* icone_guerrier1_grand = load_bitmap("chewbacca_grand.bmp",  NULL);
+    erreur_chargement_image(icone_guerrier1_grand);
+    BITMAP* icone_guerrier1_petit = load_bitmap("chewbacca_petit.bmp",  NULL);
+    erreur_chargement_image(icone_guerrier1_petit);
+
+    BITMAP* icone_tank0_grand = load_bitmap("c3po_grand.bmp",  NULL);
+    erreur_chargement_image(icone_tank0_grand);
+    BITMAP* icone_tank0_petit = load_bitmap("c3po_petit.bmp",  NULL);
+    erreur_chargement_image(icone_tank0_petit);
+    BITMAP* icone_tank1_grand = load_bitmap("r2d2_grand.bmp",  NULL);
+    erreur_chargement_image(icone_tank1_grand);
+    BITMAP* icone_tank1_petit = load_bitmap("r2d2_petit.bmp",  NULL);
+    erreur_chargement_image(icone_tank1_petit);
+
     t_personnage mage;
-    mage=init_classes("mage",1,6,2000,4);
+    mage=init_classes("mage",1,6,2000,4, icone_mage0_grand, icone_mage0_petit, icone_mage1_grand, icone_mage1_petit);
 
     t_personnage archer;
-    archer=init_classes("archer",2,6,1700,4);
+    archer=init_classes("archer",2,6,1700,4, icone_archer0_grand, icone_archer0_petit, icone_archer1_grand, icone_archer1_petit);
 
     t_personnage guerrier;
-    guerrier=init_classes("guerrier",3,6,2500,3);
+    guerrier=init_classes("guerrier",3,6,2500,3, icone_guerrier0_grand, icone_guerrier0_petit, icone_guerrier1_grand, icone_guerrier1_petit);
 
     t_personnage tank;
-    tank=init_classes("tank",4,6,4800,2);
+    tank=init_classes("tank",4,6,4800,2, icone_tank0_grand, icone_tank0_petit, icone_tank1_grand, icone_tank1_petit);
 
     ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
@@ -268,7 +304,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0);  //Tant que la case est indisponible
     }
 
-
     while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
     {
         if(Joueurs[indiceActuel].pv_actuel<=0)
@@ -301,7 +336,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             temps1=clock()-dureeStop;
 
             int  zoneDeplacement[20][16];
-            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_son, affiche_grille);
+            AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_son, affiche_grille, indiceActuel);
 
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
 
@@ -398,7 +433,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_fin_tour) // Fin de tour
             {
                 textout_ex(page, font, "Fin de tour", 100, 100, makecol(255, 255, 255), -1);
-                rest(100);
+                rest(200);
                 break;
             }
             textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
