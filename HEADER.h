@@ -77,6 +77,7 @@ typedef struct Joueur{
 
     coords position_bitmap;
     BITMAP* skin;
+    int num_skin;
 } t_joueur;
 
 typedef struct Decor{
