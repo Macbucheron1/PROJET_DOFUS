@@ -968,7 +968,7 @@ void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             while(y1>y2)                                                                                                                                    //Monter
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille,indiceActuel);
-                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respiration);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respitation);
                 masked_blit(Joueurs[indiceActuel].skin,buffer, x, 566, x1,y1-30, 33,64);
                 x=x+75;
                 if (x>=870)
@@ -982,7 +982,7 @@ void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             while(x1>x2)                                                                                                                                   //Aller a gauche
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille,indiceActuel);
-                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respiration);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respitation);
                 masked_blit(Joueurs[indiceActuel].skin,buffer, x, 340, x1,y1-30, 33,64);
                 x=x+75;
                 if (x>=870)
@@ -996,7 +996,7 @@ void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             while(y1<y2)                                                                                                                                    //Descendre
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu, avatar,temps1,temps2, affiche_on, affiche_grille,indiceActuel);
-               AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respiration);
+               AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respitation);
                 masked_blit(Joueurs[indiceActuel].skin,buffer, x, 492, x1,y1-30, 33,64);
                 x=x+75;
                 if (x>=870)
