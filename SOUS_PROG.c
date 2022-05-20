@@ -649,7 +649,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
 
             for(x=200; x<=200*nbJoueurs; x+=200)                        //Si on clique sur une des zone de saisie
             {
-                if(getpixel(buffer_detection, mouse_x, mouse_y) == makecol(255, 0, 0))
+                if(mouse_x>=x-180 && mouse_x<=x-20 && mouse_y>=30 && mouse_y<=70)
                 {
 
                     longueurPseudos[x/200-1]=saisie(buffer,x-180+10,40,pseudos[x/200 -1]);      //On recupere la longueur du pseudo
