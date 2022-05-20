@@ -151,26 +151,26 @@
 1652472026 source:c:\users\luc\downloads\projet_dofus-main\projet_dofus-main\projet_dofus-main\sous_prog.c
 	"HEADER.h"
 
-1652981505 source:c:\users\natha\desktop\projet_dofus-version-3\fonction_affichage.c
+1653057210 source:c:\users\natha\desktop\projet_dofus-version-3\fonction_affichage.c
 	"HEADER.h"
 
-1652981137 c:\users\natha\desktop\projet_dofus-version-3\header.h
+1653056838 c:\users\natha\desktop\projet_dofus-version-3\header.h
 	<stdio.h>
 	<stdlib.h>
 	<allegro.h>
 	<stdbool.h>
 	<time.h>
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\initialisation.c
+1653050705 source:c:\users\natha\desktop\projet_dofus-version-3\initialisation.c
 	"HEADER.h"
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\main.c
+1653050705 source:c:\users\natha\desktop\projet_dofus-version-3\main.c
 	"HEADER.h"
 
-1652981630 source:c:\users\natha\desktop\projet_dofus-version-3\principale.c
+1653057272 source:c:\users\natha\desktop\projet_dofus-version-3\principale.c
 	"HEADER.h"
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\sous_prog.c
+1653056838 source:c:\users\natha\desktop\projet_dofus-version-3\sous_prog.c
 	"HEADER.h"
 
 1652629429 source:c:\users\luc\onedrive\bureau\projet_dofus-version-3\attaque_archer.c
@@ -247,19 +247,19 @@
 1652867133 source:c:\users\iba20\downloads\projet_dofus-version-3\sous_prog.c
 	"HEADER.h"
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_archer.c
+1653056289 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_archer.c
 	"HEADER.h"
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_generale.c
+1653056534 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_generale.c
 	"HEADER.h"
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_guerrier.c
+1653056297 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_guerrier.c
 	"HEADER.h"
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_mage.c
+1653056554 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_mage.c
 	"HEADER.h"
 
-1652981137 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_tank.c
+1653056563 source:c:\users\natha\desktop\projet_dofus-version-3\attaque_tank.c
 	"HEADER.h"
 
 1652867133 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\attaque_archer.c
@@ -297,5 +297,42 @@
 	"HEADER.h"
 
 1652955564 source:c:\users\iba20\onedrive\bureau\projet_dofus-version-3\sous_prog.c
+	"HEADER.h"
+
+1653056289 source:c:\users\natha\desktop\projet_dofus-bon\attaque_archer.c
+	"HEADER.h"
+
+1653057765 c:\users\natha\desktop\projet_dofus-bon\header.h
+	<stdio.h>
+	<stdlib.h>
+	<allegro.h>
+	<stdbool.h>
+	<time.h>
+
+1653056534 source:c:\users\natha\desktop\projet_dofus-bon\attaque_generale.c
+	"HEADER.h"
+
+1653056297 source:c:\users\natha\desktop\projet_dofus-bon\attaque_guerrier.c
+	"HEADER.h"
+
+1653056554 source:c:\users\natha\desktop\projet_dofus-bon\attaque_mage.c
+	"HEADER.h"
+
+1653056563 source:c:\users\natha\desktop\projet_dofus-bon\attaque_tank.c
+	"HEADER.h"
+
+1653059265 source:c:\users\natha\desktop\projet_dofus-bon\fonction_affichage.c
+	"HEADER.h"
+
+1653050705 source:c:\users\natha\desktop\projet_dofus-bon\main.c
+	"HEADER.h"
+
+1653059270 source:c:\users\natha\desktop\projet_dofus-bon\sous_prog.c
+	"HEADER.h"
+
+1653057765 source:c:\users\natha\desktop\projet_dofus-bon\initialisation.c
+	"HEADER.h"
+
+1653058494 source:c:\users\natha\desktop\projet_dofus-bon\principale.c
 	"HEADER.h"
 

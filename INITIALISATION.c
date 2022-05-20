@@ -45,6 +45,7 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
 
     j.pa_actuel=j.classe.pa_max;
     j.num_skin = num_skin;
+    j.respiration = 0;
 
     if(j.classe.numero_classe==1) //pour les mages car leur PM max = 4 avc la mediatation
     {

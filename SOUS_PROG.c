@@ -202,7 +202,7 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
 
 }
 
-int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int num_map) //position du click
+int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int num_map, int respiration) //position du click
 {
     /* Recupere la position initiale et finale du deplacement
     Prend en parametre la carte, la zone de deplacement, le joueur actuel, la bitmap, et le skin du joueur
@@ -222,7 +222,7 @@ int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITM
             Joueurs[indiceActuel].position_ligne=position_souris_ligne();
             coords chemin[10];
             CalculChemin(carte, x_initial,y_initial,Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne, 6,chemin,&PM_utilises, Joueurs, nbJoueurs, num_map); //A la place de 6 mettre joueurActuel->classe.pm_max
-            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises,nbJoueurs,Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille);
+            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises,nbJoueurs,Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille, respiration);
         }
     }
 
@@ -503,7 +503,7 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
 
 int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
 {
-
+    BITMAP* buffer_detection = create_bitmap(800, 600);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     BITMAP* map_desert=load_bitmap("map_desert.bmp", NULL);
     BITMAP* map_neige=load_bitmap("map_neige.bmp", NULL);
@@ -525,6 +525,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
     int modifier[nbJoueurs];           ///tableau conteant des 0 quand un pseudo n'a pas été initialisé, 1 pour le contraire
     int quitter;
     int cpt2 = 0;
+    rectfill(buffer_detection, 0, 500, 800, 600, makecol(255, 0, 0));
     for(i=0; i<nbJoueurs; i++)
     {
         num_skin[i]=0;
@@ -565,6 +566,8 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
             if(x<=200*nbJoueurs){
                 rectfill(buffer,x-180,30,x-20,70, makecol(100,100,100));         //Zone de selection
                 rectfill(buffer,x-180+3,30+3,x-20-3,70-3, makecol(160,160,160));
+                rectfill(buffer_detection,x-180,30,x-20,70, makecol(100,100,100));         //Zone de selection
+                rectfill(buffer_detection,x-180+3,30+3,x-20-3,70-3, makecol(160,160,160));
             }
         }
         line(buffer,0,500,800,500, makecol(100,100,100));
@@ -591,6 +594,9 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
             polygon(buffer, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
             polygon(buffer, 3, points2, makecol(couleur_click[cpt+1].r, couleur_click[cpt+1].g, couleur_click[cpt+1].b));
             rectfill(buffer, x-140, 250, x-60, 300, makecol(couleur_rect[cpt2].r, couleur_rect[cpt2].g, couleur_rect[cpt2].b));
+            polygon(buffer_detection, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
+            polygon(buffer_detection, 3, points2, makecol(couleur_click[cpt+1].r, couleur_click[cpt+1].g, couleur_click[cpt+1].b));
+            rectfill(buffer_detection, x-140, 250, x-60, 300, makecol(couleur_rect[cpt2].r, couleur_rect[cpt2].g, couleur_rect[cpt2].b));
             // printf("Joueur %d : rouge = %d green = %d  bleu = %d\n",i,couleur_rect[cpt].r,couleur_rect[cpt].g,couleur_rect[cpt].b);
 
             cpt+=2;
@@ -690,7 +696,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
 
             for(x=200; x<=200*nbJoueurs; x+=200)                        //Si on clique sur une des zone de saisie
             {
-                if(mouse_x>=x-180 && mouse_x<=x-20 && mouse_y>=30 && mouse_y<=70)
+                if(getpixel(buffer_detection, mouse_x, mouse_y) == makecol(255, 0, 0))
                 {
 
                     longueurPseudos[x/200-1]=saisie(buffer,x-180+10,40,pseudos[x/200 -1]);      //On recupere la longueur du pseudo
@@ -704,7 +710,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
                 cpt++;
             }
 
-            int couleur=getpixel(buffer,mouse_x,mouse_y);
+            int couleur=getpixel(buffer_detection,mouse_x,mouse_y);
             int r=getr(couleur);
             int g=getg(couleur);
             int b=getb(couleur);
