@@ -704,12 +704,16 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
   rectfill(buffer,x-10+2,y-10+2,x-10+160-2,y-10+40-2, makecol(160,160,160));
   textprintf_ex(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),-1,"_"); //Affivhage du curseur
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+
   while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])     //La touche entree permet de valider le pseudo
   {
+
     textprintf_ex(buffer,font,x-10,y+50,makecol(0,0,0),-1,"'Entree' pour valider");
     touche=readkey();
+
     touche1=touche & 0xFF; // code ASCII
     touche2=touche >> 8;   // scancode
+
     if (( touche1>31 && touche1<58) || ( touche1>64 && touche1<123))    //Si la touche est une lettre
     {
       if (i>=saisie_max)
@@ -719,38 +723,44 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
         saisie[i]=touche1;
         derniereSaisie[0]=touche1;
         saisie[i+1]=0;
+
         /*  on affiche la touche saisie */
+        //textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1," ");
         textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"%s",derniereSaisie);
         i++;
         textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"_");
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
       }
     }
+
     if ( touche2==KEY_BACKSPACE )   //Effacer
     {
-        rectfill(buffer,x+(tailleLettre)*i+tailleLettre,y+10,x+i*tailleLettre+2*tailleLettre, y+20, makecol(160,160,160)); //Rectangle noir recouvrant la surface effacée
+        //rectfill(buffer,x+(tailleLettre)*i,y+10,x+i*tailleLettre+2*tailleLettre, y+20, makecol(160,160,160)); //Rectangle noir recouvrant la surface effacée
+        if(i>0)
+            rectfill(buffer,x+tailleLettre*(i-1),y+10,x+tailleLettre*(i+1)+tailleLettre,y+20,makecol(160,160,160));
+        else
+            rectfill(buffer,x+tailleLettre*(i),y+10,x+tailleLettre*(i+1)+tailleLettre,y+20,makecol(160,160,160));
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        saisie[i-1]='\0';
             i--;
             if ( i<0 )
                 i=0;
       textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"_");
-      textprintf_ex(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),-1," ");
     }
     //* si validation
     if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
     {
-      textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,0,255),-1," ");
+      rectfill(buffer,x+tailleLettre*(i-1),y+10,x+tailleLettre*(i)+tailleLettre,y+20,makecol(160,160,160));
       if (i==0)
         saisie[0]=32; // space
       saisie[i+1]=0;
     }
+  }
     clear_keybuf();
     return i;     //taille du pseudo
-  }
 
-    return -1;
+
 }
-
 int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
 {
     FONT* arial_28 = load_font("arial_28.pcx", NULL, NULL);
