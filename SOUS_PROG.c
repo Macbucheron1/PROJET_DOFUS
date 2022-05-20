@@ -1071,5 +1071,178 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
     }
 }
 
+int choix_map(BITMAP* buffer, SAMPLE* musique, int* volume,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
+{
+    BITMAP* buffer_detection = create_bitmap(800, 600);
+    rectfill(buffer_detection, 50, 150, 250, 350, makecol(255, 0, 0));
+    rectfill(buffer_detection, 300, 150, 500, 350, makecol(0, 255, 0));
+    rectfill(buffer_detection, 550, 150, 750, 350, makecol(0, 0, 255));
+    rectfill(buffer_detection, 200, 450, 600, 550, makecol(255, 255, 0));
+    int num_map = -1;
+    while(!key[KEY_ESC])
+    {
 
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+        blit(visuel_menu->visuel,buffer,visuel_menu->position_x,0,0,0,SCREEN_W,SCREEN_H);
+        rest(1);
+        rectfill(buffer, 200, 450, 600, 550, makecol(190, 190, 190));
+        rectfill(buffer, 200+4, 450+4, 600-4, 550-4, makecol(175, 175, 175));
+        rectfill(buffer, 200+8, 450+8, 600-8, 550-8, makecol(160, 160, 160));
+        if (num_map == 1)
+        {
+            rectfill(buffer, 50, 150, 250, 350, makecol(40, 80, 40));
+            rectfill(buffer, 50+2, 150+2, 250-2, 350-2, makecol(60, 100, 60));
+            rectfill(buffer, 50+4, 150+4, 250-4, 350-4, makecol(80, 120, 80));
+        }
+        else
+        {
+            rectfill(buffer, 50, 150, 250, 350, makecol(0, 0, 0));
+            rectfill(buffer, 50+2, 150+2, 250-2, 350-2, makecol(20, 20, 20));
+            rectfill(buffer, 50+4, 150+4, 250-4, 350-4, makecol(40, 40, 40));
+        }
+        blit(tab_bitmap[0], buffer, 200, 200, 50+6, 150+6, 200-2-4-6, 200-2-4-6);
+
+        if (num_map == 2)
+        {
+            rectfill(buffer, 300, 150, 500, 350, makecol(40, 80, 40));
+            rectfill(buffer, 300+2, 150+2, 500-2, 350-2, makecol(60, 100, 60));
+            rectfill(buffer, 300+4, 150+4, 500-4, 350-4, makecol(80, 120, 80));
+        }
+        else
+        {
+            rectfill(buffer, 300, 150, 500, 350, makecol(0, 0, 0));
+            rectfill(buffer, 300+2, 150+2, 500-2, 350-2, makecol(20, 20, 20));
+            rectfill(buffer, 300+4, 150+4, 500-4, 350-4, makecol(40, 40, 40));
+        }
+        blit(tab_bitmap[1], buffer, 200, 200, 300+6, 150+6, 200-2-4-6, 200-2-4-6);
+
+        if (num_map == 3)
+        {
+            rectfill(buffer, 550, 150, 750, 350, makecol(40, 80, 40));
+            rectfill(buffer, 550+2, 150+2, 750-2, 350-2, makecol(60, 100, 60));
+            rectfill(buffer, 550+4, 150+4, 750-4, 350-4, makecol(80, 120, 80));
+        }
+        else
+        {
+            rectfill(buffer, 550, 150, 750, 350, makecol(0, 0, 0));
+            rectfill(buffer, 550+2, 150+2, 750-2, 350-2, makecol(20, 20, 20));
+            rectfill(buffer, 550+4, 150+4, 750-4, 350-4, makecol(40, 40, 40));
+        }
+        blit(tab_bitmap[2], buffer, 200, 200, 550+6, 150+6, 200-2-4-6, 200-2-4-6);
+
+        if (getpixel(buffer_detection, mouse_x, mouse_y) == makecol(255, 0, 0))
+        {
+            if (mouse_b & 1)
+            {
+                num_map = 1;
+            }
+        }
+        if (getpixel(buffer_detection, mouse_x, mouse_y) == makecol(0, 255, 0))
+        {
+            if (mouse_b & 1)
+            {
+                num_map = 2;
+            }
+        }
+        if (getpixel(buffer_detection, mouse_x, mouse_y) == makecol(0, 0, 255))
+        {
+            if (mouse_b & 1)
+            {
+                num_map = 3;
+            }
+        }
+        if (getpixel(buffer_detection, mouse_x, mouse_y) == makecol(255, 255, 0))
+        {
+            if ((mouse_b & 1) )
+            {
+                if ((num_map == 1) || (num_map == 2) || (num_map == 3))
+                    break;
+            }
+        }
+        show_mouse(buffer);
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        clear(buffer);
+    }
+
+    return num_map;
+}
+
+
+void remplir_map_obstacle_neige(t_map* carte)
+{
+    /* Permet de remplir la matrice contenant la valeur de chaque case. Avec chaque numero represantant soit un obstacle soit un element de decor
+    Prend en parametre un pointeur sur une map
+    Ne renvoie rien*/
+    int terrain [COLONNE_TABLEAU][LIGNE_TABLEAU] =
+    {
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0},
+        { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1},
+        { 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
+        { 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
+        { 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    };
+    // On créée cette variable temporaire afin de pouvoir modifier facilement le tableau
+
+    for (int colonne = 0; colonne < COLONNE_TABLEAU; colonne++)
+    {
+        for (int ligne = 0; ligne < LIGNE_TABLEAU; ligne++)
+        {
+            carte->map_obstacle[colonne][ligne] = terrain[colonne][ligne];
+        }
+    }
+}
+
+void remplir_map_obstacle_ville(t_map* carte)
+{
+    /* Permet de remplir la matrice contenant la valeur de chaque case. Avec chaque numero represantant soit un obstacle soit un element de decor
+    Prend en parametre un pointeur sur une map
+    Ne renvoie rien*/
+    int terrain [COLONNE_TABLEAU][LIGNE_TABLEAU] =
+    {
+        { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0},
+        { 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0},
+        { 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0},
+        { 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1},
+        { 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1},
+        { 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+        { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
+        { 0, 1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0},
+        { 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    };
+    // On créée cette variable temporaire afin de pouvoir modifier facilement le tableau
+
+    for (int colonne = 0; colonne < COLONNE_TABLEAU; colonne++)
+    {
+        for (int ligne = 0; ligne < LIGNE_TABLEAU; ligne++)
+        {
+            carte->map_obstacle[colonne][ligne] = terrain[colonne][ligne];
+        }
+    }
+}
 
