@@ -812,7 +812,7 @@ void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             while(y1>y2)                                                                                                                                    //Monter
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille, indiceActuel);
-                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel);
+                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respiration);
                 masked_blit(Joueurs[indiceActuel].skin,buffer, Joueurs[indiceActuel].position_bitmap.x+x, Joueurs[indiceActuel].position_bitmap.y, x1-8,y1-40, 48,64);
                 x=x+48;
                 if (x>96)
