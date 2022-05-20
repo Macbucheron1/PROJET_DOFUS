@@ -2,7 +2,7 @@
 
 /** finie sans animation **/
 
-void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque au sabre laser au corps a corps
     (i indice du joueur qui joue)*/
@@ -22,7 +22,7 @@ void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
-                affichage_degat(tab_j,j,buffer,degat);
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
             }
             else
             {
@@ -38,7 +38,7 @@ void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque
 }
 
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
-void guerison_mage(t_joueur* tab_j,int i, BITMAP* page, int *quelle_attaque)
+void guerison_mage(int *quelle_attaque,t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*permet au mage de se soigner*/
 
@@ -57,16 +57,15 @@ void guerison_mage(t_joueur* tab_j,int i, BITMAP* page, int *quelle_attaque)
             tab_j[i].pv_actuel=tab_j[i].classe.pv_max; //si l'on arrive au max en restaurant les pv alors on bloque le nb de pv au pv max
         }
         tab_j[i].pa_actuel-=PA;
-        //rest(100);
     }
     else
     {
-        affichage_action_impossible(page); //pas assez de PA -> msg
+        affichage_action_impossible(buffer); //pas assez de PA -> msg
     }
 }
 
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
-void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque)
+void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /* permet au mage de gagner des pm */
 
@@ -93,7 +92,7 @@ void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque)
 }
 
 /** pas finie **/ //integrer la gestion de distance lineaire
-void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque a distance du mage (attaque lineaire)
     (i indice du joueur qui joue)*/
@@ -128,7 +127,7 @@ void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaq
 }
 
 /** finie sans aniamtion **/
-void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque a distance du mage (attaque zone) passe par dessus le bouclier
     (i indice du joueur qui joue)*/
@@ -146,7 +145,6 @@ void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaq
         {
             tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
             tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
-            affichage_degat(tab_j,j,buffer,degat);
         }
     }
     else

@@ -94,11 +94,9 @@ void verif_en_feu(t_joueur* tab_j,int i)
     {
         tab_j[i].pv_actuel-=degat; //infilge 20 de degats a chaque tour que le joueur est en feu
         tab_j[i].tour_en_feu+=1;
-        printf("yo1\n");
     }
     else
     {
-        printf("yo2\n");
         tab_j[i].tour_en_feu=0;
         tab_j[i].en_feu=false;
     }
@@ -139,24 +137,60 @@ int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueu
     return indice_joueur_attaque;
 }
 
-void affichage_degat(t_joueur* tab_j,int j,BITMAP* buffer,int degat)//j joueur attaqué
+void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif)//j joueur attaqué
 {
-    int x=tab_j[j].position_colonne*32+80;
-    int y=tab_j[j].position_ligne*32-16;
+    /* j le joueur sur lequel on affiche le msg
+    verif verifie si c'est une attaque, un soin, ou autre (bouvclier, pm, etc)*/
+    int x=tab_j[j].position_colonne*32+97;
+    int y=tab_j[j].position_ligne*32-12;
     int couleur_degats = makecol(255,0,0);
-    int decalage=5; //decalage en px
-    for (int i = 0; i<100; i++)
+    int couleur_soins = makecol(0,255,0);
+    int couleur_autre = makecol(0,0,255);
+
+    switch (verif)
     {
-        textprintf_ex(buffer, font, x, y-10, couleur_degats, -1, "- %d", degat);
-        rest(1);
-        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+    case 1: //attaque
+        for (int i = 0; i<100; i++)
+        {
+            textprintf_ex(buffer, font, x, y-10, couleur_degats, -1, "-%d", degat);
+            rest(1);
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+        }
+    case 2: //soin
+        for (int i = 0; i<100; i++)
+        {
+            textprintf_ex(buffer, font, x, y-10, couleur_soins, -1, "+%d", degat);
+            rest(1);
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+        }
+    case 3: //pm
+        for (int i = 0; i<100; i++)
+        {
+            textprintf_ex(buffer, font, x, y-10, couleur_autre, -1, "+%d", degat);
+            rest(1);
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+        }
+    case 4: //bouclier
+        for (int i = 0; i<100; i++)
+        {
+            textprintf_ex(buffer, font, x, y-10, couleur_autre, -1, "+%d bouclier", degat);
+            rest(1);
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+        }
+
+    default:
+        break;
     }
 }
 
 
 /** fonction d'attaque globale **/
 
-void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque) //on affiche sur la page les icones d'attaques et sur le buffer la detection de clic
+void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat)
 {
     int quelle_attaque=*quelleAttaque;
     int num_classe; //1 mage ; 2 archer ; 3 guerrier ; 4 tank
@@ -166,29 +200,29 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_mage(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+            c_a_c_mage(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
         }
         if(quelle_attaque==2)
         {
-            guerison_mage(tab_j,i,buffer,quelleAttaque);
+            guerison_mage(quelleAttaque,tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
         }
         if(quelle_attaque==3)
         {
-            meditation_mage(tab_j,i,buffer,quelleAttaque);
+            meditation_mage(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat);
         }
         if(quelle_attaque==4)
         {
-            lancer_sabre(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+            lancer_sabre(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
         }
         if(quelle_attaque==5)
         {
-            etranglement(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
+            etranglement(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
         }
     }
 
     else if(num_classe==2) //le joueur est un archer
     {
-       if(quelle_attaque==1)
+        if(quelle_attaque==1)
         {
             c_a_c_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
         }
@@ -258,5 +292,4 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
             lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs);
         }
     }
-    //rest(100);
 }
