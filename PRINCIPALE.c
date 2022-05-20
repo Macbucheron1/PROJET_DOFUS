@@ -51,6 +51,8 @@ void menu_principal(void) // A finir
     unsigned int temps=0;
     play_sample(musique,volume,128,1000,1);
 
+    int nbJoueurs;
+    int nouvelle_partie=0;      // Permet de lancer une nouvelle partie une partie
     // initialisation des classes
 
     BITMAP* icone_mage0_grand = load_bitmap("vador_grand.bmp",  NULL);
@@ -104,7 +106,7 @@ void menu_principal(void) // A finir
     ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
-    while ((quitter != 1) && (!key[KEY_ESC]))
+    while ((quitter != 10) && (!key[KEY_ESC]))
     {
         clear_bitmap(page);
         animation_decor_menu(soldat, mesActeurs, &delay, &visuel_menu, tab_bitmap, &temps);
@@ -169,10 +171,28 @@ void menu_principal(void) // A finir
             rectfill(page, 253, 153, 557, 207, makecol(195,195,195));
             rectfill(page, 256, 156, 554, 204, makecol(180,180,180));
             textprintf_ex(page, font, 270, 170, makecol(20,20, 20), -1, "Jouer");
-            if (mouse_b & 1)
+            if (mouse_b & 1 || nouvelle_partie)
             {
+                nouvelle_partie=0;
                 rest(100);
-                quitter=nouvellePartie(page, musique, &volume, mage, archer, guerrier, tank, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
+                nbJoueurs=nombreJoueurs(page,&visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
+                t_joueur Joueurs[nbJoueurs];
+                quitter=nouvellePartie(page, musique, &volume, mage, archer, guerrier, tank, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps,nbJoueurs,Joueurs);
+
+                while(quitter!=10 && nouvelles_partie==0)
+                {
+                    if(quitter==1)
+                    {
+                        rest(100);
+                        menu_fin(page,nbJoueurs,Joueurs,&nouvelle_partie,&quitter, &visuel_menu, soldat, mesActeurs,&delay,  &temps,tab_bitmap);
+                        rest(100);
+                    }
+                    if(quitter==5)
+                    {
+                        rest(100);
+                        quitter=jouer(Joueurs,nbJoueurs,musique,&volume,);
+                    }
+                }
             }
         }
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
@@ -210,9 +230,6 @@ void menu_principal(void) // A finir
         }
         montre_curseur(page,curseur);
         /////////////////////////////  /////////////////////////////////////
-
-
-
 
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
@@ -267,7 +284,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
 
     // INITIALISATION VARIABLE
     init_map(&carte, plateau, num_map);
-
     srand(time(NULL));
     page = create_bitmap(SCREEN_W,SCREEN_H);
     clear_bitmap(page);
@@ -282,10 +298,13 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     int affiche_grille = 1;
     int quelle_attaque = 0;
     int respiration = 0;
+    int nbElimine=0;
+    int pvElimine=-10000;
 
     ///pour les attaques
     BITMAP* animation_attaque; //pas initialiser car pas encore d'animation pr les attaques
     int attaqueActive=0;
+
 
 
     // CODE PRINCIPAL
@@ -296,7 +315,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     int indiceActuel= rand()%nbJoueurs;    //indice du joueur actuel choisi aleatoirement
     time_t temps1;
     time_t temps2;
-
     for(int i=0; i<nbJoueurs; i++)
     {
         do
@@ -307,13 +325,33 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
         while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0);  //Tant que la case est indisponible
     }
 
-
     while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
     {
-        if(Joueurs[indiceActuel].pv_actuel<=0)
-        {
-            Joueurs[indiceActuel].elimine=1;
+        for(int i=0;i<nbJoueurs;i++){
+            if(Joueurs[i].pv_actuel<=0 && Joueurs[i].elimine==0)
+            {
+                Joueurs[i].elimine=1;
+                Joueurs[i].position_colonne=-10;
+                Joueurs[i].position_ligne=-10;
+
+                nbElimine++;
+                Joueurs[i].pv_actuel=pvElimine;
+                pvElimine+=1000;
+                if(nbElimine==nbJoueurs-1)              ///Si il ne reste plus qu'un joueur
+                {
+                    quitter=1;
+                    return quitter;
+                }
+                do
+                {
+                    //Passage au joueur suivant
+                    indiceActuel=(indiceActuel+1)%nbJoueurs;
+                }
+                while(Joueurs[indiceActuel].elimine==1);
+                continue;
+            }
         }
+
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         int positionTmpY=-1;
         if(Joueurs[indiceActuel].classe.numero_classe==1) //gestion de la meditation du mage
@@ -332,7 +370,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
             verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
         }
-
 
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
 
@@ -361,12 +398,12 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille, num_map, respiration);
                 dureeStop+=clock()-tmp;
             }
-
-
             ////////////////////////////////////////////////////////////////////////////
 
             ////////////////////////////////////ATTAQUE/////////////////////////////////
+
             int zoneAttaque[20][16];
+
             if(quelle_attaque==0)
             {
                 attaqueActive=0; //ne fait rien
@@ -375,12 +412,13 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             {
                 attaqueActive=1;
 
-                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque,soldat, respiration);
+                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque,soldat,respiration);
                 //printf("%d\n",quelle_attaque);
             }
 
             for(int i=0;i<nbJoueurs;i++)
                 //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
+
             if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)== couleur_fin_attaque){
                 attaqueActive=0;
                 quelle_attaque=0;
@@ -391,9 +429,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 printf("pv %d:%d\n",j,Joueurs[j].pv_actuel);
             }*/
             ////////////////////////////////////////////////////////////////////////////
-
-
-            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999, respiration);
+            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999,respiration);
             //respiration a faire
             //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
 
@@ -451,7 +487,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             }
             for (int i = 0; i < nbJoueurs; i++)
                 Joueurs[i].respiration = (Joueurs[i].respiration + rand()%5*(i+1))%3400;
-
             //textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
            // textprintf_ex(page, font, 10, 275, makecol(0, 0, 0), -1, "PM : %d/%d", Joueurs[indiceActuel].pm_actuel, Joueurs[indiceActuel].classe.pm_max);
             //textprintf_ex(page, font, 10, 300, makecol(0, 0, 0), -1, "PA : %d/%d", Joueurs[indiceActuel].pa_actuel, Joueurs[indiceActuel].classe.pa_max);
@@ -1289,11 +1324,191 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
 
 
 
+void menu_fin(BITMAP* page, int nbJoueurs, t_joueur Joueurs[], int * nouvelle_partie, int* quitter,t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
+{
+    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
+
+    int couleur_quitter = makecol(0,255,255);
+    int couleur_recommencer = makecol(255,0,0);
+    int couleur_nvle_partie = makecol(0,255,0);
+    int couleur_classement = makecol(255,255,0);
+    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
+    clear(page);
+    classement(nbJoueurs,Joueurs,page, visuel_menu, soldat,mesActeurs, delay, temps,tab_bitmap);
+    while(1)
+    {
+        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
+        blit(visuel_menu->visuel,page,0,0,0,0,800,600);
+        rest(1);
+        rectfill(fond_menu, 250, 150, 560, 210, couleur_nvle_partie);
+
+        rectfill(fond_menu, 250, 250, 560, 310, couleur_recommencer);
+
+        rectfill(fond_menu, 250, 350, 560, 410, couleur_classement);
+
+        rectfill(fond_menu, 250, 450, 560, 510, couleur_quitter); // Credit
+
+
+    ///////////////////////////// DESSIN MENU /////////////////////////////////////
+
+        rectfill(page, 250, 150, 560, 210, makecol(190,190,190));
+        rectfill(page, 253, 153, 557, 207, makecol(175,175,175));
+        rectfill(page, 256, 156, 554, 204, makecol(160,160,160));
+        textprintf_ex(page, font, 270, 170, makecol(0,0,0), -1, "Nouvelle Partie");
+
+        rectfill(page,  250, 250, 560, 310, makecol(190,190,190));
+        rectfill(page, 253, 253, 557, 307, makecol(175,175,175));
+        rectfill(page, 256, 256, 554, 304, makecol(160,160,160));
+        textprintf_ex(page, font, 270, 270, makecol(0,0,0), -1, "Recommencer la Partie");
+
+        rectfill(page, 250, 350, 560, 410, makecol(190,190,190));
+        rectfill(page, 253, 353, 557, 407, makecol(175,175,175));
+        rectfill(page, 256, 356, 554, 404, makecol(160,160,160));
+        textprintf_ex(page, font, 270, 370, makecol(0,0,0), -1, "Classement");
+
+        rectfill(page, 250, 450, 560, 510, makecol(190,190,190));
+        rectfill(page, 253, 453, 557, 507, makecol(175,175,175));
+        rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
+        textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Quitter"); // CREDIT
+
+
+        ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
+
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_nvle_partie) // JOUER
+        {
+            rectfill(page, 250, 150, 560, 210, makecol(210,210,210));
+            rectfill(page, 253, 153, 557, 207, makecol(195,195,195));
+            rectfill(page, 256, 156, 554, 204, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 170, makecol(20,20, 20), -1, "Nouvelle Partie");
+            if (mouse_b & 1)
+            {
+                *nouvelle_partie=1;
+                *quitter=3;
+                rest(100);
+                return;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_recommencer) // APERCU DES CLASSES
+        {
+            rectfill(page,  250, 250, 560, 310, makecol(210,210,210));
+            rectfill(page, 253, 253, 557, 307, makecol(195,195,175));
+            rectfill(page, 256, 256, 554, 304, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 270, makecol(20,20,20), -1, "Recommencer la Partie");
+            if (mouse_b & 1)
+            {
+                init_restart(Joueurs, nbJoueurs);
+                *quitter=5;
+                rest(100);
+                return;
+            }
+        }
+        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_classement) // PARAMETRE
+        {
+            rectfill(page, 250, 350, 560, 410, makecol(210,210,210));
+            rectfill(page, 253, 353, 557, 407, makecol(195,195,175));
+            rectfill(page, 256, 356, 554, 404, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Classement");
+            if (mouse_b & 1)
+            {
+               classement(nbJoueurs,Joueurs,page, visuel_menu, soldat,mesActeurs, delay, temps,tab_bitmap);
+               rest(100);
+            }
+        }
+         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // CREDIT
+        {
+            rectfill(page, 250, 450, 560, 510, makecol(210,210,210));
+            rectfill(page, 253, 453, 557, 507, makecol(195,195,175));
+            rectfill(page, 256, 456, 554, 504, makecol(180,180,180));
+            textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "QUITTER");
+            if (mouse_b & 1)
+            {
+                *quitter=10;
+                rest(100);
+                return;
+            }
+        }
+        montre_curseur(page,curseur);
+
+
+        blit(page, screen, 0, 0, 0, 0, 800, 600);
+        clear(page);
+
+    }
+}
 
 
 
+void classement(int nbJoueurs, t_joueur Joueurs[],BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
+{
+        BITMAP* podium=load_bitmap("podium.bmp",NULL);
+        erreur_chargement_image(podium);
+        //TRI A BULLE//
+
+        int i, j;
+        int pv_tmp;
+        t_joueur joueur_tmp;
+
+      for (i=0 ; i < nbJoueurs; i++)
+      {
+        for (j=0 ; j < nbJoueurs-i; j++)
+        {
+          if (Joueurs[j].pv_actuel > Joueurs[j+1].pv_actuel)
+          {
+                    joueur_tmp = Joueurs[j];
+                    Joueurs[j] = Joueurs[j+1];
+                    Joueurs[j+1]= joueur_tmp;
+
+          }
+        }
+      }
+
+    clear(buffer);
+    int x,y;
 
 
+        masked_blit(podium,buffer,0,0, 0,0,600,600);
+       for(int i=0;i<nbJoueurs;i++)
+        {
+                if(i==nbJoueurs-1)
+                {
+                    x=280;
+                    y=150;
+                }
+                if(i==nbJoueurs-2)
+                {
+                    x=117;
+                    y=273;
+                }
+                if(i==nbJoueurs-3)
+                {
+                    x=408;
+                    y=273;
+                }
+                if(i==nbJoueurs-4)
+                {
+                    x=570;
+                    y=386;
+                }
+
+            draw_sprite(buffer,Joueurs[i].classe.icone[Joueurs[i].num_skin].icone_grand,x,y);
+
+        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+        rest(1000);
+    }
+    rest(5000);
+
+}
+
+
+
+void init_restart(t_joueur Joueurs[], int nbJoueurs)
+{
+
+    for(int i=0; i<nbJoueurs; i++)
+    {
+        Joueurs[i]=init_joueur(Joueurs[i].nom_joueur,Joueurs[i].classe,Joueurs[i].numero_joueur,Joueurs[i].num_skin);
+    }
+}
 
 
 
