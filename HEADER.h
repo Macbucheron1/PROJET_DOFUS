@@ -59,6 +59,7 @@ typedef struct Joueur{
     int pv_actuel;
     int pm_actuel;
     int pa_actuel;
+    int respiration;
 
     int elimine; //1 si elimine 0 s'il joue
 
@@ -126,7 +127,7 @@ void montre_curseur(BITMAP* page, BITMAP* curseur); // Permet d'afficher un curs
 void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //permet d'afficher un personnage
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelé par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
 void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelé par SurbrillanceDeplacement et affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
-void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs,t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille); // Fait l'animation de deplacement
+void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs,t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration); // Fait l'animation de deplacement
 void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joueur Joueurs[], int indiceActuel, int nbJoueurs); // A commenter
 int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille); // A commenter
 void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville); // Affiche la classe clone
@@ -140,12 +141,12 @@ int animation_vers_gauche(int delay, t_acteur* monActeur, int position_debut_x, 
 int animation_vers_droite(int delay, t_acteur* monActeur, int position_debut_x, int position_final_x);// Anime le personnage vers la droite
 int animation_vers_bas(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y);// Anime le personnage vers le bas
 int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, int position_final_y);// Anime le personnage vers le haut
-void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception);
+void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception, int respiration);
 void AfficheTout(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu, BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int indiceActuel);
-void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille);
-void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille);
-void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille);       //Affiche tous les Perso szuf l'indice exception
-void AnimationClasse4(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille);       //Affiche tous les Perso szuf l'indice exception
+void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration);
+void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration);
+void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration);       //Affiche tous les Perso szuf l'indice exception
+void AnimationClasse4(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration);       //Affiche tous les Perso szuf l'indice exception
 
 
 /* ----------- SOUS PROGRAMME ----------- */
@@ -159,7 +160,7 @@ int position_souris_ligne(void); // Renvoie la ligne dans lequel se situe la sou
 void prepa_alleg(void); // Lance alleg init et verifie qu'il fonctionne bien
 void erreur_chargement_image(BITMAP* image); // Verifie qu'on a bien charger l'image
 void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant, t_joueur Joueurs[], int nbJoueurs,int indiceActuel, int affiche_on, int affiche_grille, int num_map); //Remplis le tableau tab,avec des 1, sur les cases sur lesquelles peut aller le joueur
-int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int num_map); //Recupere dans la struct position, la position fde la souris lors du click, renvoie le nb de PM utilisés
+int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int num_map, int respiration); //Recupere dans la struct position, la position fde la souris lors du click, renvoie le nb de PM utilisés
 int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords chemin1[], int* PM_utilises, t_joueur Joueurs[], int nbJoueurs, int num_map );//Stock le chemin dans le tableau chemin si il est possible, sinon renvoie -1
 int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM); //Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
 void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
@@ -206,9 +207,9 @@ void SurbrillanceAttaque(BITMAP* buffer,t_map carte, int zoneAttaque[20][16]); /
 bool action_possible(t_joueur* tab_j,int i,int point_de_laction); //verification de PA necessaire
 void verif_bouclier(t_joueur* tab_j,int i); //remet a false si tour avc bouclier pass�
 void verif_roulement(t_joueur* tab_j,int i); //remet a false apres un tour
-void verif_en_feu(t_joueur* tab_j,int i,BITMAP* buffer,BITMAP* soldat,t_map carte,int nbJoueur); //si en feu met des degats
+void verif_en_feu(t_joueur* tab_j,int i,BITMAP* buffer,BITMAP* soldat,t_map carte,int nbJoueur, int respiration); //si en feu met des degats
 int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueur, BITMAP* buffer, BITMAP* animation, int nbJoueurs ); //verifie si on clique sur une case avc un joueur
-void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat); //lance les attaques en fonction de la classe et de la case cliquée
+void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat, int respiration); //lance les attaques en fonction de la classe et de la case cliquée
 
 //peut etre a mettre dans les fonctions d'affichages
 
@@ -216,36 +217,36 @@ void affichage_action_impossible(BITMAP* page); // pas assez de pa
 void affichage_action_impossible_nb(BITMAP* page); //trop d'utilisation
 void affichage_attaque_impossible(BITMAP* page); // personne sur la case
 void affichage_attaque_inefficace(BITMAP* page); // joueur attaqu� a un bouclier
-void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif);//j joueur attaqué
+void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif, int respiration);//j joueur attaqué
 
 
 /// POUR VOIR A QUOI CORRESPOND CHAQUE ATTAQUE VEUILLEZ VOUS REFEREZ AU DIFFERENT .C ASSOCIE
 
 /** MAGE **/
 
-void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void guerison_mage(int *quelle_attaque,t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void guerison_mage(int *quelle_attaque,t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
 
 /** ARCHER **/
 
-void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
 
 /** GUERRIER **/
 
-void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
 
 /** TANK **/
 
-void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
-void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
+void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration);
 
 #endif // HEADER_H_INCLUDED

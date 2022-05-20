@@ -87,14 +87,14 @@ void verif_roulement(t_joueur* tab_j,int i)
     }
 }
 
-void verif_en_feu(t_joueur* tab_j,int i,BITMAP* buffer,BITMAP* soldat,t_map carte,int nbJoueur)
+void verif_en_feu(t_joueur* tab_j,int i,BITMAP* buffer,BITMAP* soldat,t_map carte,int nbJoueur, int respiration)
 {
     int degat=20;
     if((tab_j[i].en_feu)&&(tab_j[i].tour_en_feu<tab_j[i].tour_en_feu_max))
     {
         tab_j[i].pv_actuel-=degat; //infilge 20 de degats a chaque tour que le joueur est en feu
         tab_j[i].tour_en_feu+=1;
-        affichage_degat_soin(tab_j,i,buffer,degat,soldat,carte,nbJoueur,1);
+        affichage_degat_soin(tab_j,i,buffer,degat,soldat,carte,nbJoueur,1, respiration);
     }
     else
     {
@@ -138,7 +138,7 @@ int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueu
     return indice_joueur_attaque;
 }
 
-void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif)//j joueur attaqué
+void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif,int  respiration)//j joueur attaqué
 {
     /* j le joueur sur lequel on affiche le msg
     verif verifie si c'est une attaque, un soin, ou autre (bouvclier, pm, etc)*/
@@ -155,7 +155,7 @@ void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP*
             textprintf_ex(buffer, font, x, y-10, couleur_degats, -1, "-%d PV", degat);
             rest(1);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
-            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1, respiration); //nb joueur+1 pr afficher tous les perso
         }
     }
 
@@ -166,7 +166,7 @@ void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP*
             textprintf_ex(buffer, font, x, y-10, couleur_soins, -1, "+%d PV", degat);
             rest(1);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
-            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1, respiration); //nb joueur+1 pr afficher tous les perso
         }
     }
     if (verif==3) //PM
@@ -176,7 +176,7 @@ void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP*
             textprintf_ex(buffer, font, x, y-10, couleur_autre, -1, "+%d PM", degat);
             rest(1);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
-            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1, respiration); //nb joueur+1 pr afficher tous les perso
         }
     }
     if (verif==4) //bouclier
@@ -186,7 +186,7 @@ void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP*
             textprintf_ex(buffer, font, x, y-10, couleur_autre, -1, "+%d bouclier", degat);
             rest(1);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W,SCREEN_H);
-            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1); //nb joueur+1 pr afficher tous les perso
+            AffichePerso(buffer,soldat,carte,nbJoueur,tab_j,nbJoueur+1, respiration); //nb joueur+1 pr afficher tous les perso
         }
     }
 }
@@ -194,7 +194,7 @@ void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP*
 
 /** fonction d'attaque globale **/
 
-void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat)
+void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat, int respiration)
 {
     int quelle_attaque=*quelleAttaque;
     int num_classe; //1 mage ; 2 archer ; 3 guerrier ; 4 tank
@@ -204,23 +204,23 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_mage(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            c_a_c_mage(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            guerison_mage(quelleAttaque,tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            guerison_mage(quelleAttaque,tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==3)
         {
-            meditation_mage(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            meditation_mage(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
-            lancer_sabre(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            lancer_sabre(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==5)
         {
-            etranglement(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            etranglement(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
     }
 
@@ -228,23 +228,23 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            c_a_c_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            lancer_grenade_thermique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            lancer_grenade_thermique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat,respiration);
         }
         if(quelle_attaque==3)
         {
-            tir_lourd_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            tir_lourd_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
-            tir_basique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            tir_basique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==5)
         {
-            tir_de_precision(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            tir_de_precision(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
     }
 
@@ -253,7 +253,7 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            c_a_c_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
@@ -277,15 +277,15 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_tank(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            c_a_c_tank(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            roulement(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            roulement(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat,respiration);
         }
         if(quelle_attaque==3)
         {
-            bouclier(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            bouclier(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
@@ -293,7 +293,7 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
         }
         if(quelle_attaque==5)
         {
-            lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
     }
 }

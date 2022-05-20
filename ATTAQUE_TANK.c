@@ -2,7 +2,7 @@
 
 /**  finie sans animation **/ //rajouter verif bouclier
 
-void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
+void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration)
 {
     /*attaque au corps a corps
     (i indice du joueur qui joue)*/
@@ -22,7 +22,7 @@ void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
-                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1, respiration);
             }
             else
             {
@@ -38,7 +38,7 @@ void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque
 }
 
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
-void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
+void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration)
 {
     /*permet pendant un tour (le tour suivant) d'augmenter les PM du tank à 4*/
 
@@ -49,7 +49,7 @@ void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map cart
         *quelle_attaque=0;
         tab_j[i].PM_roule=true;
         tab_j[i].pa_actuel-=PA;
-        affichage_degat_soin(tab_j,i,page,2,soldat,carte,nb_joueur,3);
+        affichage_degat_soin(tab_j,i,page,2,soldat,carte,nb_joueur,3, respiration);
     }
     else
     {
@@ -58,7 +58,7 @@ void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map cart
 }
 
 /** pas finie **/ //verifier quon ne le fait qu'une fois par tour car si on active cette fonction, on fait indifiniment son action associé
-void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
+void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration)
 {
     int PA=6; //cout en point d'action
 
@@ -67,7 +67,7 @@ void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte
         *quelle_attaque=0;
         tab_j[i].bouclier=true;
         tab_j[i].pa_actuel-=PA;
-        affichage_degat_soin(tab_j,i,page,1,soldat,carte,nb_joueur,4);
+        affichage_degat_soin(tab_j,i,page,1,soldat,carte,nb_joueur,4, respiration);
     }
     else
     {
@@ -78,7 +78,7 @@ void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte
 /** copier tir basique (ladapter en PA et degat) **/
 
 /** pas finie **/ //integrer la gestion de distance lineaire
-void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
+void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat, int respiration)
 {
     int PA=2; //cout en point d'action
     int degat=60; //PV enlever a ladversaire
@@ -96,7 +96,7 @@ void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAtta
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[j].en_feu=true; //le met en feu (perds 20pv en plus par tour)
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
-                affichage_degat_soin(tab_j,i,buffer,degat,soldat,carte,nb_joueur,1);
+                affichage_degat_soin(tab_j,i,buffer,degat,soldat,carte,nb_joueur,1, respiration);
             }
             else
             {
