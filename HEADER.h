@@ -67,6 +67,7 @@ typedef struct Joueur{
     int pv_actuel;
     int pm_actuel;
     int pa_actuel;
+    int respiration;
 
     int elimine; //1 si elimine 0 s'il joue
 
