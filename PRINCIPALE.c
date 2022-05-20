@@ -266,7 +266,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     rectfill(fond_menu, 22,555,72,595,couleur_fin_attaque);
 
     // INITIALISATION VARIABLE
-    init_map(&carte);
+    init_map(&carte, plateau, num_map);
+
     srand(time(NULL));
     page = create_bitmap(SCREEN_W,SCREEN_H);
     clear_bitmap(page);
@@ -280,7 +281,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     int affiche_son = 1;
     int affiche_grille = 1;
     int quelle_attaque = 0;
-
+    int respiration = 0;
 
     ///pour les attaques
     BITMAP* animation_attaque; //pas initialiser car pas encore d'animation pr les attaques
