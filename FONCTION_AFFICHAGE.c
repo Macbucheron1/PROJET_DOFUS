@@ -659,6 +659,7 @@ int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, in
 void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joueur Joueurs[], int indiceActuel, int nbJoueurs)
 {
     int i;
+    FONT* arial_8 = load_font("arial_8.pcx", NULL, NULL);
 
     draw_sprite(buffer, Joueurs[indiceActuel].classe.icone[Joueurs[indiceActuel].num_skin].icone_grand,3,70);
     draw_sprite(buffer, Joueurs[(indiceActuel+1)%nbJoueurs].classe.icone[Joueurs[(indiceActuel+1)%nbJoueurs].num_skin].icone_petit,3,150);
@@ -711,6 +712,8 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
     {
         rectfill(buffer, 22+2*y,555+2*y,72-2*y,595-2*y,makecol(0,125-15*y,255-15*y));
     }
+    textout_ex(buffer, arial_8, "Fin", 32+2*3, 555+5, makecol(255, 255, 255), -1);
+    textout_ex(buffer, arial_8, "Attaque", 22+2*3, 555+4*5, makecol(255, 255, 255), -1);
     for(i = 0;i<3;i++)
     {
         for(int j=0;j<3;j++)
@@ -722,14 +725,47 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
     {
         rectfill(buffer, 100+108*5+2*j, 555+2*j, 200+108*5-2*j, 595-2*j, makecol(240-15*j,0 ,0));
     }
-    textout_ex(buffer, font, "Fin de tour", 100+108*5+2*3, 555+2*5, makecol(10, 10, 10), -1);
-    for(i = 0; i<3;i++)
+    textout_ex(buffer, font, "Fin de tour", 100+108*5+2*3, 555+3*5, makecol(10, 10, 10), -1);
+    /*for(i = 0; i<3;i++)
     {
         for(int j = 0; j<3;j++)
         {
             //rectfill(buffer, 10+26*i+2*j, 180+2*j, 35+26*i-2*j, 205-2*j, makecol(190-15*j,190-15*j,190-15*j));
         }
+    }*/
+    if(Joueurs[indiceActuel].classe.numero_classe == 1)
+    {
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,560);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 540,557);
     }
+    else if(Joueurs[indiceActuel].classe.numero_classe == 2)
+    {
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 520,567);
+    }
+    else if(Joueurs[indiceActuel].classe.numero_classe == 3)
+    {
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 516,557);
+    }
+    else if(Joueurs[indiceActuel].classe.numero_classe == 4)
+    {
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 520,557);
+    }
+
 }
 
 
