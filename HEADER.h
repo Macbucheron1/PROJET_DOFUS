@@ -206,9 +206,9 @@ void SurbrillanceAttaque(BITMAP* buffer,t_map carte, int zoneAttaque[20][16]); /
 bool action_possible(t_joueur* tab_j,int i,int point_de_laction); //verification de PA necessaire
 void verif_bouclier(t_joueur* tab_j,int i); //remet a false si tour avc bouclier pass�
 void verif_roulement(t_joueur* tab_j,int i); //remet a false apres un tour
-void verif_en_feu(t_joueur* tab_j,int i); //si en feu met des degats
+void verif_en_feu(t_joueur* tab_j,int i,BITMAP* buffer,BITMAP* soldat,t_map carte,int nbJoueur); //si en feu met des degats
 int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueur, BITMAP* buffer, BITMAP* animation, int nbJoueurs ); //verifie si on clique sur une case avc un joueur
-void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque); //lance les attaques en fonction de la classe et de la case cliquée
+void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat); //lance les attaques en fonction de la classe et de la case cliquée
 
 //peut etre a mettre dans les fonctions d'affichages
 
@@ -216,34 +216,36 @@ void affichage_action_impossible(BITMAP* page); // pas assez de pa
 void affichage_action_impossible_nb(BITMAP* page); //trop d'utilisation
 void affichage_attaque_impossible(BITMAP* page); // personne sur la case
 void affichage_attaque_inefficace(BITMAP* page); // joueur attaqu� a un bouclier
+void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif);//j joueur attaqué
+
 
 /// POUR VOIR A QUOI CORRESPOND CHAQUE ATTAQUE VEUILLEZ VOUS REFEREZ AU DIFFERENT .C ASSOCIE
 
 /** MAGE **/
 
-void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
-void guerison_mage(t_joueur* tab_j,int i, BITMAP* page, int *quelle_attaque); //permet au mage de se soigner
-void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque); //permet au mage de gagner des pm
-void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
-void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
+void c_a_c_mage(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void guerison_mage(int *quelle_attaque,t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
 
 /** ARCHER **/
 
-void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
-void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
-void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
-void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
-void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
+void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
 
 /** GUERRIER **/
 
-void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
+void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
 
 /** TANK **/
 
-void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
-void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque);
-void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque);
-void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur);
+void c_a_c_tank(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void roulement(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void bouclier(t_joueur* tab_j,int i,BITMAP* page,int *quelle_attaque,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
+void lance_flammes(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat);
 
 #endif // HEADER_H_INCLUDED
