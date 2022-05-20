@@ -200,7 +200,11 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     int num_classe; //1 mage ; 2 archer ; 3 guerrier ; 4 tank
     num_classe=tab_j[i].classe.numero_classe;
 
-    if(num_classe==1) //le joueur est un mage
+    if (num_classe==0)
+    {
+        //eviter des calculs
+    }
+    else if(num_classe==1) //le joueur est un mage
     {
         if(quelle_attaque==1)
         {
@@ -296,4 +300,5 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
             lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
         }
     }
+    //rest(50);
 }
