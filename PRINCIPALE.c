@@ -449,6 +449,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 rest(200);
                 break;
             }
+            for (int i = 0; i < nbJoueurs; i++)
+                Joueurs[i].respiration = (Joueurs[i].respiration + rand()%5*(i+1))%3400;
 
             //textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
            // textprintf_ex(page, font, 10, 275, makecol(0, 0, 0), -1, "PM : %d/%d", Joueurs[indiceActuel].pm_actuel, Joueurs[indiceActuel].classe.pm_max);
