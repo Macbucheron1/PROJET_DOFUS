@@ -149,19 +149,23 @@ void AnimationClasse4(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
 
 
 /* ----------- SOUS PROGRAMME ----------- */
-void remplir_tab_coordonnes(t_map* carte); // Permet de remplir les coordonnées de la map
-void remplir_map_obstacle(t_map* carte); // Permet de remplir les types de chaque case
+void remplir_map_obstacle_desert(t_map* carte); // Permet de remplir les coordonnées de la map
+void remplir_map_obstacle_ville(t_map* carte);
+void remplir_map_obstacle_neige(t_map* carte);
+
+void remplir_tab_coordonnes(t_map* carte); // Permet de remplir les types de chaque case
 int position_souris_colonne(void); // Renvoie la colonne dans lequel se situe la souris, renvoie -1 si pas dans une colonne
 int position_souris_ligne(void); // Renvoie la ligne dans lequel se situe la souris, renvoie -1 si pas dans une ligne
 void prepa_alleg(void); // Lance alleg init et verifie qu'il fonctionne bien
 void erreur_chargement_image(BITMAP* image); // Verifie qu'on a bien charger l'image
-void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant, t_joueur Joueurs[], int nbJoueurs,int indiceActuel, int affiche_on, int affiche_grille); //Remplis le tableau tab,avec des 1, sur les cases sur lesquelles peut aller le joueur
-int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille); //Recupere dans la struct position, la position fde la souris lors du click, renvoie le nb de PM utilisés
-int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords chemin1[], int* PM_utilises, t_joueur Joueurs[], int nbJoueurs );//Stock le chemin dans le tableau chemin si il est possible, sinon renvoie -1
+void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, int zoneDeplacement[20][16], int PM_restant, t_joueur Joueurs[], int nbJoueurs,int indiceActuel, int affiche_on, int affiche_grille, int num_map); //Remplis le tableau tab,avec des 1, sur les cases sur lesquelles peut aller le joueur
+int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITMAP* buffer, BITMAP* personnage, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int num_map); //Recupere dans la struct position, la position fde la souris lors du click, renvoie le nb de PM utilisés
+int CalculChemin(t_map carte, int x1, int y1, int x2, int y2 , int PM, coords chemin1[], int* PM_utilises, t_joueur Joueurs[], int nbJoueurs, int num_map );//Stock le chemin dans le tableau chemin si il est possible, sinon renvoie -1
 int dijkstra(int G[320 + 1][320 + 1],int n,int startnode, int finishnode, int chemin[], int *distanceChemin, int PM); //Applique l'algorithme de dijkstra pour trouver le chemin le plus court d'une case à l'autre
 void createAdjMatrix(int Adj[][320 + 1],int arr[][2],int N,int M);  //Créé une matrice d'adjacence grâce a un tableau contenant toutes les liaisons d'un graphe
 int caseDisponible(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs);  // permet de determiner si une case est disponible (sans obstacle ou joueur) ou pas
 int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen);
+int choix_map(BITMAP* buffer, SAMPLE* musique, int* volume,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps);
 
 
 
@@ -175,13 +179,13 @@ int caseDisponible2(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs,
 
 t_personnage init_classes(char* nom_classe,int num_classe,int p_action_max, int p_vie_max,int p_mvt_max, BITMAP* icone0_grand, BITMAP* icone0_petit, BITMAP* icone1_grand, BITMAP* icone1_petit); //initialise les differentes classes
 t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur, int num_skin); //initialise les joueurs
-void init_map(t_map* carte); // Permet d'initaliser une map
+void init_map(t_map* carte, BITMAP* plateau, int num_map); // Permet d'initaliser une map
 void init_decor(t_decor* decor); // Initialise le decor
 void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y); // Initialise un acteurs
 /* ----------- PRINCIPALE ----------- */
 
 void menu_principal(void); // Lance le menu principale
-int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume); // Permet de jouer
+int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMAP* plateau, int num_map); // Permet de jouer
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[]) ; //Lance les credits
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps); // Lance les parametres
 void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank); // Lance l'apercu des classes
