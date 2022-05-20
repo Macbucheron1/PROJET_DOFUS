@@ -1,6 +1,6 @@
 #include "HEADER.h"
 
-/** fonction etant utilisÃ© dans chaque fichiers d'attaques **/
+/** fonction etant utilisé dans chaque fichiers d'attaques **/
 
 bool action_possible(t_joueur* tab_j,int i,int point_de_laction)
 {
@@ -20,7 +20,7 @@ bool action_possible(t_joueur* tab_j,int i,int point_de_laction)
 void affichage_action_impossible(BITMAP* page)
 {
     /* affiche un msg quand un joueur ne peut pas
-    effectuer d'action Ã  cause de ses PA*/
+    effectuer d'action à cause de ses PA*/
 
     int couleur_fond=makecol(0,0,0);
     int couleur_texte=makecol(255,255,255);
@@ -32,7 +32,7 @@ void affichage_action_impossible(BITMAP* page)
 void affichage_action_impossible_nb(BITMAP* page)
 {
     /* affiche un msg quand un joueur ne peut pas
-    effectuer d'action Ã  cause de ses PA*/
+    effectuer d'action à cause de ses PA*/
 
     int couleur_fond=makecol(0,0,0);
     int couleur_texte=makecol(255,255,255);
@@ -43,7 +43,7 @@ void affichage_action_impossible_nb(BITMAP* page)
 void affichage_attaque_impossible(BITMAP* page)
 {
     /* affiche un msg quand un joueur ne peut pas
-    effectuer d'action Ã  cause de ses PA*/
+    effectuer d'action à cause de ses PA*/
 
     int couleur_fond=makecol(0,0,0);
     int couleur_texte=makecol(255,255,255);
@@ -64,8 +64,8 @@ void affichage_attaque_inefficace(BITMAP* page)
 
 void verif_bouclier(t_joueur* tab_j,int i)
 {
-    /* sert Ã  verifier le nombre de tour durant lequel le bouclier est actif
-    si la limite eest depasÃ©, le sort se desactive */
+    /* sert à verifier le nombre de tour durant lequel le bouclier est actif
+    si la limite eest depasé, le sort se desactive */
 
     if ((tab_j[i].tour_bouclier<tab_j[i].tour_bouclier_max) && (tab_j[i].bouclier))
     {
@@ -80,7 +80,7 @@ void verif_bouclier(t_joueur* tab_j,int i)
 
 void verif_roulement(t_joueur* tab_j,int i)
 {
-    /* remise Ã  false car le sort ne dure qu'un ne dure qu'un tour */
+    /* remise à false car le sort ne dure qu'un ne dure qu'un tour */
     if (tab_j[i].PM_roule)
     {
         tab_j[i].PM_roule=false;
@@ -138,7 +138,7 @@ int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueu
     return indice_joueur_attaque;
 }
 
-void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif,int  respiration)//j joueur attaquÃ©
+void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif,int  respiration)//j joueur attaqué
 {
     /* j le joueur sur lequel on affiche le msg
     verif verifie si c'est une attaque, un soin, ou autre (bouvclier, pm, etc)*/
@@ -257,19 +257,19 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
         }
         if(quelle_attaque==2)
         {
-            lancer_grenade_thermique_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            /// a integrer
         }
         if(quelle_attaque==3)
         {
-            guerison_guerrier(quelleAttaque,tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            /// a integrer
         }
         if(quelle_attaque==4)
         {
-            tir_lourd_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            /// a integrer
         }
         if(quelle_attaque==5)
         {
-            tir_basique_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            /// a integrer
         }
     }
 
