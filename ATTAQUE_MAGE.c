@@ -51,10 +51,12 @@ void guerison_mage(int *quelle_attaque,t_joueur* tab_j,int i,BITMAP* buffer,t_ma
         if ((tab_j[i].pv_actuel+pv_restaure)<tab_j[i].classe.pv_max) //verifie quon ne rend pas plus de pv que le nb de pv max autorisé pour cette classe
         {
             tab_j[i].pv_actuel+=pv_restaure;
+            affichage_degat_soin(tab_j,i,buffer,pv_restaure,soldat,carte,nb_joueur,2);
         }
         else
         {
             tab_j[i].pv_actuel=tab_j[i].classe.pv_max; //si l'on arrive au max en restaurant les pv alors on bloque le nb de pv au pv max
+            affichage_degat_soin(tab_j,i,buffer,pv_restaure,soldat,carte,nb_joueur,2);
         }
         tab_j[i].pa_actuel-=PA;
     }
@@ -76,6 +78,8 @@ void meditation_mage(t_joueur* tab_j,int i, BITMAP* page,int *quelle_attaque,t_m
         *quelle_attaque=0;
         tab_j[i].pm_max_actu_mage+=1;
         tab_j[i].pa_actuel-=PA;
+        affichage_degat_soin(tab_j,i,page,1,soldat,carte,nb_joueur,3);
+
     }
 
     else
@@ -112,6 +116,8 @@ void lancer_sabre(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaq
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
+
             }
             else
             {
@@ -145,6 +151,7 @@ void etranglement(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaq
         {
             tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
             tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+            affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
         }
     }
     else

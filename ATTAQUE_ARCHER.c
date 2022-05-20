@@ -2,7 +2,7 @@
 
 /** finie sans animation **/
 
-void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque au corps a corps
     (i indice du joueur qui joue)*/
@@ -22,6 +22,7 @@ void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaq
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
             }
             else
             {
@@ -38,7 +39,7 @@ void c_a_c_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaq
 
 /** finie sans animation **/
 
-void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque a distance de l'archer (attaque de zone)
     (i indice du joueur qui joue)*/
@@ -58,6 +59,8 @@ void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map 
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
+
             }
             else
             {
@@ -74,7 +77,7 @@ void lancer_grenade_thermique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map 
 
 /** finie sans animation **/
 
-void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque a distance qui inflige bcp de degat (courte distance)*/
 
@@ -93,6 +96,7 @@ void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneA
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
             }
             else
             {
@@ -109,7 +113,7 @@ void tir_lourd_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneA
 
 /** finie sans animation **/
 
-void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque a distance qui inflige de leger de degat (moyenne distance)*/
 
@@ -128,6 +132,7 @@ void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zon
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
             }
             else
             {
@@ -144,7 +149,7 @@ void tir_basique_archer(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zon
 
 /** finie sans animation **/
 
-void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque a distance qui inflige de moyen de degat (longue distance)*/
     int PA=4; //cout en point d'action
@@ -162,6 +167,7 @@ void tir_de_precision(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneA
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
             }
             else
             {

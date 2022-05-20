@@ -1,7 +1,7 @@
 #include "HEADER.h"
 
 /** finie sans animation **/
-void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur)
+void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAttaque[20][16],BITMAP* animation,int nb_joueur,BITMAP* soldat)
 {
     /*attaque au corps a corps
     (i indice du joueur qui joue)*/
@@ -22,6 +22,7 @@ void c_a_c_guerrier(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte,int zoneAtt
             {
                 tab_j[j].pv_actuel-=degat; //retire les pv au joueur attaqué
                 tab_j[i].pa_actuel-=PA; //retire les PA au joueur qui joue
+                affichage_degat_soin(tab_j,j,buffer,degat,soldat,carte,nb_joueur,1);
             }
             else
             {
