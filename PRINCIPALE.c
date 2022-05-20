@@ -229,22 +229,16 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     t_map carte;
     BITMAP* page;
     BITMAP* soldat;
-
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-
     BITMAP* avatar[4];
     avatar[0] = load_bitmap("avatar.bmp", NULL);
     erreur_chargement_image(avatar[0]);
-
     avatar[1] = load_bitmap("avatar2.bmp", NULL);
     erreur_chargement_image(avatar[1]);
-
     avatar[2] = load_bitmap("avatar3.bmp", NULL);
     erreur_chargement_image(avatar[2]);
-
     avatar[3] = load_bitmap("avatar4.bmp", NULL);
     erreur_chargement_image(avatar[3]);
-
     int couleur_menu = makecol(0,255,255);
     int couleur_attaque_1 = makecol(255,0,0);
     int couleur_attaque_2 = makecol(0,255,0);
@@ -253,9 +247,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     int couleur_attaque_5 = makecol(255,255,255);
     int couleur_fin_tour = makecol(150, 0, 0);
     int couleur_fin_attaque = makecol(136,136,136);
-
     clear_to_color(fond_menu, makecol(0, 0, 0));
-
     rectfill(fond_menu, 750,10,790,50,couleur_menu);
     rectfill(fond_menu, 100+78*0, 555, 150+78*0, 595, couleur_attaque_1);
     rectfill(fond_menu, 100+78*1, 555, 150+78*1, 595, couleur_attaque_2);
@@ -287,17 +279,12 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     ///pour les attaques
     BITMAP* animation_attaque; //pas initialiser car pas encore d'animation pr les attaques
     int attaqueActive=0;
-
-
     // CODE PRINCIPAL
-
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
-
     int indiceActuel= rand()%nbJoueurs;    //indice du joueur actuel choisi aleatoirement
     time_t temps1;
     time_t temps2;
-
     for(int i=0; i<nbJoueurs; i++)
     {
         do
@@ -338,10 +325,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
             verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
         }
-
-
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
-
         temps1=clock();  //On stocke le temps en secondes dans temps1
         temps2=temps1+30000;
         time_t dureeStop=0;     ///permet de determiner combien de temps le timer a été stoppé (A mettre en place)
@@ -353,7 +337,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             int  zoneDeplacement[20][16];
             AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_son, affiche_grille, indiceActuel);
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
-
             if(Joueurs[indiceActuel].pm_actuel>0 && attaqueActive==0)
             {
                 if(Joueurs[indiceActuel].position_colonne!=positionTmpX || Joueurs[indiceActuel].position_ligne!=positionTmpY)    //Permet d'actualiser le chemin seulement si le joueur change de position
@@ -387,10 +370,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 //printf("%d\n",quelle_attaque);
             }
 
-
             for(int i=0;i<nbJoueurs;i++)
                 //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
-
             if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)== couleur_fin_attaque){
                 attaqueActive=0;
                 quelle_attaque=0;
@@ -411,7 +392,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 adjust_sample(musique, *volume, 128, 1000, 1);
             else
                 adjust_sample(musique, 0, 128, 1000, 1);
-
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
                 tmp=clock();
