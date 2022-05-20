@@ -223,28 +223,22 @@ void menu_principal(void) // A finir
     destroy_sample(musique);
 }
 
-int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A finir
+int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMAP* plateau, int num_map) // A finir
 {
     // VARIABLE
     t_map carte;
     BITMAP* page;
     BITMAP* soldat;
-
     BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-
     BITMAP* avatar[4];
     avatar[0] = load_bitmap("avatar.bmp", NULL);
     erreur_chargement_image(avatar[0]);
-
     avatar[1] = load_bitmap("avatar2.bmp", NULL);
     erreur_chargement_image(avatar[1]);
-
     avatar[2] = load_bitmap("avatar3.bmp", NULL);
     erreur_chargement_image(avatar[2]);
-
     avatar[3] = load_bitmap("avatar4.bmp", NULL);
     erreur_chargement_image(avatar[3]);
-
     int couleur_menu = makecol(0,255,255);
     int couleur_attaque_1 = makecol(255,0,0);
     int couleur_attaque_2 = makecol(0,255,0);
@@ -253,9 +247,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     int couleur_attaque_5 = makecol(255,255,255);
     int couleur_fin_tour = makecol(150, 0, 0);
     int couleur_fin_attaque = makecol(136,136,136);
-
     clear_to_color(fond_menu, makecol(0, 0, 0));
-
     rectfill(fond_menu, 750,10,790,50,couleur_menu);
     rectfill(fond_menu, 100+78*0, 555, 150+78*0, 595, couleur_attaque_1);
     rectfill(fond_menu, 100+78*1, 555, 150+78*1, 595, couleur_attaque_2);
@@ -266,7 +258,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     rectfill(fond_menu, 22,555,72,595,couleur_fin_attaque);
 
     // INITIALISATION VARIABLE
-    init_map(&carte);
+    init_map(&carte, plateau, num_map);
+
     srand(time(NULL));
     page = create_bitmap(SCREEN_W,SCREEN_H);
     clear_bitmap(page);
@@ -280,22 +273,18 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
     int affiche_son = 1;
     int affiche_grille = 1;
     int quelle_attaque = 0;
+    int respiration = 0;
 
 
     ///pour les attaques
     BITMAP* animation_attaque; //pas initialiser car pas encore d'animation pr les attaques
     int attaqueActive=0;
-
-
     // CODE PRINCIPAL
-
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
-
     int indiceActuel= rand()%nbJoueurs;    //indice du joueur actuel choisi aleatoirement
     time_t temps1;
     time_t temps2;
-
     for(int i=0; i<nbJoueurs; i++)
     {
         do
@@ -305,6 +294,10 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
         }
         while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0);  //Tant que la case est indisponible
     }
+
+    /*
+    Joueurs[0].position_colonne=0;                      //On donne une position aléatoire à chaque joueur
+    Joueurs[0].position_ligne=0;*/
 
 
     while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
@@ -324,7 +317,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max;  //On remet le pm max au joueur à chaque tour
         }
 
-        verif_en_feu(Joueurs,indiceActuel,page,soldat,carte,nbJoueurs); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
+        verif_en_feu(Joueurs,indiceActuel,page,soldat,carte,nbJoueurs, respiration); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
         verif_bouclier(Joueurs,indiceActuel);//au debut de la fonction car doit savoir si le tank est protege ou pas
 
         if(Joueurs[indiceActuel].PM_roule) // verifie que le joueur a activer le sort au tour precedent et ainsi l'active
@@ -332,10 +325,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
             verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
         }
-
-
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
-
         temps1=clock();  //On stocke le temps en secondes dans temps1
         temps2=temps1+30000;
         time_t dureeStop=0;     ///permet de determiner combien de temps le timer a été stoppé (A mettre en place)
@@ -347,26 +337,27 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             int  zoneDeplacement[20][16];
             AfficheTout(page, soldat, carte, nbJoueurs, Joueurs,fond_menu,avatar,temps1,temps2, affiche_son, affiche_grille, indiceActuel);
             ////////////////////////////////////DEPLACEMENT/////////////////////////////
-
             if(Joueurs[indiceActuel].pm_actuel>0 && attaqueActive==0)
             {
                 if(Joueurs[indiceActuel].position_colonne!=positionTmpX || Joueurs[indiceActuel].position_ligne!=positionTmpY)    //Permet d'actualiser le chemin seulement si le joueur change de position
                 {
-                    CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel, affiche_son, affiche_grille);
+                    CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel, affiche_son, affiche_grille, num_map);
                     positionTmpX=Joueurs[indiceActuel].position_colonne;
                     positionTmpY=Joueurs[indiceActuel].position_ligne;
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
                 tmp=clock();
-                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille, num_map, respiration);
                 dureeStop+=clock()-tmp;
             }
+
 
             ////////////////////////////////////////////////////////////////////////////
 
             ////////////////////////////////////ATTAQUE/////////////////////////////////
 
             int zoneAttaque[20][16];
+
             if(quelle_attaque==0)
             {
                 attaqueActive=0; //ne fait rien
@@ -375,14 +366,12 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             {
                 attaqueActive=1;
 
-                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque,soldat);
+                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque,soldat, respiration);
                 //printf("%d\n",quelle_attaque);
             }
 
-
             for(int i=0;i<nbJoueurs;i++)
                 //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
-
             if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)== couleur_fin_attaque){
                 attaqueActive=0;
                 quelle_attaque=0;
@@ -395,7 +384,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
             ////////////////////////////////////////////////////////////////////////////
 
 
-            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999);
+            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999, respiration);
             //respiration a faire
             //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
 
@@ -403,7 +392,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
                 adjust_sample(musique, *volume, 128, 1000, 1);
             else
                 adjust_sample(musique, 0, 128, 1000, 1);
-
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
                 tmp=clock();
@@ -442,6 +430,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A 
                 rest(200);
                 break;
             }
+            for (int i = 0; i < nbJoueurs; i++)
+                Joueurs[i].respiration = (Joueurs[i].respiration + rand()%5*(i+1))%3400;
 
             //textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
            // textprintf_ex(page, font, 10, 275, makecol(0, 0, 0), -1, "PM : %d/%d", Joueurs[indiceActuel].pm_actuel, Joueurs[indiceActuel].classe.pm_max);
