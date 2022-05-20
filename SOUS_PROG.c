@@ -159,7 +159,6 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
         {
             if(x>=0 && y>=0)
             {
-
                 if(!(i==PM_restant && j==PM_restant) && caseDisponible2(carte, x, y, Joueurs, nbJoueurs, indiceActuel)  && CalculChemin(carte,x_soldat,y_soldat,x,y,PM_restant,chemin,&inutile, Joueurs, nbJoueurs, num_map)!=-1 ) // Verifie si la case est accessible
                 {
                     zoneDeplacement[x][y]=1;                                                           //Si c'est le cas, las case=1 dans le tableau
@@ -179,6 +178,7 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
             continuer=0;
     }
     x=x+2;
+
     if(continuer)
     {
         for(i=0; i<PM_restant; i++)
@@ -188,7 +188,7 @@ void CalculDeplacement(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat, i
             {
                 if(x>=0 && y>=0)
                 {
-                    if(caseDisponible2(carte, x, y, Joueurs, nbJoueurs, indiceActuel)  && CalculChemin(carte,x_soldat,y_soldat,x,y,PM_restant,chemin,&inutile, Joueurs, nbJoueurs,num_map)!=-1)
+                    if(caseDisponible2(carte, x, y, Joueurs, nbJoueurs, indiceActuel)  && CalculChemin(carte,x_soldat,y_soldat,x,y,PM_restant,chemin,&inutile, Joueurs, nbJoueurs, num_map)!=-1)
                         zoneDeplacement[x][y]=1;
                 }
                 if(x<19)
@@ -221,8 +221,8 @@ int Deplacement(t_map carte, int zoneDeplacement[20][16], int indiceActuel, BITM
             Joueurs[indiceActuel].position_colonne=position_souris_colonne();
             Joueurs[indiceActuel].position_ligne=position_souris_ligne();
             coords chemin[10];
-            CalculChemin(carte, x_initial,y_initial,Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne, 6,chemin,&PM_utilises, Joueurs, nbJoueurs,num_map); //A la place de 6 mettre joueurActuel->classe.pm_max
-            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises,nbJoueurs,Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille,respiration);
+            CalculChemin(carte, x_initial,y_initial,Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne, 6,chemin,&PM_utilises, Joueurs, nbJoueurs, num_map); //A la place de 6 mettre joueurActuel->classe.pm_max
+            AnimationDeplacement(buffer,personnage,carte,x_initial,y_initial, indiceActuel, chemin,PM_utilises,nbJoueurs,Joueurs,fond_menu,avatar,temps1,temps2, affiche_on, affiche_grille, respiration);
         }
     }
 
@@ -262,7 +262,7 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2, int PM, coords che
 
 
     nbSommets = 320;            //nombre de sommet
-    int edges[500][2];      //Tous les angles reliant les sommets du graphe (cases)
+    int edges[500][2];      //Tous les angles reliant les sommets du graphe (cases) //340 1
     int ajout=0;
 
     for(int i=0; i<20; i++)                                             //bouvle permettant d'initialiser chaques angles du graphe
@@ -289,7 +289,6 @@ int CalculChemin(t_map carte, int x1, int y1, int x2, int y2, int PM, coords che
 
         }
     }
-
     nbAretes = ajout;                  //nombre d'angles
     int Adj[nbSommets + 1][nbSommets + 1];      //matrice d'adjacence
 
@@ -502,9 +501,8 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
     return Stardelay;
 }
 
-int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps,int nbJoueurs,t_joueur Joueurs[])
+int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
 {
-
     BITMAP* buffer_detection = create_bitmap(800, 600);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     BITMAP* map_desert=load_bitmap("map_desert.bmp", NULL);
@@ -515,7 +513,8 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
     erreur_chargement_image(map_ville);
     erreur_chargement_image(personnage);
     int num_map = -1;
-
+    int nbJoueurs=nombreJoueurs(buffer,visuel_menu, soldat, delay, mesActeurs, tab_bitmap, temps);
+    t_joueur Joueurs[nbJoueurs];
 
     int classe[nbJoueurs];
     int num_skin[nbJoueurs];
@@ -595,7 +594,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
             polygon(buffer, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
             polygon(buffer, 3, points2, makecol(couleur_click[cpt+1].r, couleur_click[cpt+1].g, couleur_click[cpt+1].b));
             rectfill(buffer, x-140, 250, x-60, 300, makecol(couleur_rect[cpt2].r, couleur_rect[cpt2].g, couleur_rect[cpt2].b));
-             polygon(buffer_detection, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
+            polygon(buffer_detection, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
             polygon(buffer_detection, 3, points2, makecol(couleur_click[cpt+1].r, couleur_click[cpt+1].g, couleur_click[cpt+1].b));
             rectfill(buffer_detection, x-140, 250, x-60, 300, makecol(couleur_rect[cpt2].r, couleur_rect[cpt2].g, couleur_rect[cpt2].b));
             // printf("Joueur %d : rouge = %d green = %d  bleu = %d\n",i,couleur_rect[cpt].r,couleur_rect[cpt].g,couleur_rect[cpt].b);
@@ -764,10 +763,8 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
 
   while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])     //La touche entree permet de valider le pseudo
   {
-
     textprintf_ex(buffer,font,x-10,y+50,makecol(0,0,0),-1,"'Entree' pour valider");
     touche=readkey();
-
     touche1=touche & 0xFF; // code ASCII
     touche2=touche >> 8;   // scancode
 
@@ -782,7 +779,6 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
         saisie[i+1]=0;
 
         /*  on affiche la touche saisie */
-        //textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1," ");
         textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"%s",derniereSaisie);
         i++;
         textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"_");
@@ -792,31 +788,28 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
 
     if ( touche2==KEY_BACKSPACE )   //Effacer
     {
-        //rectfill(buffer,x+(tailleLettre)*i,y+10,x+i*tailleLettre+2*tailleLettre, y+20, makecol(160,160,160)); //Rectangle noir recouvrant la surface effacée
-        if(i>0)
-            rectfill(buffer,x+tailleLettre*(i-1),y+10,x+tailleLettre*(i+1)+tailleLettre,y+20,makecol(160,160,160));
-        else
-            rectfill(buffer,x+tailleLettre*(i),y+10,x+tailleLettre*(i+1)+tailleLettre,y+20,makecol(160,160,160));
+        rectfill(buffer,x+(tailleLettre)*i+tailleLettre,y+10,x+i*tailleLettre+2*tailleLettre, y+20, makecol(160,160,160)); //Rectangle noir recouvrant la surface effacée
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        saisie[i-1]='\0';
+
             i--;
             if ( i<0 )
                 i=0;
       textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"_");
+      textprintf_ex(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),-1," ");
     }
     //* si validation
     if ( (touche2==KEY_ENTER_PAD) || (touche2==KEY_ENTER) )
     {
-      rectfill(buffer,x+tailleLettre*(i-1),y+10,x+tailleLettre*(i)+tailleLettre,y+20,makecol(160,160,160));
+      textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,0,255),-1," ");
       if (i==0)
         saisie[0]=32; // space
       saisie[i+1]=0;
     }
-  }
     clear_keybuf();
     return i;     //taille du pseudo
+  }
 
-
+    return -1;
 }
 
 int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
@@ -1128,18 +1121,14 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
         zoneAttaque[x][y]=1;
         if(y>0)
             y--;
-        else
-            break;
     }
     y=y_soldat+1;
 
     while(y<y_soldat+distance && y<=15 && caseDisponible(carte,x,y,tab_j,nb_j))
     {
         zoneAttaque[x][y]=1;
-        if(y<15)
+        if(y<150)
             y++;
-        else
-            break;
     }
     y=y_soldat;
     x--;
@@ -1149,8 +1138,6 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
         zoneAttaque[x][y]=1;
         if(x>0)
             x--;
-        else
-            break;
     }
     x=x_soldat+1;;
     while(x<x_soldat+distance && x<=19 && caseDisponible(carte,x,y,tab_j,nb_j))
@@ -1158,8 +1145,6 @@ void CalculAttaque_ligne(BITMAP* buffer, t_map carte, int x_soldat,int y_soldat,
         zoneAttaque[x][y]=1;
         if(x<19)
             x++;
-        else
-            break;
     }
 
 }
@@ -1338,4 +1323,5 @@ void remplir_map_obstacle_ville(t_map* carte)
         }
     }
 }
+
 

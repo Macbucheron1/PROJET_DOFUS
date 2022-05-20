@@ -51,8 +51,6 @@ void menu_principal(void) // A finir
     unsigned int temps=0;
     play_sample(musique,volume,128,1000,1);
 
-    int nbJoueurs;
-    int nouvelle_partie=0;      // Permet de lancer une nouvelle partie une partie
     // initialisation des classes
 
     BITMAP* icone_mage0_grand = load_bitmap("vador_grand.bmp",  NULL);
@@ -106,7 +104,7 @@ void menu_principal(void) // A finir
     ///////////////////////////// BOUCLE EVENEMENT /////////////////////////////////////
     BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
     erreur_chargement_image(curseur);
-    while ((quitter != 10) && (!key[KEY_ESC]))
+    while ((quitter != 1) && (!key[KEY_ESC]))
     {
         clear_bitmap(page);
         animation_decor_menu(soldat, mesActeurs, &delay, &visuel_menu, tab_bitmap, &temps);
@@ -171,28 +169,10 @@ void menu_principal(void) // A finir
             rectfill(page, 253, 153, 557, 207, makecol(195,195,195));
             rectfill(page, 256, 156, 554, 204, makecol(180,180,180));
             textprintf_ex(page, font, 270, 170, makecol(20,20, 20), -1, "Jouer");
-            if (mouse_b & 1 || nouvelle_partie)
+            if (mouse_b & 1)
             {
-                nouvelle_partie=0;
                 rest(100);
-                nbJoueurs=nombreJoueurs(page,&visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
-                t_joueur Joueurs[nbJoueurs];
-                quitter=nouvellePartie(page, musique, &volume, mage, archer, guerrier, tank, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps,nbJoueurs,Joueurs);
-
-                while(quitter!=10 && nouvelles_partie==0)
-                {
-                    if(quitter==1)
-                    {
-                        rest(100);
-                        menu_fin(page,nbJoueurs,Joueurs,&nouvelle_partie,&quitter, &visuel_menu, soldat, mesActeurs,&delay,  &temps,tab_bitmap);
-                        rest(100);
-                    }
-                    if(quitter==5)
-                    {
-                        rest(100);
-                        quitter=jouer(Joueurs,nbJoueurs,musique,&volume,);
-                    }
-                }
+                quitter=nouvellePartie(page, musique, &volume, mage, archer, guerrier, tank, &visuel_menu, soldat, &delay, mesActeurs, tab_bitmap, &temps);
             }
         }
         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_apercu_classe) // APERCU DES CLASSES
@@ -230,6 +210,9 @@ void menu_principal(void) // A finir
         }
         montre_curseur(page,curseur);
         /////////////////////////////  /////////////////////////////////////
+
+
+
 
 
         ///////////////////////////// AVANCEMENT DU FOND /////////////////////////////////////
@@ -284,6 +267,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
 
     // INITIALISATION VARIABLE
     init_map(&carte, plateau, num_map);
+
     srand(time(NULL));
     page = create_bitmap(SCREEN_W,SCREEN_H);
     clear_bitmap(page);
@@ -298,13 +282,11 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     int affiche_grille = 1;
     int quelle_attaque = 0;
     int respiration = 0;
-    int nbElimine=0;
-    int pvElimine=-10000;
+
 
     ///pour les attaques
     BITMAP* animation_attaque; //pas initialiser car pas encore d'animation pr les attaques
     int attaqueActive=0;
-
 
 
     // CODE PRINCIPAL
@@ -315,6 +297,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     int indiceActuel= rand()%nbJoueurs;    //indice du joueur actuel choisi aleatoirement
     time_t temps1;
     time_t temps2;
+
     for(int i=0; i<nbJoueurs; i++)
     {
         do
@@ -325,33 +308,17 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
         while(caseDisponible2(carte, Joueurs[i].position_colonne, Joueurs[i].position_ligne, Joueurs,nbJoueurs,i)==0);  //Tant que la case est indisponible
     }
 
+    /*
+    Joueurs[0].position_colonne=0;                      //On donne une position aléatoire à chaque joueur
+    Joueurs[0].position_ligne=0;*/
+
+
     while (((quitter != 1) && (quitter != 3)) || (!key[KEY_ESC]))
     {
-        for(int i=0;i<nbJoueurs;i++){
-            if(Joueurs[i].pv_actuel<=0 && Joueurs[i].elimine==0)
-            {
-                Joueurs[i].elimine=1;
-                Joueurs[i].position_colonne=-10;
-                Joueurs[i].position_ligne=-10;
-
-                nbElimine++;
-                Joueurs[i].pv_actuel=pvElimine;
-                pvElimine+=1000;
-                if(nbElimine==nbJoueurs-1)              ///Si il ne reste plus qu'un joueur
-                {
-                    quitter=1;
-                    return quitter;
-                }
-                do
-                {
-                    //Passage au joueur suivant
-                    indiceActuel=(indiceActuel+1)%nbJoueurs;
-                }
-                while(Joueurs[indiceActuel].elimine==1);
-                continue;
-            }
+        if(Joueurs[indiceActuel].pv_actuel<=0)
+        {
+            Joueurs[indiceActuel].elimine=1;
         }
-
         int  positionTmpX=-1;    //Permet d'actualiser le chemin seulement si le joueur change de position
         int positionTmpY=-1;
         if(Joueurs[indiceActuel].classe.numero_classe==1) //gestion de la meditation du mage
@@ -362,6 +329,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
         {
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max;  //On remet le pm max au joueur à chaque tour
         }
+
         verif_en_feu(Joueurs,indiceActuel,page,soldat,carte,nbJoueurs, respiration); //au debut car si le joueur est en feu on lui inflige les degats a ce moment la
         verif_bouclier(Joueurs,indiceActuel);//au debut de la fonction car doit savoir si le tank est protege ou pas
 
@@ -370,6 +338,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             Joueurs[indiceActuel].pm_actuel=Joueurs[indiceActuel].classe.pm_max+2;
             verif_roulement(Joueurs,indiceActuel); //a metre a la fin car remise a false
         }
+
 
         Joueurs[indiceActuel].pa_actuel=Joueurs[indiceActuel].classe.pa_max;
 
@@ -398,6 +367,8 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille, num_map, respiration);
                 dureeStop+=clock()-tmp;
             }
+
+
             ////////////////////////////////////////////////////////////////////////////
 
             ////////////////////////////////////ATTAQUE/////////////////////////////////
@@ -412,9 +383,10 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             {
                 attaqueActive=1;
 
-                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque,soldat,respiration);
+                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque,soldat, respiration);
                 //printf("%d\n",quelle_attaque);
             }
+
 
             for(int i=0;i<nbJoueurs;i++)
                 //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
@@ -429,7 +401,9 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 printf("pv %d:%d\n",j,Joueurs[j].pv_actuel);
             }*/
             ////////////////////////////////////////////////////////////////////////////
-            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999,respiration);
+
+
+            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999, respiration);
             //respiration a faire
             //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
 
@@ -437,6 +411,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 adjust_sample(musique, *volume, 128, 1000, 1);
             else
                 adjust_sample(musique, 0, 128, 1000, 1);
+
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
                 tmp=clock();
@@ -449,35 +424,25 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 rest(200);
                 dureeStop+=clock()-tmp;
             }
-            else if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_1) // Attaque 1
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_1) // Attaque 1
             {
-                affichage_attaque1(page, Joueurs, indiceActuel);
-                if (mouse_b & 1)
-                    quelle_attaque = 1;
+                quelle_attaque = 1;
             }
-            else if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_2) // Attaque 2
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_2) // Attaque 2
             {
-                affichage_attaque2(page,Joueurs,indiceActuel);
-                if(mouse_b & 1)
-                    quelle_attaque = 2;
+                quelle_attaque = 2;
             }
-            else if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_3) // Attaque 3
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_3) // Attaque 3
             {
-                affichage_attaque3(page, Joueurs, indiceActuel);
-                if(mouse_b & 1)
-                    quelle_attaque = 3;
+                quelle_attaque = 3;
             }
-            else if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_4) // Attaque 4
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_4) // Attaque 4
             {
-                affichage_attaque4(page, Joueurs, indiceActuel);
-                if(mouse_b & 1)
-                    quelle_attaque = 4;
+                quelle_attaque = 4;
             }
-            else if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_5) // Attaque 5
+            else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_attaque_5) // Attaque 5
             {
-                affichage_attaque5(page, Joueurs, indiceActuel);
-                if(mouse_b & 1)
-                    quelle_attaque = 5;
+                quelle_attaque = 5;
             }
             else if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_fin_tour) // Fin de tour
             {
@@ -487,6 +452,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             }
             for (int i = 0; i < nbJoueurs; i++)
                 Joueurs[i].respiration = (Joueurs[i].respiration + rand()%5*(i+1))%3400;
+
             //textprintf_ex(page, font, 10, 250, makecol(0, 0, 0), -1, "PV : %d/%d", Joueurs[indiceActuel].pv_actuel, Joueurs[indiceActuel].classe.pv_max);
            // textprintf_ex(page, font, 10, 275, makecol(0, 0, 0), -1, "PM : %d/%d", Joueurs[indiceActuel].pm_actuel, Joueurs[indiceActuel].classe.pm_max);
             //textprintf_ex(page, font, 10, 300, makecol(0, 0, 0), -1, "PA : %d/%d", Joueurs[indiceActuel].pa_actuel, Joueurs[indiceActuel].classe.pa_max);
@@ -509,246 +475,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
     destroy_bitmap(page);
     return quitter;
 }
-
-void affichage_attaque1(BITMAP* buffer, t_joueur Joueur[], int indicejoueur)
-{
-    if(Joueur[indicejoueur].classe.numero_classe == 1)
-    {
-        rectfill(buffer, 80,500,170,550,makecol(160,160,160));
-        textprintf_ex(buffer, font,85,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, font, 85, 520, makecol(255,255,255), -1, "degat: 250");
-        textprintf_ex(buffer, font, 85, 535, makecol(255,255,255), -1, "Porte: 1");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 2)
-    {
-        rectfill(buffer, 80,500,170,550,makecol(160,160,160));
-        textprintf_ex(buffer, font,85,505,makecol(255,255,255), -1, "Cout: 2");
-        textprintf_ex(buffer, font, 85, 520, makecol(255,255,255), -1, "degat: 80");
-        textprintf_ex(buffer, font, 85, 535, makecol(255,255,255), -1, "Porte: 1");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 3)
-    {
-        rectfill(buffer, 80,500,170,550,makecol(160,160,160));
-        textprintf_ex(buffer, font,85,505,makecol(255,255,255), -1, "Cout: 3");
-        textprintf_ex(buffer, font, 85, 520, makecol(255,255,255), -1, "degat: 200");
-        textprintf_ex(buffer, font, 85, 535, makecol(255,255,255), -1, "Porte: 1");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 4)
-    {
-        rectfill(buffer, 80,500,170,550,makecol(160,160,160));
-        textprintf_ex(buffer, font,85,505,makecol(255,255,255), -1, "Cout: 5");
-        textprintf_ex(buffer, font, 85, 520, makecol(255,255,255), -1, "degat: 420");
-        textprintf_ex(buffer, font, 85, 535, makecol(255,255,255), -1, "Porte: 1");
-    }
-
-}
-
-void affichage_attaque2(BITMAP* buffer, t_joueur Joueur[], int indicejoueur)
-{
-    FONT* arial_8 = load_font("arial_8.pcx", NULL, NULL);
-
-    if(Joueur[indicejoueur].classe.numero_classe == 1)
-    {
-        rectfill(buffer, 148,500,258,550,makecol(160,160,160));
-        vline(buffer,205,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,153,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, arial_8, 153, 520, makecol(255,255,255), -1, "soint: 180");
-        textprintf_ex(buffer, arial_8, 153, 535, makecol(255,255,255), -1, "Porte: 0");
-
-        textprintf_ex(buffer, arial_8, 210, 510, makecol(255,255,255), -1, "Soigne");
-        textprintf_ex(buffer, arial_8, 208, 525, makecol(255,255,255), -1, "180 PV");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 2)
-    {
-        rectfill(buffer, 148,500,258,550,makecol(160,160,160));
-        vline(buffer,205,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,153,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, arial_8, 150, 520, makecol(255,255,255), -1, "degat: 180");
-        textprintf_ex(buffer, arial_8, 153, 535, makecol(255,255,255), -1, "Porte: 4");
-
-        textprintf_ex(buffer, arial_8, 210, 510, makecol(255,255,255), -1, "Attaque");
-        textprintf_ex(buffer, arial_8, 208, 525, makecol(255,255,255), -1, "de zone");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 3)
-    {
-        rectfill(buffer, 148,500,258,550,makecol(160,160,160));
-        vline(buffer,205,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,153,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, arial_8, 150, 520, makecol(255,255,255), -1, "degat: 180");
-        textprintf_ex(buffer, arial_8, 153, 535, makecol(255,255,255), -1, "Porte: 4");
-
-        textprintf_ex(buffer, arial_8, 210, 510, makecol(255,255,255), -1, "Attaque");
-        textprintf_ex(buffer, arial_8, 208, 525, makecol(255,255,255), -1, "de zone");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 4)
-    {
-        rectfill(buffer, 148,500,258,550,makecol(160,160,160));
-        vline(buffer,205,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,153,505,makecol(255,255,255), -1, "Cout: 6");
-        textprintf_ex(buffer, arial_8, 153, 520, makecol(255,255,255), -1, "degat: 0");
-        textprintf_ex(buffer, arial_8, 153, 535, makecol(255,255,255), -1, "Porte: 0");
-
-        textprintf_ex(buffer, arial_8, 210, 510, makecol(255,255,255), -1, "protege");
-        textprintf_ex(buffer, arial_8, 213, 525, makecol(255,255,255), -1, "2 tour");
-    }
-
-}
-
-void affichage_attaque3(BITMAP* buffer, t_joueur Joueur[], int indicejoueur)
-{
-    FONT* arial_8 = load_font("arial_8.pcx", NULL, NULL);
-
-    if(Joueur[indicejoueur].classe.numero_classe == 1)
-    {
-        rectfill(buffer, 251,500,361,550,makecol(160,160,160));
-        vline(buffer,310,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,256,505,makecol(255,255,255), -1, "Cout: 5");
-        textprintf_ex(buffer, arial_8, 256, 520, makecol(255,255,255), -1, "degat: 0");
-        textprintf_ex(buffer, arial_8, 256, 535, makecol(255,255,255), -1, "Porte: 0");
-
-        textprintf_ex(buffer, arial_8, 320, 510, makecol(255,255,255), -1, "Plus");
-        textprintf_ex(buffer, arial_8, 320, 525, makecol(255,255,255), -1, "1 PM");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 2)
-    {
-        rectfill(buffer, 251,500,361,550,makecol(160,160,160));
-        vline(buffer,310,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,256,505,makecol(255,255,255), -1, "Cout: 6");
-        textprintf_ex(buffer, arial_8, 253, 520, makecol(255,255,255), -1, "degat: 300");
-        textprintf_ex(buffer, arial_8, 256, 535, makecol(255,255,255), -1, "Porte: 3");
-
-        textprintf_ex(buffer, arial_8, 315, 510, makecol(255,255,255), -1, "attaque");
-        textprintf_ex(buffer, arial_8, 314, 525, makecol(255,255,255), -1, "longiligne");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 3)
-    {
-        rectfill(buffer, 251,500,361,550,makecol(160,160,160));
-        vline(buffer,310,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,256,505,makecol(255,255,255), -1, "Cout: 3");
-        textprintf_ex(buffer, arial_8, 256, 520, makecol(255,255,255), -1, "soint: 120");
-        textprintf_ex(buffer, arial_8, 256, 535, makecol(255,255,255), -1, "Porte: 0");
-
-        textprintf_ex(buffer, arial_8, 320, 510, makecol(255,255,255), -1, "Soigne");
-        textprintf_ex(buffer, arial_8, 320, 525, makecol(255,255,255), -1, "120 PV");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 4)
-    {
-        rectfill(buffer, 251,500,361,550,makecol(160,160,160));
-        vline(buffer,310,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,256,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, arial_8, 256, 520, makecol(255,255,255), -1, "degat: 0");
-        textprintf_ex(buffer, arial_8, 256, 535, makecol(255,255,255), -1, "Porte: 0");
-
-        textprintf_ex(buffer, arial_8, 320, 505, makecol(255,255,255), -1, "4 PM");
-        textprintf_ex(buffer, arial_8, 320, 520, makecol(255,255,255), -1, "au tour");
-        textprintf_ex(buffer, arial_8, 320, 535, makecol(255,255,255), -1, "suivant");
-    }
-
-}
-
-void affichage_attaque4(BITMAP* buffer, t_joueur Joueur[], int indicejoueur)
-{
-    FONT* arial_8 = load_font("arial_8.pcx", NULL, NULL);
-
-    if(Joueur[indicejoueur].classe.numero_classe == 1)
-    {
-        rectfill(buffer, 379,500,489,550,makecol(160,160,160));
-        vline(buffer,435,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,383,505,makecol(255,255,255), -1, "Cout: 2");
-        textprintf_ex(buffer, arial_8, 383, 520, makecol(255,255,255), -1, "degat: 70");
-        textprintf_ex(buffer, arial_8, 383, 535, makecol(255,255,255), -1, "Porte: 4");
-
-        textprintf_ex(buffer, arial_8, 445, 510, makecol(255,255,255), -1, "attaque");
-        textprintf_ex(buffer, arial_8, 440, 525, makecol(255,255,255), -1, "longiligne");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 2)
-    {
-        rectfill(buffer, 379,500,489,550,makecol(160,160,160));
-        vline(buffer,435,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,383,505,makecol(255,255,255), -1, "Cout: 2");
-        textprintf_ex(buffer, arial_8, 383, 520, makecol(255,255,255), -1, "degat: 80");
-        textprintf_ex(buffer, arial_8, 383, 535, makecol(255,255,255), -1, "Porte: 5");
-
-        textprintf_ex(buffer, arial_8, 445, 510, makecol(255,255,255), -1, "attaque");
-        textprintf_ex(buffer, arial_8, 440, 525, makecol(255,255,255), -1, "longiligne");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 3)
-    {
-        rectfill(buffer, 379,500,489,550,makecol(160,160,160));
-        vline(buffer,435,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,383,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, arial_8, 380, 520, makecol(255,255,255), -1, "degat: 250");
-        textprintf_ex(buffer, arial_8, 383, 535, makecol(255,255,255), -1, "Porte: 3");
-
-        textprintf_ex(buffer, arial_8, 445, 510, makecol(255,255,255), -1, "attaque");
-        textprintf_ex(buffer, arial_8, 440, 525, makecol(255,255,255), -1, "longiligne");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 4)
-    {
-        rectfill(buffer, 379,500,489,550,makecol(160,160,160));
-        vline(buffer,435,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,383,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, arial_8, 380, 520, makecol(255,255,255), -1, "degat: 200");
-        textprintf_ex(buffer, arial_8, 383, 535, makecol(255,255,255), -1, "Porte: 3");
-
-        textprintf_ex(buffer, arial_8, 445, 510, makecol(255,255,255), -1, "attaque");
-        textprintf_ex(buffer, arial_8, 440, 525, makecol(255,255,255), -1, "longiligne");
-    }
-
-}
-
-void affichage_attaque5(BITMAP* buffer, t_joueur Joueur[], int indicejoueur)
-{
-    FONT* arial_8 = load_font("arial_8.pcx", NULL, NULL);
-
-    if(Joueur[indicejoueur].classe.numero_classe == 1)
-    {
-        rectfill(buffer, 507,500,617,550,makecol(160,160,160));
-        vline(buffer,567,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,510,505,makecol(255,255,255), -1, "Cout: 3");
-        textprintf_ex(buffer, arial_8, 510, 520, makecol(255,255,255), -1, "degat: 130");
-        textprintf_ex(buffer, arial_8, 510, 535, makecol(255,255,255), -1, "Porte: 2");
-
-        textprintf_ex(buffer, arial_8, 573, 510, makecol(255,255,255), -1, "Attaque");
-        textprintf_ex(buffer, arial_8, 573, 525, makecol(255,255,255), -1, "de zone");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 2)
-    {
-        rectfill(buffer, 507,500,617,550,makecol(160,160,160));
-        vline(buffer,567,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,510,505,makecol(255,255,255), -1, "Cout: 4");
-        textprintf_ex(buffer, arial_8, 510, 520, makecol(255,255,255), -1, "degat: 120");
-        textprintf_ex(buffer, arial_8, 510, 535, makecol(255,255,255), -1, "Porte: 7");
-
-        textprintf_ex(buffer, arial_8, 573, 510, makecol(255,255,255), -1, "Attaque");
-        textprintf_ex(buffer, arial_8, 570, 525, makecol(255,255,255), -1, "longiligne");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 3)
-    {
-        rectfill(buffer, 507,500,617,550,makecol(160,160,160));
-        vline(buffer,567,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,510,505,makecol(255,255,255), -1, "Cout: 2");
-        textprintf_ex(buffer, arial_8, 510, 520, makecol(255,255,255), -1, "degat: 80");
-        textprintf_ex(buffer, arial_8, 510, 535, makecol(255,255,255), -1, "Porte: 5");
-
-        textprintf_ex(buffer, arial_8, 573, 510, makecol(255,255,255), -1, "Attaque");
-        textprintf_ex(buffer, arial_8, 570, 525, makecol(255,255,255), -1, "longiligne");
-    }
-    else if(Joueur[indicejoueur].classe.numero_classe == 4)
-    {
-        rectfill(buffer, 507,500,617,550,makecol(160,160,160));
-        vline(buffer,560,505,545, makecol(255,255,255));
-        textprintf_ex(buffer, arial_8,510,505,makecol(255,255,255), -1, "Cout: 2");
-        textprintf_ex(buffer, arial_8, 510, 520, makecol(255,255,255), -1, "degat: 60");
-        textprintf_ex(buffer, arial_8, 510, 535, makecol(255,255,255), -1, "Porte: 4");
-
-        textprintf_ex(buffer, arial_8, 563, 505, makecol(255,255,255), -1, "20 degats");
-        textprintf_ex(buffer, arial_8, 567, 520, makecol(255,255,255), -1, "pendant");
-        textprintf_ex(buffer, arial_8, 567, 535, makecol(255,255,255), -1, "3 tours");
-    }
-
-}
-
 
 int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille)
 {
@@ -1324,191 +1050,11 @@ void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, 
 
 
 
-void menu_fin(BITMAP* page, int nbJoueurs, t_joueur Joueurs[], int * nouvelle_partie, int* quitter,t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
-{
-    BITMAP* fond_menu = create_bitmap(SCREEN_W,SCREEN_H);
-
-    int couleur_quitter = makecol(0,255,255);
-    int couleur_recommencer = makecol(255,0,0);
-    int couleur_nvle_partie = makecol(0,255,0);
-    int couleur_classement = makecol(255,255,0);
-    BITMAP* curseur = load_bitmap("curseur.bmp", NULL);
-    clear(page);
-    classement(nbJoueurs,Joueurs,page, visuel_menu, soldat,mesActeurs, delay, temps,tab_bitmap);
-    while(1)
-    {
-        animation_decor_menu(soldat, mesActeurs, delay, visuel_menu, tab_bitmap, temps);
-        blit(visuel_menu->visuel,page,0,0,0,0,800,600);
-        rest(1);
-        rectfill(fond_menu, 250, 150, 560, 210, couleur_nvle_partie);
-
-        rectfill(fond_menu, 250, 250, 560, 310, couleur_recommencer);
-
-        rectfill(fond_menu, 250, 350, 560, 410, couleur_classement);
-
-        rectfill(fond_menu, 250, 450, 560, 510, couleur_quitter); // Credit
-
-
-    ///////////////////////////// DESSIN MENU /////////////////////////////////////
-
-        rectfill(page, 250, 150, 560, 210, makecol(190,190,190));
-        rectfill(page, 253, 153, 557, 207, makecol(175,175,175));
-        rectfill(page, 256, 156, 554, 204, makecol(160,160,160));
-        textprintf_ex(page, font, 270, 170, makecol(0,0,0), -1, "Nouvelle Partie");
-
-        rectfill(page,  250, 250, 560, 310, makecol(190,190,190));
-        rectfill(page, 253, 253, 557, 307, makecol(175,175,175));
-        rectfill(page, 256, 256, 554, 304, makecol(160,160,160));
-        textprintf_ex(page, font, 270, 270, makecol(0,0,0), -1, "Recommencer la Partie");
-
-        rectfill(page, 250, 350, 560, 410, makecol(190,190,190));
-        rectfill(page, 253, 353, 557, 407, makecol(175,175,175));
-        rectfill(page, 256, 356, 554, 404, makecol(160,160,160));
-        textprintf_ex(page, font, 270, 370, makecol(0,0,0), -1, "Classement");
-
-        rectfill(page, 250, 450, 560, 510, makecol(190,190,190));
-        rectfill(page, 253, 453, 557, 507, makecol(175,175,175));
-        rectfill(page, 256, 456, 554, 504, makecol(160,160,160));
-        textprintf_ex(page, font, 270, 470, makecol(0,0,0), -1, "Quitter"); // CREDIT
-
-
-        ///////////////////////////// DETECTION BOUTON /////////////////////////////////////
-
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_nvle_partie) // JOUER
-        {
-            rectfill(page, 250, 150, 560, 210, makecol(210,210,210));
-            rectfill(page, 253, 153, 557, 207, makecol(195,195,195));
-            rectfill(page, 256, 156, 554, 204, makecol(180,180,180));
-            textprintf_ex(page, font, 270, 170, makecol(20,20, 20), -1, "Nouvelle Partie");
-            if (mouse_b & 1)
-            {
-                *nouvelle_partie=1;
-                *quitter=3;
-                rest(100);
-                return;
-            }
-        }
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_recommencer) // APERCU DES CLASSES
-        {
-            rectfill(page,  250, 250, 560, 310, makecol(210,210,210));
-            rectfill(page, 253, 253, 557, 307, makecol(195,195,175));
-            rectfill(page, 256, 256, 554, 304, makecol(180,180,180));
-            textprintf_ex(page, font, 270, 270, makecol(20,20,20), -1, "Recommencer la Partie");
-            if (mouse_b & 1)
-            {
-                init_restart(Joueurs, nbJoueurs);
-                *quitter=5;
-                rest(100);
-                return;
-            }
-        }
-        if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_classement) // PARAMETRE
-        {
-            rectfill(page, 250, 350, 560, 410, makecol(210,210,210));
-            rectfill(page, 253, 353, 557, 407, makecol(195,195,175));
-            rectfill(page, 256, 356, 554, 404, makecol(180,180,180));
-            textprintf_ex(page, font, 270, 370, makecol(20,20,20), -1, "Classement");
-            if (mouse_b & 1)
-            {
-               classement(nbJoueurs,Joueurs,page, visuel_menu, soldat,mesActeurs, delay, temps,tab_bitmap);
-               rest(100);
-            }
-        }
-         if (getpixel(fond_menu, mouse_x, mouse_y) == couleur_quitter) // CREDIT
-        {
-            rectfill(page, 250, 450, 560, 510, makecol(210,210,210));
-            rectfill(page, 253, 453, 557, 507, makecol(195,195,175));
-            rectfill(page, 256, 456, 554, 504, makecol(180,180,180));
-            textprintf_ex(page, font, 270, 470, makecol(20,20,20), -1, "QUITTER");
-            if (mouse_b & 1)
-            {
-                *quitter=10;
-                rest(100);
-                return;
-            }
-        }
-        montre_curseur(page,curseur);
-
-
-        blit(page, screen, 0, 0, 0, 0, 800, 600);
-        clear(page);
-
-    }
-}
 
 
 
-void classement(int nbJoueurs, t_joueur Joueurs[],BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[])
-{
-        BITMAP* podium=load_bitmap("podium.bmp",NULL);
-        erreur_chargement_image(podium);
-        //TRI A BULLE//
-
-        int i, j;
-        int pv_tmp;
-        t_joueur joueur_tmp;
-
-      for (i=0 ; i < nbJoueurs; i++)
-      {
-        for (j=0 ; j < nbJoueurs-i; j++)
-        {
-          if (Joueurs[j].pv_actuel > Joueurs[j+1].pv_actuel)
-          {
-                    joueur_tmp = Joueurs[j];
-                    Joueurs[j] = Joueurs[j+1];
-                    Joueurs[j+1]= joueur_tmp;
-
-          }
-        }
-      }
-
-    clear(buffer);
-    int x,y;
 
 
-        masked_blit(podium,buffer,0,0, 0,0,600,600);
-       for(int i=0;i<nbJoueurs;i++)
-        {
-                if(i==nbJoueurs-1)
-                {
-                    x=280;
-                    y=150;
-                }
-                if(i==nbJoueurs-2)
-                {
-                    x=117;
-                    y=273;
-                }
-                if(i==nbJoueurs-3)
-                {
-                    x=408;
-                    y=273;
-                }
-                if(i==nbJoueurs-4)
-                {
-                    x=570;
-                    y=386;
-                }
-
-            draw_sprite(buffer,Joueurs[i].classe.icone[Joueurs[i].num_skin].icone_grand,x,y);
-
-        blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-        rest(1000);
-    }
-    rest(5000);
-
-}
-
-
-
-void init_restart(t_joueur Joueurs[], int nbJoueurs)
-{
-
-    for(int i=0; i<nbJoueurs; i++)
-    {
-        Joueurs[i]=init_joueur(Joueurs[i].nom_joueur,Joueurs[i].classe,Joueurs[i].numero_joueur,Joueurs[i].num_skin);
-    }
-}
 
 
 

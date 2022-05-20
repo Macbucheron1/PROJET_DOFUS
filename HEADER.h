@@ -38,13 +38,6 @@ typedef struct icone{
     BITMAP* icone_petit;
 }t_icone;
 
-typedef struct image_attaque{
-    BITMAP* attaque1;
-    BITMAP* attaque2;
-    BITMAP* attaque3;
-    BITMAP* attaque4;
-    BITMAP* attaque5;
-}t_attaque;
 
 typedef struct Personnage{ //les classes
     int numero_classe; // de 1 � 4 pour differencier les classes plus facilement
@@ -53,7 +46,6 @@ typedef struct Personnage{ //les classes
     int pm_max; // afin de remettre a ca a chaque tour
     int pa_max; // pareil
     t_icone icone[2];
-    t_attaque image_attaque;
 }t_personnage;
 
 typedef struct Joueur{
@@ -68,6 +60,7 @@ typedef struct Joueur{
     int pm_actuel;
     int pa_actuel;
     int respiration;
+
     int elimine; //1 si elimine 0 s'il joue
 
     //pour les attaques
@@ -134,17 +127,13 @@ void montre_curseur(BITMAP* page, BITMAP* curseur); // Permet d'afficher un curs
 void affichagePerso(BITMAP* buffer, BITMAP* soldat, t_map carte,int x,int y); //permet d'afficher un personnage
 void SurbrillanceDeplacement(BITMAP* buffer,t_map carte, int tab[20][16]); //est appelé par CalculDeplacement, permet d'afficher des carres verts sur les cases contenant des 1 dans le tableau tab
 void afficheSouris(BITMAP* buffer,t_map carte, int tab[20][16]); // est appelé par SurbrillanceDeplacement et affiche un carré bleu a la position de la souris (si la souris se trouve dans la zone de deplacement)
-void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs,t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration); // Fait l'animation de deplacementvoid affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joueur Joueurs[], int indiceActuel, int nbJoueurs); // A commenter
+void AnimationDeplacement(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs,t_joueur Joueurs[], BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration); // Fait l'animation de deplacement
+void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joueur Joueurs[], int indiceActuel, int nbJoueurs); // A commenter
 int menu_en_jeu(BITMAP* buffer, BITMAP* fond_menu, int* affiche_son, int* affiche_grille); // A commenter
 void affichage_classe2(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville); // Affiche la classe clone
 void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige); // Affiche la classe dark vador
 void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_desert); // Affiche la classe jedi
 void affichage_classe4(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_ville);
-void affichage_attaque1(BITMAP* buffer, t_joueur Joueur[], int indicejoueur);
-void affichage_attaque2(BITMAP* buffer, t_joueur Joueur[], int indicejoueur);
-void affichage_attaque3(BITMAP* buffer, t_joueur Joueur[], int indicejoueur);
-void affichage_attaque4(BITMAP* buffer, t_joueur Joueur[], int indicejoueur);
-void affichage_attaque5(BITMAP* buffer, t_joueur Joueur[], int indicejoueur);
 
 int affichage_credit(int police, int vitesse, int depart_texte, BITMAP* page, FONT* arial_28, FONT* arial_26, FONT* arial_24, FONT* arial_22, FONT* arial_20,FONT* arial_18, FONT* arial_16, FONT* arial_14, FONT* arial_12, FONT* arial_10, FONT* arial_8); // Affiche les credits
 void animation_decor_menu(BITMAP* soldat, t_acteur mesActeurs[], int* delay, t_decor* visuel_menu, BITMAP* tableau_map[], unsigned int* temps); // Anime tout le decor du mennu
@@ -180,7 +169,8 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen);
 int choix_map(BITMAP* buffer, SAMPLE* musique, int* volume,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps);
 
 
-int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps,int nbJoueurs,t_joueur Joueurs[]);
+
+int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps);
 int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]); // stockage de la totalité de la saisie
 int nombreJoueurs(BITMAP* buffer, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps);
 int caseDisponible2(t_map carte, int x, int y,t_joueur Joueurs[], int nbJoueurs, int exception);
@@ -196,7 +186,7 @@ void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin,
 /* ----------- PRINCIPALE ----------- */
 
 void menu_principal(void); // Lance le menu principale
-int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume,BITMAP* plateau, int num_map); // Permet de jouer
+int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMAP* plateau, int num_map); // Permet de jouer
 void credit_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, t_acteur mesActeurs[], int* delay, unsigned int* temps, BITMAP* tab_bitmap[]) ; //Lance les credits
 void parametre_en_cours(BITMAP* page, t_decor* visuel_menu, SAMPLE* musique, int* volume, BITMAP* soldat, t_acteur mesActeurs[], int* delay, BITMAP* tab_bitmap[], unsigned int* temps); // Lance les parametres
 void apercu_classe_en_cours(BITMAP* page, t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank); // Lance l'apercu des classes
@@ -220,6 +210,7 @@ void verif_roulement(t_joueur* tab_j,int i); //remet a false apres un tour
 void verif_en_feu(t_joueur* tab_j,int i,BITMAP* buffer,BITMAP* soldat,t_map carte,int nbJoueur, int respiration); //si en feu met des degats
 int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueur, BITMAP* buffer, BITMAP* animation, int nbJoueurs ); //verifie si on clique sur une case avc un joueur
 void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat, int respiration); //lance les attaques en fonction de la classe et de la case cliquée
+
 //peut etre a mettre dans les fonctions d'affichages
 
 void affichage_action_impossible(BITMAP* page); // pas assez de pa
