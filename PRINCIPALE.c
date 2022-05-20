@@ -352,22 +352,21 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             {
                 if(Joueurs[indiceActuel].position_colonne!=positionTmpX || Joueurs[indiceActuel].position_ligne!=positionTmpY)    //Permet d'actualiser le chemin seulement si le joueur change de position
                 {
-                    CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel, affiche_son, affiche_grille);
+                    CalculDeplacement(page,carte, Joueurs[indiceActuel].position_colonne,Joueurs[indiceActuel].position_ligne,zoneDeplacement, Joueurs[indiceActuel].pm_actuel, Joueurs, nbJoueurs,indiceActuel, affiche_son, affiche_grille, num_map);
                     positionTmpX=Joueurs[indiceActuel].position_colonne;
                     positionTmpY=Joueurs[indiceActuel].position_ligne;
                 }
                 SurbrillanceDeplacement(page,carte,zoneDeplacement);
                 tmp=clock();
-                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille);
+                Joueurs[indiceActuel].pm_actuel-=Deplacement(carte, zoneDeplacement, indiceActuel, page, perso1,nbJoueurs,Joueurs,fond_menu,avatar, temps1,temps2, affiche_son, affiche_grille, num_map, respiration);
                 dureeStop+=clock()-tmp;
             }
+
 
             ////////////////////////////////////////////////////////////////////////////
 
             ////////////////////////////////////ATTAQUE/////////////////////////////////
-
             int zoneAttaque[20][16];
-
             if(quelle_attaque==0)
             {
                 attaqueActive=0; //ne fait rien
@@ -376,14 +375,12 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             {
                 attaqueActive=1;
 
-                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque);
+                attaque(Joueurs,indiceActuel,page,carte,zoneAttaque,animation_attaque,nbJoueurs,&quelle_attaque,soldat, respiration);
                 //printf("%d\n",quelle_attaque);
             }
 
-
             for(int i=0;i<nbJoueurs;i++)
                 //printf("PV du jouer %d: %d\n",i,Joueurs[i].pv_actuel);
-
             if(mouse_b && getpixel(fond_menu,mouse_x,mouse_y)== couleur_fin_attaque){
                 attaqueActive=0;
                 quelle_attaque=0;
@@ -396,7 +393,7 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
             ////////////////////////////////////////////////////////////////////////////
 
 
-            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999);
+            AffichePerso(page, perso1, carte, nbJoueurs, Joueurs,9999, respiration);
             //respiration a faire
             //affichage_en_jeu(page,fond_menu,avatar,avatar2,avatar3,avatar4);
 
@@ -404,7 +401,6 @@ int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMA
                 adjust_sample(musique, *volume, 128, 1000, 1);
             else
                 adjust_sample(musique, 0, 128, 1000, 1);
-
             if (mouse_b && getpixel(fond_menu, mouse_x, mouse_y) == couleur_menu) // menu
             {
                 tmp=clock();
