@@ -107,13 +107,13 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
     {
         if (num_skin == 0)
         {
-            j.position_bitmap.x=432;
+            j.position_bitmap.x=9*48;
             j.position_bitmap.y=256;
             j.skin=load_bitmap("nv_perso1.bmp",NULL);
         }
         else
         {
-            j.position_bitmap.x=384;
+            j.position_bitmap.x=6*48;
             j.position_bitmap.y=256;
             j.skin=load_bitmap("nv_perso1.bmp",NULL);
         }
