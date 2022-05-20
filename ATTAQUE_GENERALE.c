@@ -264,28 +264,26 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
         }
     }
 
-    else if(num_classe==4) //le joueur est un tank
+       else if(num_classe==4) //le joueur est un tank
     {
         if(quelle_attaque==1)
         {
-            c_a_c_tank(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            c_a_c_tank(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            roulement(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            roulement(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat,respiration);
         }
         if(quelle_attaque==3)
         {
-            bouclier(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            bouclier(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
-            tir_basique_tank(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            /// a integrer
         }
         if(quelle_attaque==5)
         {
-            lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
     }
-    //rest(50);
-}
