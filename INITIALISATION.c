@@ -193,15 +193,35 @@ void init_decor(t_decor* decor)
     decor->position_y = 0;
 }
 
-void init_map(t_map* carte)
+void init_map(t_map* carte, BITMAP* plateau, int num_map)
 {
     /* Permet d'initialiser une map
     Prend en parametre la carte qu'on doit remplir
     Ne renvoie rien*/
-    carte->fond_map = load_bitmap("map_desert.bmp",NULL);
+    carte->fond_map = create_bitmap(800, 600);
+    blit(plateau, carte->fond_map, 0, 0, 0, 0, 800, 600);
     erreur_chargement_image(carte->fond_map);
     remplir_tab_coordonnes(carte);
-    remplir_map_obstacle(carte);
+    if (num_map == 1)
+    {
+        remplir_map_obstacle_desert(carte);
+    }
+    else if (num_map == 2)
+    {
+        remplir_map_obstacle_neige(carte);
+    }
+    else if (num_map == 3)
+    {
+
+        remplir_map_obstacle_ville(carte);
+
+    }
+    else
+    {
+        allegro_message("La map n'existe pas");
+        allegro_exit();
+        exit(EXIT_FAILURE);
+    }
 }
 
 void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin, int deplacement_x, int deplacement_y, int position_bitmap_x, int position_bitmap_y, int deplacement_bitmap_x, int deplacement_bitmap_y)
