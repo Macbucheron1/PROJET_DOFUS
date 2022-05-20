@@ -733,7 +733,7 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
 }
 
 
-vvoid AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception, int respiration){       //Affiche tous les Perso sauf l'indice exception
+void AffichePerso(BITMAP* buffer, BITMAP* soldat, t_map carte, int nbJoueurs, t_joueur Joueurs[], int exception, int respiration){       //Affiche tous les Perso sauf l'indice exception
     for(int i=0; i<nbJoueurs;i++)
     {
                if(i!=exception)
