@@ -366,8 +366,7 @@ void affichage_classe1(int* position_x_bitmap_soldat, int* nouvelle_affichage, i
 }
 
 
-void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige)
-{
+void affichage_classe3(int* position_x_bitmap_soldat, int* nouvelle_affichage, int* direction_soldat, BITMAP* soldat, BITMAP* page, int position_affichage_x, int position_affichage_y, BITMAP* map_neige){
         /* Permet d'afficher la classe Dark vador
         Prend en parametre la position du skin dans la bitmap, le temps ecoulé depuis le dernier changement d'affichage, la direction du personnage, le personnage, la bitmap d'affichage, la position d'affichage, la bitmap de fond
         Ne renvoie rien */
@@ -659,9 +658,11 @@ int animation_vers_haut(int delay, t_acteur* monActeur, int position_debut_y, in
 void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joueur Joueurs[], int indiceActuel, int nbJoueurs)
 {
     int i;
+    FONT* arial_8 = load_font("arial_8.pcx", NULL, NULL);
 
     draw_sprite(buffer, Joueurs[indiceActuel].classe.icone[Joueurs[indiceActuel].num_skin].icone_grand,3,70);
     draw_sprite(buffer, Joueurs[(indiceActuel+1)%nbJoueurs].classe.icone[Joueurs[(indiceActuel+1)%nbJoueurs].num_skin].icone_petit,3,150);
+
     if (nbJoueurs == 3)
     {
         draw_sprite(buffer, Joueurs[(indiceActuel+2)%nbJoueurs].classe.icone[Joueurs[(indiceActuel+2)%nbJoueurs].num_skin].icone_petit,34,150);
@@ -674,17 +675,17 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
 
     textprintf_ex(buffer,font,13,190,makecol(0,0,0), -1,"PV");
     rect(buffer,10, 200, 30, 350,makecol(0,0,0));
-    rectfill(buffer,12, 202, 28,(((float)Joueurs[indiceActuel].pv_actuel/Joueurs[indiceActuel].classe.pv_max)*146)+202,makecol(0,255,0));
+    rectfill(buffer,12, 202, 28,(((float)Joueurs[indiceActuel].pv_actuel/Joueurs[indiceActuel].classe.pv_max)*146)+202,makecol(255,0,0));
 
     textprintf_ex(buffer,font,41,190,makecol(0,0,0), -1,"PM");
     rect(buffer,38, 200, 58, 350,makecol(0,0,0));
     if(Joueurs[indiceActuel].classe.numero_classe == 1)
     {
-        rectfill(buffer,40, 202, 56,(((float)Joueurs[indiceActuel].pm_actuel/Joueurs[indiceActuel].pm_max_actu_mage)*146)+202,makecol(0,255,0));
+        rectfill(buffer,40, 202, 56,(((float)Joueurs[indiceActuel].pm_actuel/Joueurs[indiceActuel].pm_max_actu_mage)*146)+202,makecol(0,0,255));
     }
     else
     {
-        rectfill(buffer,40, 202, 56,(((float)Joueurs[indiceActuel].pm_actuel/Joueurs[indiceActuel].classe.pm_max)*146)+202,makecol(0,255,0));
+        rectfill(buffer,40, 202, 56,(((float)Joueurs[indiceActuel].pm_actuel/Joueurs[indiceActuel].classe.pm_max)*146)+202,makecol(0,0,255));
     }
 
     textprintf_ex(buffer,font,69,190,makecol(0,0,0), -1,"PA");
@@ -694,7 +695,7 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
     for(i = 0; i<3; i++)
     {
         rectfill(buffer, 750+2*i, 10+2*i, 790-2*i, 50-2*i, makecol(190-15*i,190-15*i,190-15*i));
-        //rectfill(buffer, 18+2*i, 20+2*i, 78-2*i, 80-2*i, makecol(190-15*i,190-15*i,190-15*i));
+        rectfill(buffer,7+2*i,45+2*i,85-2*i,65-2*i, makecol(190-15*i,190-15*i,190-15*i));
     }
     for(i = 0; i<3; i++)
     {
@@ -711,6 +712,8 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
     {
         rectfill(buffer, 22+2*y,555+2*y,72-2*y,595-2*y,makecol(0,125-15*y,255-15*y));
     }
+    textout_ex(buffer, arial_8, "Fin", 32+2*3, 555+5, makecol(255, 255, 255), -1);
+    textout_ex(buffer, arial_8, "Attaque", 22+2*3, 555+4*5, makecol(255, 255, 255), -1);
     for(i = 0;i<3;i++)
     {
         for(int j=0;j<3;j++)
@@ -722,14 +725,42 @@ void affichage_en_jeu(BITMAP* buffer,BITMAP* fond_menu, BITMAP* avatar[], t_joue
     {
         rectfill(buffer, 100+108*5+2*j, 555+2*j, 200+108*5-2*j, 595-2*j, makecol(240-15*j,0 ,0));
     }
-    textout_ex(buffer, font, "Fin de tour", 100+108*5+2*3, 555+2*5, makecol(10, 10, 10), -1);
-    for(i = 0; i<3;i++)
+    textout_ex(buffer, font, "Fin de tour", 100+108*5+2*3, 555+3*5, makecol(10, 10, 10), -1);
+
+    textprintf_ex(buffer, arial_8, 14, 50, makecol(255,255,255), -1, "%s", Joueurs[indiceActuel].nom_joueur);
+    if(Joueurs[indiceActuel].classe.numero_classe == 1)
     {
-        for(int j = 0; j<3;j++)
-        {
-            //rectfill(buffer, 10+26*i+2*j, 180+2*j, 35+26*i-2*j, 205-2*j, makecol(190-15*j,190-15*j,190-15*j));
-        }
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,560);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 540,557);
     }
+    else if(Joueurs[indiceActuel].classe.numero_classe == 2)
+    {
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 520,567);
+    }
+    else if(Joueurs[indiceActuel].classe.numero_classe == 3)
+    {
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 516,557);
+    }
+    else if(Joueurs[indiceActuel].classe.numero_classe == 4)
+    {
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque1, 105,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque2, 184,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque3, 260,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque4, 388,557);
+        draw_sprite(buffer, Joueurs[indiceActuel].classe.image_attaque.attaque5, 520,557);
+    }
+
 }
 
 
@@ -827,8 +858,7 @@ void AnimationClasse1(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
     blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
 }
 
-void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration)
-{
+void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP* fond_menu,BITMAP* avatar[],time_t temps1,time_t temps2, int affiche_on, int affiche_grille, int respiration){
     int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
     int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
 
@@ -906,8 +936,7 @@ void AnimationClasse2(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
     blit(carte.fond_map,buffer,0,0, (SCREEN_W-carte.fond_map->w)/2, (SCREEN_H-carte.fond_map->h)/2, carte.fond_map->w, carte.fond_map->h);     //AfficheTout
 }
 
-void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP *fond_menu, BITMAP* avatar[],time_t temps1, time_t temps2, int affiche_on, int affiche_grille, int respitation)
-{
+void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial, int y_initial, int indiceActuel, coords chemin[], int PM, int nbJoueurs, t_joueur Joueurs[],BITMAP *fond_menu, BITMAP* avatar[],time_t temps1, time_t temps2, int affiche_on, int affiche_grille, int respitation){
     int x1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_x;    //On recupere les coordonnées en pixels de la case initial
     int y1 = carte.tab_coordonnes[x_initial][y_initial].position_pixel_y;
 
@@ -967,7 +996,7 @@ void AnimationClasse3(BITMAP* buffer, BITMAP* soldat, t_map carte, int x_initial
             while(y1<y2)                                                                                                                                    //Descendre
             {
                 AfficheTout(buffer, soldat, carte, nbJoueurs, Joueurs,fond_menu, avatar,temps1,temps2, affiche_on, affiche_grille,indiceActuel);
-                AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respitation);
+               AffichePerso(buffer, soldat, carte, nbJoueurs, Joueurs, indiceActuel, respitation);
                 masked_blit(Joueurs[indiceActuel].skin,buffer, x, 492, x1,y1-30, 33,64);
                 x=x+75;
                 if (x>=870)
