@@ -244,7 +244,7 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat);
+            c_a_c_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
