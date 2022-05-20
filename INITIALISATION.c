@@ -151,13 +151,13 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
         if (num_skin == 0)
         {
             j.position_bitmap.x=144;
-            j.position_bitmap.y=256;
+            j.position_bitmap.y=260;
             j.skin=load_bitmap("nv_perso2.bmp",NULL);
         }
         else
         {
             j.position_bitmap.x=0;
-            j.position_bitmap.y=256;
+            j.position_bitmap.y=260;
             j.skin=load_bitmap("nv_perso2.bmp",NULL);
         }
         j.classe.image_attaque.attaque1 = load_bitmap("poing.bmp", NULL);
