@@ -223,7 +223,7 @@ void menu_principal(void) // A finir
     destroy_sample(musique);
 }
 
-int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume) // A finir
+int jouer(t_joueur Joueurs[], int nbJoueurs, SAMPLE* musique, int* volume, BITMAP* plateau, int num_map) // A finir
 {
     // VARIABLE
     t_map carte;
