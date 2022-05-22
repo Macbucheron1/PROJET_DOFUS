@@ -470,9 +470,8 @@ int Star (t_star TabStar[LIMIT_STAR], int Stardelay, int i,BITMAP * backscreen)
     return Stardelay;
 }
 
-int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps)
+int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mage,t_personnage archer,t_personnage guerrier, t_personnage tank,t_decor* visuel_menu, BITMAP* soldat, int* delay, t_acteur mesActeurs[], BITMAP* tab_bitmap[], unsigned int* temps,int nbJoueurs,t_joueur Joueurs[], int* num_map)
 {
-    BITMAP* buffer_detection = create_bitmap(800, 600);
     BITMAP *personnage=load_bitmap("personnage.bmp", NULL);
     BITMAP* map_desert=load_bitmap("map_desert.bmp", NULL);
     BITMAP* map_neige=load_bitmap("map_neige.bmp", NULL);
@@ -481,20 +480,17 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
     erreur_chargement_image(map_neige);
     erreur_chargement_image(map_ville);
     erreur_chargement_image(personnage);
-    int num_map = -1;
-    int nbJoueurs=nombreJoueurs(buffer,visuel_menu, soldat, delay, mesActeurs, tab_bitmap, temps);
-    t_joueur Joueurs[nbJoueurs];
 
     int classe[nbJoueurs];
     int num_skin[nbJoueurs];
-    int x,y,i,cpt;
+    int x, i,cpt;
+    //int y;
     char pseudos[nbJoueurs][13];
     int nbPseudos=0;
     int longueurPseudos[4];             ///contient la longueur de chaque pseudo
     int modifier[nbJoueurs];           ///tableau conteant des 0 quand un pseudo n'a pas été initialisé, 1 pour le contraire
     int quitter;
     int cpt2 = 0;
-    rectfill(buffer_detection, 0, 500, 800, 600, makecol(255, 0, 0));
     for(i=0; i<nbJoueurs; i++)
     {
         num_skin[i]=0;
@@ -529,8 +525,6 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
             if(x<=200*nbJoueurs){
                 rectfill(buffer,x-180,30,x-20,70, makecol(100,100,100));         //Zone de selection
                 rectfill(buffer,x-180+3,30+3,x-20-3,70-3, makecol(160,160,160));
-                rectfill(buffer_detection,x-180,30,x-20,70, makecol(100,100,100));         //Zone de selection
-                rectfill(buffer_detection,x-180+3,30+3,x-20-3,70-3, makecol(160,160,160));
             }
         }
         line(buffer,0,500,800,500, makecol(100,100,100));
@@ -553,10 +547,6 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
             polygon(buffer, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
             polygon(buffer, 3, points2, makecol(couleur_click[cpt+1].r, couleur_click[cpt+1].g, couleur_click[cpt+1].b));
             rectfill(buffer, x-140, 250, x-60, 300, makecol(couleur_rect[cpt2].r, couleur_rect[cpt2].g, couleur_rect[cpt2].b));
-            polygon(buffer_detection, 3, points, makecol(couleur_click[cpt].r, couleur_click[cpt].g, couleur_click[cpt].b));
-            polygon(buffer_detection, 3, points2, makecol(couleur_click[cpt+1].r, couleur_click[cpt+1].g, couleur_click[cpt+1].b));
-            rectfill(buffer_detection, x-140, 250, x-60, 300, makecol(couleur_rect[cpt2].r, couleur_rect[cpt2].g, couleur_rect[cpt2].b));
-            // printf("Joueur %d : rouge = %d green = %d  bleu = %d\n",i,couleur_rect[cpt].r,couleur_rect[cpt].g,couleur_rect[cpt].b);
 
             cpt+=2;
             cpt2++;
@@ -567,24 +557,24 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
             if(classe[cpt]==1) // JEDI SITH
             {
                 x=144+48;
-                y=256+2*64;
+                //y = 256+2*64;
                 masked_blit(mage.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
             }
             else if(classe[cpt]==2)   //CLONE
             {
                 x=480;
-                y=256+2*64;
+                //y=256+2*64;
                 masked_blit(archer.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
             }
             else if(classe[cpt]==3)   //Chasseur de prime
             {
                 x=144+48;
-                y=2*64;
+                //y=2*64;
                 masked_blit(guerrier.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
             }
             else if(classe[cpt]==4)   //Droide
             {
-                y=256+2*64;
+                //y=256+2*64;
                 x=144+48;
                 masked_blit(tank.icone[num_skin[cpt]].icone_grand,buffer, 0, 0, i-135,160, 76,76);
             }
@@ -628,18 +618,18 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
                     }
                     destroy_bitmap(personnage);
                     rest(100);
-                    num_map = choix_map(buffer, musique, volume, visuel_menu, soldat, delay, mesActeurs, tab_bitmap, temps);
-                    if (num_map == 1)
+                    *num_map = choix_map(buffer, musique, volume, visuel_menu, soldat, delay, mesActeurs, tab_bitmap, temps);
+                    if (*num_map == 1)
                     {
-                        quitter=jouer(Joueurs,nbJoueurs, musique, volume, map_desert, num_map);                      /////////////////////////////////////////////////////
+                        quitter=jouer(Joueurs,nbJoueurs, musique, volume, map_desert, *num_map);                      /////////////////////////////////////////////////////
                     }
-                    else if (num_map == 2)
+                    else if (*num_map == 2)
                     {
-                        quitter=jouer(Joueurs,nbJoueurs, musique, volume, map_neige, num_map);                      /////////////////////////////////////////////////////
+                        quitter=jouer(Joueurs,nbJoueurs, musique, volume, map_neige, *num_map);                      /////////////////////////////////////////////////////
                     }
-                    else if (num_map == 3)
+                    else if (*num_map == 3)
                     {
-                        quitter=jouer(Joueurs,nbJoueurs, musique, volume, map_ville, num_map);                      /////////////////////////////////////////////////////
+                        quitter=jouer(Joueurs,nbJoueurs, musique, volume, map_ville, *num_map);                      /////////////////////////////////////////////////////
                     }
                     return quitter;
                     //menu_prin;
@@ -649,7 +639,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
 
             for(x=200; x<=200*nbJoueurs; x+=200)                        //Si on clique sur une des zone de saisie
             {
-                if(mouse_x>=x-180 && mouse_x<=x-20 && mouse_y>=30 && mouse_y<=70)
+                if(mouse_x >= x-180 && mouse_x <= x-20 && mouse_y >= 30 && mouse_y <= 70)
                 {
 
                     longueurPseudos[x/200-1]=saisie(buffer,x-180+10,40,pseudos[x/200 -1]);      //On recupere la longueur du pseudo
@@ -662,7 +652,7 @@ int nouvellePartie(BITMAP* buffer, SAMPLE* musique, int* volume,t_personnage mag
                 cpt++;
             }
 
-            int couleur=getpixel(buffer_detection,mouse_x,mouse_y);
+            int couleur=getpixel(buffer,mouse_x,mouse_y);
             int r=getr(couleur);
             int g=getg(couleur);
             int b=getb(couleur);
@@ -704,16 +694,12 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
   rectfill(buffer,x-10+2,y-10+2,x-10+160-2,y-10+40-2, makecol(160,160,160));
   textprintf_ex(buffer,font,x+tailleLettre*(i+1),y+10,makecol(0,255,255),-1,"_"); //Affivhage du curseur
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-
   while(!key[KEY_ENTER] && !key[KEY_ENTER_PAD])     //La touche entree permet de valider le pseudo
   {
-
     textprintf_ex(buffer,font,x-10,y+50,makecol(0,0,0),-1,"'Entree' pour valider");
     touche=readkey();
-
     touche1=touche & 0xFF; // code ASCII
     touche2=touche >> 8;   // scancode
-
     if (( touche1>31 && touche1<58) || ( touche1>64 && touche1<123))    //Si la touche est une lettre
     {
       if (i>=saisie_max)
@@ -723,16 +709,13 @@ int saisie(BITMAP* buffer,int x,int y, char saisie[12+1]) // stockage de la tota
         saisie[i]=touche1;
         derniereSaisie[0]=touche1;
         saisie[i+1]=0;
-
         /*  on affiche la touche saisie */
-        //textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1," ");
         textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"%s",derniereSaisie);
         i++;
         textprintf_ex(buffer,font,x+tailleLettre*i,y+10,makecol(0,255,255),-1,"_");
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
       }
     }
-
     if ( touche2==KEY_BACKSPACE )   //Effacer
     {
         //rectfill(buffer,x+(tailleLettre)*i,y+10,x+i*tailleLettre+2*tailleLettre, y+20, makecol(160,160,160)); //Rectangle noir recouvrant la surface effacée
@@ -1185,8 +1168,8 @@ void remplir_map_obstacle_neige(t_map* carte)
     Ne renvoie rien*/
     int terrain [COLONNE_TABLEAU][LIGNE_TABLEAU] =
     {
-        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+        { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
         { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         { 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0},
         { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0},

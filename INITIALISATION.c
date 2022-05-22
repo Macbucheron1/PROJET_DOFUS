@@ -96,6 +96,11 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
             j.position_bitmap.y=256;
             j.skin=load_bitmap("nv_perso1.bmp",NULL);
         }
+        j.classe.image_attaque.attaque1 = load_bitmap("poing.bmp", NULL);
+        j.classe.image_attaque.attaque2 = load_bitmap("soin.bmp", NULL);
+        j.classe.image_attaque.attaque3 = load_bitmap("augmente_pm.bmp", NULL);
+        j.classe.image_attaque.attaque4 = load_bitmap("sabre.bmp", NULL);
+        j.classe.image_attaque.attaque5 = load_bitmap("etranglemlent.bmp", NULL);
     }
 
     else if(num_classe==2) //le joueur est un archer
@@ -112,6 +117,11 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
             j.position_bitmap.y=256;
             j.skin=load_bitmap("nv_perso1.bmp",NULL);
         }
+        j.classe.image_attaque.attaque1 = load_bitmap("poing.bmp", NULL);
+        j.classe.image_attaque.attaque2 = load_bitmap("grenade.bmp", NULL);
+        j.classe.image_attaque.attaque3 = load_bitmap("bazouka.bmp", NULL);
+        j.classe.image_attaque.attaque4 = load_bitmap("pistolet.bmp", NULL);
+        j.classe.image_attaque.attaque5 = load_bitmap("sniper.bmp", NULL);
     }
 
 
@@ -129,6 +139,11 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
             j.position_bitmap.y=0;
             j.skin=load_bitmap("nv_perso1.bmp",NULL);
         }
+        j.classe.image_attaque.attaque1 = load_bitmap("poing.bmp", NULL);
+        j.classe.image_attaque.attaque2 = load_bitmap("grenade.bmp", NULL);
+        j.classe.image_attaque.attaque3 = load_bitmap("seringue.bmp", NULL);
+        j.classe.image_attaque.attaque4 = load_bitmap("bazouka.bmp", NULL);
+        j.classe.image_attaque.attaque5 = load_bitmap("pistolet.bmp", NULL);
     }
 
     else if(num_classe==4) //le joueur est un tank
@@ -145,6 +160,11 @@ t_joueur init_joueur(char* nom_joueur,t_personnage classe_choisie,int num_joueur
             j.position_bitmap.y=260;
             j.skin=load_bitmap("nv_perso2.bmp",NULL);
         }
+        j.classe.image_attaque.attaque1 = load_bitmap("poing.bmp", NULL);
+        j.classe.image_attaque.attaque2 = load_bitmap("bouclier.bmp", NULL);
+        j.classe.image_attaque.attaque3 = load_bitmap("augmente_pm.bmp", NULL);
+        j.classe.image_attaque.attaque4 = load_bitmap("pistolet.bmp", NULL);
+        j.classe.image_attaque.attaque5 = load_bitmap("flamme.bmp", NULL);
     }
     erreur_chargement_image(j.skin);
     //on return le joueur crée
@@ -253,4 +273,12 @@ void init_acteur(t_acteur* acteur, int position_x, int position_y, BITMAP* skin,
 
 }
 
+void init_restart(t_joueur Joueurs[], int nbJoueurs)
+{
+
+    for(int i=0; i<nbJoueurs; i++)
+    {
+        Joueurs[i]=init_joueur(Joueurs[i].nom_joueur,Joueurs[i].classe,Joueurs[i].numero_joueur,Joueurs[i].num_skin);
+    }
+}
 

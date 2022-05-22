@@ -1,6 +1,6 @@
 #include "HEADER.h"
 
-/** fonction etant utilisé dans chaque fichiers d'attaques **/
+/** fonction etant utilisÃ© dans chaque fichiers d'attaques **/
 
 bool action_possible(t_joueur* tab_j,int i,int point_de_laction)
 {
@@ -20,7 +20,7 @@ bool action_possible(t_joueur* tab_j,int i,int point_de_laction)
 void affichage_action_impossible(BITMAP* page)
 {
     /* affiche un msg quand un joueur ne peut pas
-    effectuer d'action à cause de ses PA*/
+    effectuer d'action Ã  cause de ses PA*/
 
     int couleur_fond=makecol(0,0,0);
     int couleur_texte=makecol(255,255,255);
@@ -32,7 +32,7 @@ void affichage_action_impossible(BITMAP* page)
 void affichage_action_impossible_nb(BITMAP* page)
 {
     /* affiche un msg quand un joueur ne peut pas
-    effectuer d'action à cause de ses PA*/
+    effectuer d'action Ã  cause de ses PA*/
 
     int couleur_fond=makecol(0,0,0);
     int couleur_texte=makecol(255,255,255);
@@ -43,7 +43,7 @@ void affichage_action_impossible_nb(BITMAP* page)
 void affichage_attaque_impossible(BITMAP* page)
 {
     /* affiche un msg quand un joueur ne peut pas
-    effectuer d'action à cause de ses PA*/
+    effectuer d'action Ã  cause de ses PA*/
 
     int couleur_fond=makecol(0,0,0);
     int couleur_texte=makecol(255,255,255);
@@ -64,8 +64,8 @@ void affichage_attaque_inefficace(BITMAP* page)
 
 void verif_bouclier(t_joueur* tab_j,int i)
 {
-    /* sert à verifier le nombre de tour durant lequel le bouclier est actif
-    si la limite eest depasé, le sort se desactive */
+    /* sert Ã  verifier le nombre de tour durant lequel le bouclier est actif
+    si la limite eest depasÃ©, le sort se desactive */
 
     if ((tab_j[i].tour_bouclier<tab_j[i].tour_bouclier_max) && (tab_j[i].bouclier))
     {
@@ -77,10 +77,9 @@ void verif_bouclier(t_joueur* tab_j,int i)
         tab_j[i].bouclier=false;
     }
 }
-
 void verif_roulement(t_joueur* tab_j,int i)
 {
-    /* remise à false car le sort ne dure qu'un ne dure qu'un tour */
+    /* remise Ã  false car le sort ne dure qu'un ne dure qu'un tour */
     if (tab_j[i].PM_roule)
     {
         tab_j[i].PM_roule=false;
@@ -102,31 +101,24 @@ void verif_en_feu(t_joueur* tab_j,int i,BITMAP* buffer,BITMAP* soldat,t_map cart
         tab_j[i].en_feu=false;
     }
 }
-
-int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueur, BITMAP* buffer, BITMAP* animation, int nbJoueurs )
+int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueur, BITMAP* buffer, int nbJoueurs )
 {
     /*Verifie lors du clic si un joueur est sur la case ou non
     return l'indice du joueur (donc son numero-1) ou bien 4 si
     il n'y as personne sur la case*/
-
     int i=0,j=0;
     int indice_joueur_attaque=20; //personne n'a ete attaque car pas un indice de joueur
-
     //printf("id_j1:%d\n",indice_joueur_attaque);
     if(position_souris_colonne()!=-1 && position_souris_ligne()!=-1)                    //Si le curseur et sur la map
     {
         i= position_souris_colonne();
         j= position_souris_ligne();
-
         if(mouse_b && zoneAttaque[i][j]==1 )                                         //Si le joueur click sur une zone d'attaque
         {
-
-
             for(int k=0; k<nbJoueurs; k++)
             {
                 if((joueur[k].position_colonne==i)&&(joueur[k].position_ligne==j))
                 {
-
                     indice_joueur_attaque=(joueur[k].numero_joueur); // car num de joueur de 1 a 4 mais indice de 0 a 3
                     return indice_joueur_attaque;
                 }
@@ -138,7 +130,7 @@ int joueur_sur_case_ou_pas(t_map carte, int zoneAttaque[20][16], t_joueur* joueu
     return indice_joueur_attaque;
 }
 
-void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif,int  respiration)//j joueur attaqué
+void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP* soldat,t_map carte,int nbJoueur,int verif,int  respiration)//j joueur attaquÃ©
 {
     /* j le joueur sur lequel on affiche le msg
     verif verifie si c'est une attaque, un soin, ou autre (bouvclier, pm, etc)*/
@@ -147,7 +139,6 @@ void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP*
     int couleur_degats = makecol(255,0,0);
     int couleur_soins = makecol(0,255,255);
     int couleur_autre = makecol(0,0,255);
-
     if (verif==1)
     {
         for (int i = 0; i<100; i++)
@@ -194,7 +185,7 @@ void affichage_degat_soin(t_joueur* tab_j,int j,BITMAP* buffer,int degat,BITMAP*
 
 /** fonction d'attaque globale **/
 
-void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], BITMAP* animation, int nbJoueurs, int *quelleAttaque,BITMAP* soldat, int respiration)
+void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[20][16], int nbJoueurs, int *quelleAttaque,BITMAP* soldat, int respiration)
 {
     int quelle_attaque=*quelleAttaque;
     int num_classe; //1 mage ; 2 archer ; 3 guerrier ; 4 tank
@@ -204,23 +195,23 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_mage(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            c_a_c_mage(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            guerison_mage(quelleAttaque,tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            guerison_mage(quelleAttaque,tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==3)
         {
-            meditation_mage(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            meditation_mage(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
-            lancer_sabre(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            lancer_sabre(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==5)
         {
-            etranglement(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            etranglement(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
     }
 
@@ -228,23 +219,23 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            c_a_c_archer(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            lancer_grenade_thermique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat,respiration);
+            lancer_grenade_thermique_archer(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat,respiration);
         }
         if(quelle_attaque==3)
         {
-            tir_lourd_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            tir_lourd_archer(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
-            tir_basique_archer(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            tir_basique_archer(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==5)
         {
-            tir_de_precision(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            tir_de_precision(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
     }
 
@@ -253,39 +244,39 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
     {
         if(quelle_attaque==1)
         {
-            c_a_c_guerrier(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            c_a_c_guerrier(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            /// a integrer
+            lancer_grenade_thermique_guerrier(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==3)
         {
-            /// a integrer
+            guerison_guerrier(quelleAttaque,tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
-            /// a integrer
+            tir_lourd_guerrier(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==5)
         {
-            /// a integrer
+            tir_basique_guerrier(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
     }
 
-    else if(num_classe==4) //le joueur est un tank
+       else if(num_classe==4) //le joueur est un tank
     {
         if(quelle_attaque==1)
         {
-            c_a_c_tank(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            c_a_c_tank(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==2)
         {
-            roulement(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat,respiration);
+            roulement(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,nbJoueurs,soldat,respiration);
         }
         if(quelle_attaque==3)
         {
-            bouclier(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            bouclier(tab_j,i,buffer,quelleAttaque,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
         if(quelle_attaque==4)
         {
@@ -293,7 +284,7 @@ void attaque(t_joueur* tab_j,int i,BITMAP* buffer,t_map carte, int zoneAttaque[2
         }
         if(quelle_attaque==5)
         {
-            lance_flammes(tab_j,i,buffer,carte,zoneAttaque,animation,nbJoueurs,soldat, respiration);
+            lance_flammes(tab_j,i,buffer,carte,zoneAttaque,nbJoueurs,soldat, respiration);
         }
     }
 }
